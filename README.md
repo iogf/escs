@@ -1,0 +1,2 @@
+# escs
+A modal IDE.
