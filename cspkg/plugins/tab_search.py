@@ -40,7 +40,7 @@ class TabSearch(Plugin):
         root.note.on(elem)
 
         wid  = root.note.nametowidget(root.note.select())
-        root.title('Vy %s' % wid.focused_xstr.filename)
+        root.title('Escs %s' % wid.focused_xstr.filename)
 
     def switch_back(self, wid):
         """
@@ -52,7 +52,7 @@ class TabSearch(Plugin):
         root.note.on(elem)
 
         wid  = root.note.nametowidget(root.note.select())
-        root.title('Vy %s' % wid.focused_xstr.filename)
+        root.title('Escs %s' % wid.focused_xstr.filename)
 
     def stop(self, wid):
         wid  = root.note.nametowidget(root.note.select())
