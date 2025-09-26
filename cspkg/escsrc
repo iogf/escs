@@ -1,0 +1,40 @@
+##############################################################################
+# Standalone plugin modules are located in ~/escs/
+
+import sys
+from os.path import expanduser, join
+sys.path.append(join(expanduser('~'), '.escs'))
+##############################################################################
+# Functions used to load the plugins.
+
+from cspkg.core import load_module, load_cls
+##############################################################################
+# Basic core modes.
+
+from cspkg.plugins import insert_mode
+load_module(insert_mode)
+
+from cspkg.plugins import normal_mode
+load_module(normal_mode)
+
+from cspkg.plugins import extra_mode
+load_module(extra_mode)
+
+##############################################################################
+from cspkg.plugins import tabs
+load_module(tabs)
+
+from cspkg.plugins import splits
+load_module(splits)
+
+from cspkg.plugins import text_jumps
+load_module(text_jumps)
+##############################################################################
+# Setup Xstr font type, color and cursor.
+
+def escs_setup(xstr):
+    xstr.config(blockcursor=True, 
+    undo=True, foreground='yellow', insertbackground='red', 
+    background='black', font=('Monospace', 8, 'bold'))
+    
+load_cls(escs_setup) 
