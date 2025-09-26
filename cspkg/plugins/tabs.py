@@ -74,11 +74,15 @@ class Tabs(Plugin):
         """
     
         root.note.select(root.note.index(root.note.select()) - 1)
+        wid  = root.note.nametowidget(root.note.select())
+        wid.focused_xstr.focus_set()
     
     def select_right(self, event):
         """
         """
     
         root.note.select(root.note.index(root.note.select()) + 1)
+        wid  = root.note.nametowidget(root.note.select())
+        wid.focused_xstr.focus_set()
     
 install = Tabs

@@ -24,6 +24,9 @@ load_module(extra_mode)
 from cspkg.plugins import tabs
 load_module(tabs)
 
+from cspkg.plugins import tab_search
+load_module(tab_search)
+
 from cspkg.plugins import splits
 load_module(splits)
 
