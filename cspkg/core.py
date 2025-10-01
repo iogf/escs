@@ -54,7 +54,7 @@ class Plugin:
         code = 'mode%s%s' % (self.xstr, mode)
         # if self.bind_class(code, seq):
             # printd('Warning: %s %s already binded!' % (mode, seq))
-        if spread is True:
+        if spread is False:
             handle = mkwrapper(handle)
         self.xstr.bind_class(code, seq, handle, add)
 

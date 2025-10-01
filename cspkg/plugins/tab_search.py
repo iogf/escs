@@ -11,10 +11,10 @@ class TabSearch(Plugin):
         self.xstr = xstr
 
         self.add_kmap(TabSearchNS, Main, 
-        '<Alt-i>', self.on_next_mode, True)
+        '<Alt-i>', self.on_next_mode)
 
         self.add_kmap(TabSearchNS, Main, 
-        '<Alt-u>', self.on_back_mode, True)
+        '<Alt-u>', self.on_back_mode)
 
     def on_next_mode(self, event):
         get = Get(events={'<<Data>>': self.switch_next, 

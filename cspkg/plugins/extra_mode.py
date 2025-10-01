@@ -12,7 +12,7 @@ class ExtraMode(Plugin):
         super().__init__(xstr)
 
         self.add_kmap(ExtraModeNS, 
-        Main, '<Alt-v>', self.switch_extra, True)
+        Main, '<Alt-v>', self.switch_extra)
 
     def switch_extra(self, event):
         """

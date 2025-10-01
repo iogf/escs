@@ -11,13 +11,13 @@ class Splits(Plugin):
         super().__init__(xstr)
 
         self.add_kmap(SplitsNS, Main, 
-        '<Alt-V>', self.add_horizontal_xstr, True)
+        '<Alt-V>', self.add_horizontal_xstr)
 
         self.add_kmap(SplitsNS, Main, 
-        '<Alt-C>', self.add_vertical_xstr, True)
+        '<Alt-C>', self.add_vertical_xstr)
 
         self.add_kmap(SplitsNS, Main, 
-        '<Alt-X>', self.remove_xstr, True)
+        '<Alt-X>', self.remove_xstr)
     
     def add_vertical_xstr(self, event):
         """
