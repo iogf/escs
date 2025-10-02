@@ -65,6 +65,28 @@ class Xstr(Text):
         self.charset = name
         self.load_data(self.filename)
 
+    def save_data_as(self, filename):
+        """
+        """
+
+        self.filename = filename
+        self.save_data()
+
+    def save_data(self):
+        """
+        """
+        _, self.extension = os.path.splitext(self.filename)
+        self.event_generate('<<Pre-SaveData>>')
+        self.event_generate('<<Pre-Save/*%s>>' % self.extension)
+
+        data = self.get('1.0', 'end -1c')
+        data = data.encode(self.charset)
+        fd   = open(self.filename, 'wb')
+        fd.write(data)
+        fd.close()
+        self.event_generate('<<SaveData>>')
+        self.event_generate('<<Save/*%s>>' % self.extension)
+
     def load_data(self, filename):
         """
         """
@@ -151,3 +173,81 @@ class Xstr(Text):
         except Exception:
             pass
     
+    def isearch(self, pattern, index, stopindex='end', forwards=None,
+        backwards=None, exact=None, regexp=None, nocase=None,
+        count=None, elide=None, nolinestop=None):
+
+        """
+        Just AreaVi.search shortcut, in the sense it return the matched chunk
+        the initial position and the end position.
+        """
+        count = IntVar()
+        index = self.search(pattern, index, stopindex, 
+        forwards, backwards, exact, regexp, nocase, count=count,
+        elide=elide, nolinestop=nolinestop)
+
+        if not index: return 
+
+        len   = count.get()
+        tmp   = '%s +%sc' % (index, len)
+        chunk = self.get(index, tmp)
+
+        pos0  = self.index(index)
+        pos1  = self.index('%s +%sc' % (index, len))
+
+        return chunk, pos0, pos1
+
+    def search(self, pattern, index, stopindex='end', forwards=None,
+        backwards=None, exact=None, regexp=None, nocase=None,
+        count=None, elide=None, nolinestop=None):
+            
+        """
+        """
+    
+        args = [self._w, 'search']
+        if forwards: args.append('-forwards')
+        if backwards: args.append('-backwards')
+        if exact: args.append('-exact')
+        if regexp: args.append('-regexp')
+        if nocase: args.append('-nocase')
+        if elide: args.append('-elide')
+        if nolinestop: args.append("-nolinestop")
+        if count: args.append('-count'); args.append(count)
+        if pattern and pattern[0] == '-': args.append('--')
+        args.append(pattern)
+        args.append(index)
+        if stopindex: args.append(stopindex)
+    
+        return str(self.tk.call(tuple(args)))
+
+    def clear_data(self):
+        """
+        It clears all text inside an AreaVi instance.
+        """
+        
+        self.delete('1.0', 'end')
+        self.filename = os.path.abspath(self.default_filename)
+        self.event_generate('<<ClearData>>')
+
+    def rmsel(self, index0, index1):
+        """
+        It removes the tag sel from the range that is delimited by index0 and index1
+        regardless whether index0 <= index1.
+        """
+
+        index2 = self.min(index0, index1)
+        index3 = self.max(index0, index1)
+
+        self.tag_remove('sel', index2, index3)
+
+    def addsel(self, index0, index1):
+        """
+        It adds the tag sel to the range delimited by index0 and index1 regardless
+        whether index0 <= index1.
+        """
+
+        index2 = self.min(index0, index1)
+        index3 = self.max(index0, index1)
+
+        self.tag_add('sel', index2, index3)
+

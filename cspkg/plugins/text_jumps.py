@@ -8,8 +8,6 @@ class TextJumps(Plugin):
     def __init__(self, xstr):
         super().__init__(xstr)
 
-        self.chmode(Normal)
-
         self.add_kmap(TextJumpsNS, Main, 
         '<Alt-g>', self.text_start)
 
@@ -35,10 +33,10 @@ class TextJumps(Plugin):
         '<Key-p>', self.line_end)
 
         self.add_kmap(TextJumpsNS, Main, 
-        '<Control-period>', self.next_word)
+        '<Alt-l>', self.next_word)
 
         self.add_kmap(TextJumpsNS, Main, 
-        '<Control-comma>', self.prev_word)
+        '<Alt-h>', self.prev_word)
 
         self.add_kmap(TextJumpsNS, Main, 
         '<Alt-d>', self.down)

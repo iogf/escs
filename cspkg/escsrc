@@ -32,6 +32,34 @@ load_module(splits)
 
 from cspkg.plugins import text_jumps
 load_module(text_jumps)
+
+from cspkg.plugins import mode_status
+load_module(mode_status)
+
+from cspkg.plugins import topbar_status
+load_module(topbar_status)
+
+from cspkg.plugins import tab_status
+load_module(tab_status)
+
+from cspkg.plugins import xsave
+load_module(xsave)
+
+from cspkg.plugins import xopen
+load_module(xopen)
+
+from cspkg.plugins import xrename
+load_module(xrename)
+
+from cspkg.plugins import pane_jumps
+load_module(pane_jumps)
+
+from cspkg.plugins import line_scroll
+load_module(line_scroll)
+
+from cspkg.plugins import range_sel
+load_module(range_sel)
+
 ##############################################################################
 # Setup Xstr font type, color and cursor.
 

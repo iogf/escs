@@ -40,6 +40,7 @@ class Plugin:
     def __init__(self, xstr):
         self.xstr = xstr
         self.kmaps = dict()
+        self.mode = None
 
     def del_kmap(self, namespace, mode, seq, handle=None):
         """
@@ -51,7 +52,8 @@ class Plugin:
         """
         """
 
-        code = 'mode%s%s' % (self.xstr, mode)
+        code = 'MODE:%s:%s' % (self.xstr, mode.__name__)
+
         # if self.bind_class(code, seq):
             # printd('Warning: %s %s already binded!' % (mode, seq))
         if spread is False:
@@ -59,18 +61,17 @@ class Plugin:
         self.xstr.bind_class(code, seq, handle, add)
 
     def chmode(self, mode):
-        code0 = 'mode%s%s' % (self.xstr, Main)
-        code1 = 'mode%s%s' % (self.xstr, mode)
+        code0 = 'MODE:%s:%s' % (self.xstr, Main.__name__)
+        code1 = 'MODE:%s:%s' % (self.xstr, mode.__name__)
 
         taglist = [code0, code1, self]
         if mode.EDIT is True:
             taglist.append('Text')
         taglist.append('.')
         self.xstr.bindtags(taglist)
-    
         self.mode = mode
         self.xstr.event_generate('<<Chmode>>')
-        self.xstr.event_generate('<<Chmode-%s>>' % mode.__name__)
+        # self.xstr.event_generate('<<Chmode-%s>>' % mode.__name__)
 
 def lsmap(namespace=None, mode=None, seqcode=None):
     """
