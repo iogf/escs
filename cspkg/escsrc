@@ -60,6 +60,9 @@ load_module(line_scroll)
 from cspkg.plugins import range_sel
 load_module(range_sel)
 
+from cspkg.plugins import block_sel
+load_module(block_sel)
+
 ##############################################################################
 # Setup Xstr font type, color and cursor.
 
