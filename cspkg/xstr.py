@@ -87,6 +87,23 @@ class Xstr(Text):
         self.event_generate('<<SaveData>>')
         self.event_generate('<<Save/*%s>>' % self.extension)
 
+    def replace_ranges(self, name, regex, data, exact=False, 
+        regexp=True, nocase=False, elide=False, nolinestop=False):
+        """
+        """
+    
+        count = 0
+        while True:
+            map = self.tag_nextrange(name, '1.0', 'end')
+            if map == (): 
+                return count
+            self.tag_remove(name, *map)
+    
+            inc = self.replace_all(regex, data, map[0], map[1], 
+                    exact, regexp, nocase, elide, nolinestop)
+            count = count + inc
+        return count
+
     def load_data(self, filename):
         """
         """
@@ -113,7 +130,6 @@ class Xstr(Text):
 
         self.event_generate('<<LoadData>>')
         self.event_generate('<<Load/*%s>>' % self.extension)
-
 
     def indexsplit(self, index='insert'):
         """ 
@@ -172,6 +188,19 @@ class Xstr(Text):
                 'sel.first', 'sel.last')
         except Exception:
             pass
+
+    def check_ranges(self, name, regex, index='1.0', 
+        stopindex='end', exact=False, regexp=True, nocase=False, 
+        elide=False, nolinestop=False):
+        """
+        """
+        
+        map = self.tag_ranges(name)
+        for indi in range(0, len(map) - 1, 2):
+            seq = self.find(regex, map[indi], map[indi + 1], 
+                exact=exact, regexp=regexp, nocase=nocase, 
+                    elide=elide, nolinestop=nolinestop)
+            yield from seq
     
     def isearch(self, pattern, index, stopindex='end', forwards=None,
         backwards=None, exact=None, regexp=None, nocase=None,
@@ -196,6 +225,22 @@ class Xstr(Text):
         pos1  = self.index('%s +%sc' % (index, len))
 
         return chunk, pos0, pos1
+
+    def replace_all(self, regex, data, index='1.0', stopindex='end', 
+        exact=None, regexp=True, nocase=None, elide=None, nolinestop=None):
+        """
+        """
+        matches = self.find(regex, index, stopindex, exact=exact, 
+        regexp=regexp, nocase=nocase, elide=elide, nolinestop=nolinestop)
+        count = 0
+
+        for xstr, pos0, pos1 in matches:
+            if callable(data):
+                self.swap(data(xstr, pos0, pos1), pos0, pos1)
+            else:
+                self.swap(data, pos0, pos1)
+            count = count + 1
+        return count
 
     def search(self, pattern, index, stopindex='end', forwards=None,
         backwards=None, exact=None, regexp=None, nocase=None,
@@ -250,4 +295,108 @@ class Xstr(Text):
         index3 = self.max(index0, index1)
 
         self.tag_add('sel', index2, index3)
+
+    def ipick(self, name, regex, index='insert', stopindex='end', 
+        verbose=False, backwards=False, exact=False, regexp=True, 
+        nocase=False, elide=False, nolinestop=False):
+
+        """
+        """
+
+        # Force to do a search from index.
+        if verbose is True: 
+            self.tag_remove(name, '1.0', 'end')
+        if backwards is False: 
+            ranges = self.tag_nextrange(name, index, 'end')
+        else: 
+            ranges = self.tag_prevrange(name, index, '1.0')
+
+        if ranges: 
+            index0, index1 = ranges[:2]
+        else: 
+            index0 = index1 = index
+
+        index = self.isearch(regex, index=index0 if backwards else index1, 
+        stopindex=stopindex, backwards=backwards, exact=exact, regexp=regexp, 
+        nocase=nocase, elide=elide, nolinestop=nolinestop)
+
+        if not index: 
+            return None
+        _, start, end = index
+
+        self.mark_set('insert', start if backwards else end)
+        self.see('insert')
+
+        self.tag_remove(name, '1.0', 'end')
+        self.tag_add(name, start, end)
+        return start, end
+
+    def replace(self, regex, data, index=None, stopindex=None,  
+        forwards=None, backwards=None, exact=None, regexp=True, 
+        nocase=None, elide=None, nolinestop=None):
+
+        """
+        """
+        if not regex: 
+            raise TypeError('Regex should be non blank!')
+
+        count = IntVar()
+
+        index = self.search(regex, index, stopindex, forwards=forwards, 
+        backwards=backwards, exact=exact, nocase=nocase,  nolinestop=nolinestop, 
+        regexp=regexp, elide=elide, count=count)
+            
+        if not index:  
+            return None
+
+        index0 = self.index('%s +%sc' % (index, count.get()))
+
+        if callable(data): 
+            data = data(self.get(index, index0), index, index0)
+        
+        self.delete(index, index0)
+        self.insert(index, data)
+        
+        return index, len(data)
+
+    def find(self, regex, index='1.0', stopindex='end', 
+        backwards=False, exact=False, regexp=True, nocase=False, 
+        elide=False, nolinestop=False, step=''):
+
+        """
+        """
+        if not regex: 
+            raise TclError('Regex is blank!')
+        self.mark_set('(FIND-POS)', index)
+
+        while True:
+            count = IntVar()
+            index = self.search(regex, '(FIND-POS)', stopindex, 
+                None, backwards, exact, regexp, nocase, count=count,
+                    elide=elide, nolinestop=nolinestop)
+
+            if not index: 
+                return None
+            len  = count.get()
+            pos0 = self.index(index)
+            pos1 = self.index('%s +%sc' % (index, len))
+            data = self.get(pos0, pos1)
+
+            self.mark_set('(FIND-POS)', 
+            index if len and backwards else (
+                pos1 if len else (('%s -1c'  
+                    if backwards else '%s +1c') % pos1)))
+
+            if step != '':
+                self.mark_set('(FIND-POS)',
+                    '%s %s' % (self.index('(FIND-POS)'), step))
+            yield(data, pos0, pos1)
+
+    def swap(self, data, index0, index1):
+        """
+        Swap the text in the range index0, index1 for data.
+        """
+
+        self.delete(index0, index1)
+        self.insert(index0, data)
 

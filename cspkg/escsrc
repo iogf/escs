@@ -63,6 +63,10 @@ load_module(range_sel)
 from cspkg.plugins import block_sel
 load_module(block_sel)
 
+from cspkg.plugins.find import Find
+Find.c_appearance(background='green', foreground='white')
+load_cls(Find)
+
 ##############################################################################
 # Setup Xstr font type, color and cursor.
 
