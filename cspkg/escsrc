@@ -85,8 +85,8 @@ spacing.TabSpacing.set_scheme({
 
 load_module(spacing)
 
-from cspkg.plugins import code_comment
-load_module(code_comment)
+from cspkg.plugins import code_comments
+load_module(code_comments)
 
 ##############################################################################
 # Setup Xstr font type, color and cursor.
