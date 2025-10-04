@@ -400,3 +400,52 @@ class Xstr(Text):
         self.delete(index0, index1)
         self.insert(index0, data)
 
+    def cpsel(self, sep=''):
+        """
+        Copy selected text to the clipboard.
+        """
+
+        data = self.join_ranges('sel', sep)
+        self.clipboard_clear()
+        self.clipboard_append(data)
+        self.tag_remove('sel', 'sel.first', 'sel.last')
+
+    def swap_ranges(self, name, data, index='1.0', stopindex='end'):
+        """
+        """
+
+        count = 0
+        self.mark_set('(SWAP)', index)
+
+        while True:
+            range = self.tag_nextrange(
+                name, '(SWAP)', stopindex)
+
+            if len(range) == 0: 
+                return count
+
+            self.mark_set('(SWAP)', range[1])
+            self.swap(data, *range)
+            count = count + 1
+
+    def join_ranges(self, name, sep=''):
+        """     
+        """
+
+        data = ''
+        ranges = self.tag_ranges(name)
+        for ind in range(0, len(ranges) - 1, 2):
+            data += self.get(ranges[ind], ranges[ind + 1]) + sep
+        return data
+
+    def ctsel(self, sep=''):
+        """
+        It cuts the selected text.
+        """
+
+        data = self.join_ranges('sel', sep)
+        self.clipboard_clear()
+        self.clipboard_append(data)
+        self.edit_separator()
+        self.swap_ranges('sel', '', '1.0', 'end')
+
