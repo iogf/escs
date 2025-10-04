@@ -73,6 +73,18 @@ load_module(clipboard)
 from cspkg.plugins import text_shift
 load_module(text_shift)
 
+from cspkg.plugins import spacing
+spacing.TabSpacing.set_scheme({
+'.rb': (2, ' '),
+'.c' : (4, ' '),
+'.cpp' : (4, ' '),
+'.java' : (4, ' '),
+'.go':(1, '\t'),
+'.py': (4, ' '),
+'':(4, ' '), })
+
+load_module(spacing)
+
 ##############################################################################
 # Setup Xstr font type, color and cursor.
 

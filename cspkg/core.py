@@ -1,5 +1,6 @@
 from os.path import expanduser, join, exists, dirname
 from tkinter import Tk, Grid
+from functools import wraps
 from cspkg.cmdout import CmdOut
 from cspkg.nbook import EscsBook
 from shutil import copyfile
@@ -108,5 +109,22 @@ class EscsApp(Tk):
         self.status.grid(row=2, sticky='we')
         Grid.rowconfigure(self, 0, weight=1)
         Grid.columnconfigure(self, 0, weight=1)
+
+class Command:
+    xstr = None
+    def __init__(self, name=None):
+        self.name = name
+
+    def __call__(self, handle):
+        name = self.name if self.name else handle.__name__
+        @wraps(handle)
+        def wrapper(*args, **kwargs):
+            return handle(Command.xstr, *args, **kwargs)
+        rcenv[name] = wrapper
+        return wrapper
+
+    @classmethod
+    def set_target(cls, xstr):
+        cls.xstr = xstr
 
 
