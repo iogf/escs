@@ -70,6 +70,9 @@ load_cls(Find)
 from cspkg.plugins import clipboard
 load_module(clipboard)
 
+from cspkg.plugins import text_shift
+load_module(text_shift)
+
 ##############################################################################
 # Setup Xstr font type, color and cursor.
 

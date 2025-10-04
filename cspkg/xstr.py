@@ -14,6 +14,8 @@ class Xstr(Text):
         self.charset  = 'utf-8'
         self.project  = ''
         self.mark_set('(LC)', '1.0')
+        self.tabchar = ' '
+        self.tabsize = 4
 
     def settab(self, tabsize, tabchar):
         self.tabchar = tabchar
@@ -449,3 +451,10 @@ class Xstr(Text):
         self.edit_separator()
         self.swap_ranges('sel', '', '1.0', 'end')
 
+    def settab(self, tabsize, tabchar):
+        self.tabchar = tabchar
+        self.tabsize = tabsize
+
+    def indent(self):
+        self.edit_separator()
+        self.insert('insert', self.tabchar * self.tabsize)
