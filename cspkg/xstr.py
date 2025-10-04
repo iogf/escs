@@ -4,6 +4,7 @@ from tkinter import Text, IntVar
 import os
 
 class Xstr(Text):
+    homedir   = ''
     def __init__(self, default_filename, *args, **kwargs):
         Text.__init__(self, *args, **kwargs)
 
@@ -16,6 +17,7 @@ class Xstr(Text):
         self.mark_set('(LC)', '1.0')
         self.tabchar = ' '
         self.tabsize = 4
+        self.project  = ''
 
     def settab(self, tabsize, tabchar):
         self.tabchar = tabchar

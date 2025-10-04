@@ -8,6 +8,12 @@ sys.path.append(join(expanduser('~'), '.escs'))
 # Functions used to load the plugins.
 
 from cspkg.core import load_module, load_cls
+from cspkg.stderr import printd
+##############################################################################
+# Set homedir.
+# from cspkg.xstr import Xstr
+# Xstr.homedir = expanduser('~')
+# printd('Setting home dir:', Xstr.homedir)
 ##############################################################################
 # Basic core modes.
 
@@ -91,9 +97,18 @@ load_module(code_comments)
 from cspkg.plugins import sneak
 load_module(sneak)
 
+from cspkg.plugins.project import Project
+Project.c_sentinels('.git', '.svn', '.hg', '._')
+load_cls(Project)
+
 from cspkg.plugins.qsearch import QSearch
 QSearch.c_appearance(background='yellow', foreground='black')
 load_cls(QSearch)
+
+from cspkg.plugins.sniper import Sniper
+# Sniper.c_dirs('/home/user/projects')
+Sniper.c_path('ag')
+load_cls(Sniper)
 
 ##############################################################################
 # Setup Xstr font type, color and cursor.
@@ -102,5 +117,5 @@ def escs_setup(xstr):
     xstr.config(blockcursor=True, 
     undo=True, foreground='yellow', insertbackground='red', 
     background='black', font=('Monospace', 8, 'bold'))
-    
+
 load_cls(escs_setup) 

@@ -14,8 +14,8 @@ class TabSpacing(Plugin):
     def __init__(self, xstr):
         super().__init__(xstr)
 
-        self.add_kmap(TabSpacingNS, Main, '<<LoadData>>', self.set_scm)
-        self.add_kmap(TabSpacingNS, Main, '<<SaveData>>', self.set_scm)
+        self.add_kmap(TabSpacingNS, Main, '<<LoadData>>', self.set_scm, True)
+        self.add_kmap(TabSpacingNS, Main, '<<SaveData>>', self.set_scm, True)
         self.add_kmap(TabSpacingNS, Insert, '<Tab>',  self.insert_tabchar)
     
     def set_scm(self, event):

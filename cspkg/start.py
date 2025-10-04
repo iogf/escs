@@ -1,7 +1,7 @@
 """
 """
 
-from vyapp.stderr import QUIET, logger
+from cspkg.stderr import QUIET, logger
 from itertools import groupby
 from cspkg.core import EscsApp
 import argparse
@@ -34,8 +34,6 @@ lst  = lst + [[[ind]] for ind in args.files]
 if not args.verbose: 
     logger.setLevel(logging.ERROR)
 
-# It has to be called from here otherwise the plugins will not
-# be able to import vyapp.app.root variable.
 root.create_escsrc()
 
 if not lst: 
