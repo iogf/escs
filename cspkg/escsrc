@@ -88,6 +88,9 @@ load_module(spacing)
 from cspkg.plugins import code_comments
 load_module(code_comments)
 
+from cspkg.plugins import sneak
+load_module(sneak)
+
 ##############################################################################
 # Setup Xstr font type, color and cursor.
 
