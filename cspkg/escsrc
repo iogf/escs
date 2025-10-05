@@ -15,6 +15,9 @@ from cspkg.stderr import printd
 # Xstr.homedir = expanduser('~')
 # printd('Setting home dir:', Xstr.homedir)
 ##############################################################################
+from cspkg.plugins import text_commands
+##############################################################################
+
 # Basic core modes.
 
 from cspkg.plugins import insert_mode
@@ -112,6 +115,16 @@ from cspkg.plugins.sniper import Sniper
 # Sniper.c_dirs('/home/user/projects')
 Sniper.c_path('ag')
 load_cls(Sniper)
+
+from cspkg.plugins import outputs
+load_module(outputs)
+
+from cspkg.plugins import cmd_log
+load_module(cmd_log)
+
+from cspkg.plugins import cmd_exec
+load_module(cmd_exec)
+
 
 ##############################################################################
 # Setup Xstr font type, color and cursor.

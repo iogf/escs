@@ -22,3 +22,4 @@ def error(handle):
             root.status.set_msg('Error :%s' % e)
             raise
     return shell
+
