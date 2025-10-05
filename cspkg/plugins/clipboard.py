@@ -20,6 +20,20 @@ class Clipboard(Plugin):
         self.add_kmap(ClipboardNS, Extra, '<Key-y>', self.copy_with_sep)
         self.add_kmap(ClipboardNS, Extra, '<Key-t>', self.paste_block)
         self.add_kmap(ClipboardNS, Extra, '<Key-u>', self.cut_with_sep)
+        self.add_kmap(ClipboardNS, Normal, '<Key-d>', self.del_sel),
+        self.add_kmap(ClipboardNS, Normal, '<Key-D>', self.del_line),
+
+    def del_line(self, event):
+        self.xstr.edit_separator()
+        self.xstr.delete('insert linestart', 'insert +1l linestart')
+        self.xstr.see('insert')
+
+    def del_sel(self, event):
+        """
+        It deletes all selected text.
+        """
+        self.xstr.edit_separator()
+        self.xstr.swap_ranges('sel', '', '1.0', 'end')
 
     def cut(self, event):
         """
