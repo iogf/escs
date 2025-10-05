@@ -43,7 +43,7 @@ class Sniper(Plugin):
             printd('Sniper - Sniper.dirs is not set.')
 
     def display_matches(self, event):
-        self.options.display()
+        self.options.display(self.xstr)
 
     def find_matches(self, event):
         wid = Get(events = {
@@ -155,15 +155,21 @@ class Sniper(Plugin):
 
         pattern = wid.get()
         root.status.set_msg('Set pattern:%s!' % pattern)
-
         output = self.run_cmd(pattern)
-        regex  = '(.+):([0-9]+):[0-9]+:(.+)' 
-        ranges = findall(regex, output)
-        if ranges:
-            self.options(self.xstr, ranges)
+        print(output)
+
+        if output:
+            self.fmt_output(output)
         else:
             root.status.set_msg('No results:%s!' % pattern)
         return True
+
+    def fmt_output(self, output):
+        regex  = '(.+):([0-9]+):[0-9]+:(.+)' 
+        ranges = findall(regex, output)
+
+        self.options.extend(ranges)
+        self.options.display(self.xstr)
 
 install = Sniper
 

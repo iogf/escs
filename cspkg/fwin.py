@@ -105,20 +105,16 @@ class FloatingWindow(Toplevel):
 
 
 class OptionWindow(Toplevel):
-    parent = None
-    def  __call__(self, parent, options=[], display=True):
-        self.parent = parent
+    def extend(self, options=[]):
         self.options = options
 
         self.listbox.delete(0, END)
         for key, value in options:
             self.listbox.insert(END, key)
 
-        if display:
-            self.display()
-
     def  __init__(self):
         Toplevel.__init__(self, master=root)
+        self.parent = None
         self.options = None
         self.title('Matches')
 
@@ -148,7 +144,8 @@ class OptionWindow(Toplevel):
         self.transient(root)
         self.withdraw()
 
-    def display(self):
+    def display(self, parent):
+        self.parent = parent
         self.grab_set()
         self.deiconify()
         self.listbox.focus_set()
@@ -211,7 +208,7 @@ class LinePicker(OptionWindow):
         self.listbox.bind('<Return>', 
         lambda event: self.on_new_tab())
 
-    def  __call__(self, xstr, options=[], display=True):
+    def extend(self, options=[]):
         """
         """
         # Make sure it is a list otherwise it may receive
@@ -223,7 +220,7 @@ class LinePicker(OptionWindow):
         for filename, line, msg in options), options)
 
         ranges = list(ranges)
-        super(LinePicker, self).__call__(xstr, ranges, display)
+        super(LinePicker, self).extend(ranges)
 
     def on_new_tab(self):
         index = self.listbox.index(ACTIVE)
@@ -235,9 +232,6 @@ class LinePicker(OptionWindow):
         filename = self.options[index][1][0]
         line     = self.options[index][1][1]
 
-        # If the file is already loaded then just set the line.
-        # Obs:Te self.parent object is the self.xstr object passed
-        # to the LinePicker.__call__.
         if not self.parent.filename in filename:
             self.parent.load_data(filename)
         self.parent.setcur(line, 0)

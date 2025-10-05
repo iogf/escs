@@ -1,0 +1,85 @@
+from cspkg.tools import build_regex
+from subprocess import Popen, STDOUT, PIPE
+from cspkg.fwin import LinePicker
+from cspkg.xscan import Get
+from cspkg.start import root
+from os.path import basename
+from cspkg.core import Namespace, Plugin, Main
+
+class FSnifferNS(Namespace):
+    pass
+
+class FSniffer(Plugin):
+    options = LinePicker()
+    wide    = True
+
+    def __init__(self, xstr):
+        super().__init__(xstr)
+        self.add_kmap(FSnifferNS, Main, '<Alt-t>', self.display_matches)
+        self.add_kmap(FSnifferNS, Main, '<Alt-y>', self.find_matches)
+    
+    def display_matches(self, event):
+        self.options.display(self.xstr)
+
+    def find_matches(self, event):
+        Get(events={'<Return>' : self.find,
+        '<Control-w>':self.set_wide, 
+        '<<Idle>>': self.update_pattern,
+        '<Escape>': lambda wid: True})
+
+    @classmethod
+    def set_wide(cls, event):
+        FSniffer.wide = False if FSniffer.wide else True
+        root.status.set_msg('Set wide search: %s' % FSniffer.wide)
+
+    def update_pattern(self, wid):
+        pattern = build_regex(wid.get(), '.*')
+        root.status.set_msg('File pattern: %s' % pattern)
+
+    def make_cmd(self, pattern):
+        # When FSniffer.wide is False it searches in the current 
+        # Areavi instance project.
+        cmd   = ['locate', '--limit', '200']
+        regex = build_regex(pattern, '.*')
+
+        if self.wide or not self.xstr.project:
+            cmd.extend(['--regexp', regex])
+        else:
+            cmd.extend(['--regexp', '%s.*%s' % (
+                self.xstr.project, regex)])
+
+        # Used to filter only files because locate doesn't support 
+        # searching only for files.
+        cmd = '%s | %s' % (' '.join(cmd), '''while read -r file; do
+          [ -d "$file" ] || printf '%s\n' "$file"; done''')
+        return cmd
+
+    def run_cmd(self, pattern):
+        cmd   = self.make_cmd(pattern)
+        child = Popen(cmd, stdout=PIPE, stderr=STDOUT, 
+        encoding=self.xstr.charset, shell=True)
+
+        output = child.communicate()[0]
+        return output
+
+    def find(self, wid):
+        pattern = wid.get()
+        output = self.run_cmd(pattern)
+        if output:
+            self.fmt_output(output)
+        else:
+            root.status.set_msg('No results:%s!' % pattern)
+        return True
+
+    def fmt_output(self, output):
+        output = output.strip('\n').rstrip('\n')
+        ranges = output.split('\n')
+        ranges = [ind for ind in ranges
+            if ranges]
+
+        ranges = [(ind, '0', basename(ind)) for ind in ranges]
+        self.options.extend(ranges)
+        self.options.display(self.xstr)
+
+install = FSniffer
+

@@ -3,6 +3,7 @@ from cspkg.start import root
 from tkinter.filedialog import askopenfilename
 from cspkg.core import Namespace, Main, Plugin
 from cspkg.plugins.normal_mode import Normal
+from cspkg.xstr import Xstr
 
 class TabsNS(Namespace):
     pass
@@ -62,6 +63,11 @@ class Tabs(Plugin):
         wid  = root.note.nametowidget(name)
         wid.destroy()
         root.note.select(0)
+
+        wid  = root.note.nametowidget(root.note.select())
+        seq  = Xstr.xstr_widgets(wid)
+        xstr = next(seq)
+        xstr.focus_set()
     
         # We don't need to call forget after destroy.
         # It seems the method forget from note doesnt destroy
