@@ -1,20 +1,20 @@
 from cspkg.core import Namespace, Plugin
 from cspkg.plugins.normal_mode import Normal
 
-class WordSelNS(Namespace):
+class SeqSelNS(Namespace):
     pass
 
-class WordSel(Plugin):
+class SeqSel(Plugin):
     def __init__(self, xstr):
         super().__init__(xstr)
-        self.add_kmap(WordSelNS, Normal, '<Key-w>', self.select)
+        self.add_kmap(SeqSelNS, Normal, '<Key-W>', self.select)
 
     def select(self, event):
         """
         """
 
-        index1, index2 = self.xstr.get_word_range()
+        index1, index2 = self.xstr.get_seq_range()
         self.xstr.tag_add('sel', index1, index2)
 
-install = WordSel
+install = SeqSel
 

@@ -128,6 +128,15 @@ load_module(line_feed)
 from cspkg.plugins import line_index
 load_module(line_index)
 
+from cspkg.plugins import line_sel
+load_module(line_sel)
+
+from cspkg.plugins import word_sel
+load_module(word_sel)
+
+from cspkg.plugins import seq_sel
+load_module(seq_sel)
+
 ##############################################################################
 # Setup Xstr font type, color and cursor.
 
