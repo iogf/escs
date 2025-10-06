@@ -137,6 +137,9 @@ load_module(word_sel)
 from cspkg.plugins import seq_sel
 load_module(seq_sel)
 
+from cspkg.plugins import undo
+load_module(undo)
+
 ##############################################################################
 # Setup Xstr font type, color and cursor.
 
