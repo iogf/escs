@@ -116,16 +116,11 @@ from cspkg.plugins.sniper import Sniper
 Sniper.c_path('ag')
 load_cls(Sniper)
 
-from cspkg.plugins import outputs
-load_module(outputs)
-
-from cspkg.plugins import cmd_log
-load_module(cmd_log)
+from cspkg.plugins import syslog
+load_module(syslog)
 
 from cspkg.plugins import cmd_exec
 load_module(cmd_exec)
-
-
 ##############################################################################
 # Setup Xstr font type, color and cursor.
 
