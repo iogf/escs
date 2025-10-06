@@ -121,6 +121,10 @@ load_module(syslog)
 
 from cspkg.plugins import cmd_exec
 load_module(cmd_exec)
+
+from cspkg.plugins import line_feed
+load_module(line_feed)
+
 ##############################################################################
 # Setup Xstr font type, color and cursor.
 
