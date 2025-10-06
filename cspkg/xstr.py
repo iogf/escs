@@ -469,31 +469,21 @@ class Xstr(Text):
         index0 = self.min(index0, index1)
         index1 = self.max(index2, index1)
 
-        map = self.tag_contains(name, index0, index1)
-        if map:
+        if self.range_in(name, index0, index1):
             self.tag_remove(name, index0, index1)
         else:
             self.tag_add(name, index0, index1)
 
-    def tag_contains(self, name, index0, index1):
+    def range_in(self, name, index0, index1):
         """
         """ 
-
         ranges = self.tag_ranges(name)
         for ind in range(0, len(ranges) - 1, 2):
-            if self.slc_contains(index0, index1, ranges[ind].string, 
-                                ranges[ind + 1].string):
-                return ranges[ind].string, ranges[ind + 1].string
-
-    def slc_contains(self, index0, index1, index2, index3):
-        """
-        It returns True if index2 <= index0 <= index1 <= index2 otherwise
-        it returns False.
-        """
-
-        r1 = self.index_in(index0, index2, index3)
-        r2 = self.index_in(index1, index2, index3)
-        return r1 and r2
+            if self.index_in(index0, 
+                    ranges[ind].string, ranges[ind + 1].string):
+                if self.index_in(index1, 
+                    ranges[ind].string, ranges[ind + 1].string):
+                        return ranges[ind].string, ranges[ind + 1].string
 
     def index_in(self, index, index0, index1):
         """
@@ -509,14 +499,14 @@ class Xstr(Text):
 
         return r1 and r2
 
-    def get_word_range(self, index='insert'):
+    def word_bounds(self, index='insert'):
         index1 = self.search('\W', index, regexp=True, stopindex='%s linestart' % index, backwards=True)
         index2 = self.search('\W', index, regexp=True, stopindex='%s lineend' % index)
         index1 = '%s linestart' % index if not index1 else '%s +1c' % index1
         index2 = '%s lineend' % index if not index2 else index2
         return index1, index2
 
-    def get_seq_range(self, index='insert'):
+    def seq_bounds(self, index='insert'):
         index1 = self.search(' ', index, regexp=True, stopindex='%s linestart' %index, backwards=True)
         index2 = self.search(' ', index, regexp=True, stopindex='%s lineend' % index)
         index1 = '%s linestart' % index if not index1 else '%s +1c' % index1

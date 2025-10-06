@@ -13,7 +13,7 @@ class WordSel(Plugin):
         """
         """
 
-        index1, index2 = self.xstr.get_word_range()
+        index1, index2 = self.xstr.word_bounds()
         self.xstr.tag_add('sel', index1, index2)
 
 install = WordSel

@@ -13,7 +13,7 @@ class SeqSel(Plugin):
         """
         """
 
-        index1, index2 = self.xstr.get_seq_range()
+        index1, index2 = self.xstr.seq_bounds()
         self.xstr.tag_add('sel', index1, index2)
 
 install = SeqSel
