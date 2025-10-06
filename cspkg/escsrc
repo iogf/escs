@@ -125,6 +125,9 @@ load_module(cmd_exec)
 from cspkg.plugins import line_feed
 load_module(line_feed)
 
+from cspkg.plugins import line_index
+load_module(line_index)
+
 ##############################################################################
 # Setup Xstr font type, color and cursor.
 
