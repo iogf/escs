@@ -113,13 +113,14 @@ class OptionWindow(Toplevel):
         for key, value in options:
             self.listbox.insert(END, key)
 
-    def  __init__(self):
+    def  __init__(self, xstr=None):
         Toplevel.__init__(self, master=root)
-        self.xstr = None
+        self.xstr = xstr
         self.options = None
         self.title('Matches')
 
-        self.listbox = Listbox(master=self, exportselection=False, takefocus=True)
+        self.listbox = Listbox(master=self, 
+        exportselection=False, takefocus=True)
 
         self.listbox.pack(expand=True, fill=BOTH, side=TOP)
         self.listbox.focus_set()
@@ -147,9 +148,12 @@ class OptionWindow(Toplevel):
 
     def display(self, xstr):
         self.xstr = xstr
+
         self.grab_set()
         self.deiconify()
-        root.after(100, lambda : self.listbox.focus_set())
+
+        root.after(100, lambda : 
+            self.listbox.focus_set())
         # self.wait_window(self)
 
     def close(self):
