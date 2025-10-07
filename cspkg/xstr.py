@@ -523,3 +523,19 @@ class Xstr(Text):
     
             for indj in it:
                 yield indi, indj
+
+    def bck_check(self, lhs, rhs, index, max, backwards=False):
+        """
+        """
+
+        sign  = '-' if backwards else '+'
+        count = 0
+        regex = '|'.join((escape(lhs), escape(rhs)))
+
+        matches = self.find(regex, index, 
+        '%s %s%sc' % (index, sign, max), backwards, regexp=True)
+
+        for data, pos0, pos1 in matches:
+            count = count + (1 if data == lhs else -1)
+            if count == 0: 
+                return pos0, pos1

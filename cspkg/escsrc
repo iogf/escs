@@ -146,6 +146,9 @@ load_module(word_completion)
 from cspkg.plugins import jedi
 load_module(jedi)
 
+from cspkg.plugins import bck_sel
+load_module(bck_sel)
+
 # Auto completion using ycmd. 
 # Warning: Don't use it with jedi auto completion.
 # from cspkg.plugins.ycmd import client
