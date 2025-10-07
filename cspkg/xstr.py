@@ -500,15 +500,23 @@ class Xstr(Text):
         return r1 and r2
 
     def word_bounds(self, index='insert'):
-        index1 = self.search('\W', index, regexp=True, stopindex='%s linestart' % index, backwards=True)
-        index2 = self.search('\W', index, regexp=True, stopindex='%s lineend' % index)
+        index1 = self.search('\W', index, regexp=True, 
+        stopindex='%s linestart' % index, backwards=True)
+
+        index2 = self.search('\W', index, regexp=True, 
+        stopindex='%s lineend' % index)
+
         index1 = '%s linestart' % index if not index1 else '%s +1c' % index1
         index2 = '%s lineend' % index if not index2 else index2
         return index1, index2
 
     def seq_bounds(self, index='insert'):
-        index1 = self.search(' ', index, regexp=True, stopindex='%s linestart' %index, backwards=True)
-        index2 = self.search(' ', index, regexp=True, stopindex='%s lineend' % index)
+        index1 = self.search(' ', index, regexp=True,
+        stopindex='%s linestart' %index, backwards=True)
+
+        index2 = self.search(' ', index, regexp=True, 
+        stopindex='%s lineend' % index)
+
         index1 = '%s linestart' % index if not index1 else '%s +1c' % index1
         index2=  '%s lineend' % index if not index2 else index2
         return index1, index2
@@ -532,10 +540,31 @@ class Xstr(Text):
         count = 0
         regex = '|'.join((escape(lhs), escape(rhs)))
 
-        matches = self.find(regex, index, 
-        '%s %s%sc' % (index, sign, max), backwards, regexp=True)
-
+        matches = self.find(regex, index, '%s %s%sc' % (
+            index, sign, max), backwards, regexp=True)
         for data, pos0, pos1 in matches:
-            count = count + (1 if data == lhs else -1)
+            count = count + (1 
+                if data == lhs else -1)
             if count == 0: 
                 return pos0, pos1
+
+    def append(self, data, *args):
+        """
+        """
+
+        # This is sort of odd, it seems that
+        # i have to add -1l for it to work.
+        # It shouldn't be necessary.
+        index0 = self.index('end -1l')
+        self.insert('end', data)
+
+        for ind in args:
+            self.tag_add(ind, index0, 'end -1c')
+
+        # self.mark_set('insert', 'end')
+        self.see('insert')
+
+    def get_line(self, index='insert'):
+        return self.get('%s linestart' % index, 
+        '%s lineend' % index)
+

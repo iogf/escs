@@ -13,7 +13,7 @@ class NormalMode(Plugin):
         self.chmode(Normal)
 
         self.add_kmap(NormalModeNS, 
-        Main, '<Escape>', self.switch_normal)
+        Main, '<Escape>', self.switch_normal, True)
 
     def switch_normal(self, event):
         """

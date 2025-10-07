@@ -7,7 +7,8 @@ class WordSelNS(Namespace):
 class WordSel(Plugin):
     def __init__(self, xstr):
         super().__init__(xstr)
-        self.add_kmap(WordSelNS, Normal, '<Key-w>', self.select)
+        self.add_kmap(WordSelNS, Normal, 
+        '<Key-w>', self.select)
 
     def select(self, event):
         """

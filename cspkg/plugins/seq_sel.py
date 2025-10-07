@@ -7,7 +7,8 @@ class SeqSelNS(Namespace):
 class SeqSel(Plugin):
     def __init__(self, xstr):
         super().__init__(xstr)
-        self.add_kmap(SeqSelNS, Normal, '<Key-W>', self.select)
+        self.add_kmap(SeqSelNS, Normal, 
+        '<Key-W>', self.select)
 
     def select(self, event):
         """

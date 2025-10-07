@@ -149,6 +149,14 @@ load_module(jedi)
 from cspkg.plugins import bck_sel
 load_module(bck_sel)
 
+# The mc filenamanager.
+# Configure your color scheme with 
+# Mc.c_appearance method..
+from cspkg.plugins.mc import Mc
+# Mc.c_appearance(dir={'foreground': 'red'}, 
+# file={'foreground': 'yellow'})
+load_cls(Mc)
+
 # Auto completion using ycmd. 
 # Warning: Don't use it with jedi auto completion.
 # from cspkg.plugins.ycmd import client

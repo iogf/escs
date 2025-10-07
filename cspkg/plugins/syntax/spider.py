@@ -141,15 +141,14 @@ class Spider(Plugin):
         """
         Colorize visible region.
         """
-
         index0 = self.xstr.index('@0,0')
         index1 = self.xstr.index('%s -%sl' % (index0, self.max))
-        index2 = self.xstr.tag_prev_occur(TK_ORDER, index0, index1, '1.0')
+        index2 = self.prev_gindex(TK_ORDER, index0, index1, '1.0')
 
         index3 = '@%s,%s' % (self.xstr.winfo_height(), self.xstr.winfo_width())
         index4 = self.xstr.index(index3)
         index5 = self.xstr.index('%s +%sl' % (index4, self.max))
-        index6 = self.xstr.tag_next_occur(TK_ORDER, index4, index5, 'end')
+        index6 = self.next_gindex(TK_ORDER, index4, index5, 'end')
 
         # Macumba attempt.
         index7 = self.xstr.tag_prevrange('Token.Text', index2, '1.0')
@@ -164,6 +163,26 @@ class Spider(Plugin):
         line, col = self.xstr.indexsplit(index2)
         tokens = get_tokens_matrix(line, col, data, self.lexer)
         self.formatter.format(tokens, self.xstr)
+
+    def prev_gindex(self, tag_names, index0, index1, default):
+        """
+        Should be renamed.
+        """
+
+        for ind in tag_names:
+            index = self.xstr.tag_prevrange(ind, index0, index1)
+            if index != (): return index[0]
+        return default
+    
+    def next_gindex(self, tag_names, index0, index1, default):
+        """
+        Should be renamed.
+        """
+
+        for ind in tag_names:
+            index = self.xstr.tag_nextrange(ind, index0, index1)
+            if index != (): return index[1]
+        return default
 
 install = Spider
 
