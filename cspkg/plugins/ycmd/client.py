@@ -131,7 +131,7 @@ class YcmdServer:
             'X-YCM-HMAC': hmac_secret,
         }
 
-        req = self.post(url, json=data, headers=headers, timeout=2)
+        req = self.post(url, json=data, headers=headers, timeout=7)
         printd('Ycmd - debug_info Event Response JSON:\n', req.json())
         return req
 
@@ -156,7 +156,7 @@ class YcmdServer:
             'X-YCM-HMAC': hmac_secret,
         }
 
-        req = self.post(url, json=data, headers=headers, timeout=1)
+        req = self.post(url, json=data, headers=headers, timeout=7)
         return req
 
     def buffer_unload(self, line, col, path, data):
@@ -218,7 +218,7 @@ class YcmdServer:
             'X-YCM-HMAC': hmac_secret,
         }
 
-        req = self.post(url, json=data, headers=headers, timeout=2)
+        req = self.post(url, json=data, headers=headers, timeout=7)
         printd('Request data:', req.json())
         return self.build_docs(req.json())
 
