@@ -141,6 +141,30 @@ from cspkg.plugins import undo
 load_module(undo)
 
 ##############################################################################
+# Syntax plugin is used to highlight code.
+# It uses python pygments styles to highlight code :)
+# Note: When uncommenting a theme dont forget to comment the previously used one.
+from cspkg.plugins.syntax.spider import Spider
+
+# Check out more pygments styles.
+# from pygments.styles.emacs import EmacsStyle
+# from pygments.styles.murphy import MurphyStyle
+# from pygments.styles.abap import AbapStyle
+# from pygments.styles.borland import BorlandStyle
+# from pygments.styles.fruity import FruityStyle
+# from pygments.styles.colorful import ColorfulStyle
+# from pygments.styles.tango import TangoStyle
+# from pygments.styles.trac import TracStyle
+# from pygments.styles.igor import IgorStyle
+# from pygments.styles.paraiso_dark import ParaisoDarkStyle
+# from pygments.styles.vim import VimStyle
+
+# Import and configure VyStyle to highligh code.
+from cspkg.plugins.syntax.default_style import EscStyle
+Spider.c_style(EscStyle)
+load_cls(Spider)
+
+##############################################################################
 # Setup Xstr font type, color and cursor.
 
 def escs_setup(xstr):
