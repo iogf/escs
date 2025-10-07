@@ -118,13 +118,12 @@ class OptionWindow(Toplevel):
         self.options = None
         self.title('Matches')
 
-        self.listbox = Listbox(master=self)
+        self.listbox = Listbox(master=self, exportselection=False, takefocus=True)
 
         self.listbox.pack(expand=True, fill=BOTH, side=TOP)
         self.listbox.focus_set()
         self.listbox.activate(0)
         self.listbox.selection_set(0)
-
         self.listbox.config(width=50)
 
         self.listbox.bind('<Key-h>', lambda event:
@@ -141,6 +140,7 @@ class OptionWindow(Toplevel):
 
         self.listbox.bind('<Escape>', lambda event: self.close())
         self.protocol("WM_DELETE_WINDOW", self.close)
+
         self.transient(root)
         self.withdraw()
 
@@ -148,7 +148,7 @@ class OptionWindow(Toplevel):
         self.parent = parent
         self.grab_set()
         self.deiconify()
-        self.listbox.focus_set()
+        root.after(100, lambda : self.listbox.focus_set())
         # self.wait_window(self)
 
     def close(self):
