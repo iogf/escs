@@ -512,3 +512,14 @@ class Xstr(Text):
         index1 = '%s linestart' % index if not index1 else '%s +1c' % index1
         index2=  '%s lineend' % index if not index2 else index2
         return index1, index2
+
+    @staticmethod
+    def find_all(wid, regex, index='1.0', stopindex='end', *args, **kwargs):
+        """
+        """
+
+        for indi in Xstr.xstr_widgets(wid):
+            it = indi.find(regex, index, stopindex, *args, **kwargs)
+    
+            for indj in it:
+                yield indi, indj

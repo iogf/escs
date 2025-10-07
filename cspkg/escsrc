@@ -140,6 +140,9 @@ load_module(seq_sel)
 from cspkg.plugins import undo
 load_module(undo)
 
+from cspkg.plugins import word_completion
+load_module(word_completion)
+
 ##############################################################################
 # Syntax plugin is used to highlight code.
 # It uses python pygments styles to highlight code :)
