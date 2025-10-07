@@ -115,7 +115,7 @@ class OptionWindow(Toplevel):
 
     def  __init__(self):
         Toplevel.__init__(self, master=root)
-        self.parent = None
+        self.xstr = None
         self.options = None
         self.title('Matches')
 
@@ -145,8 +145,8 @@ class OptionWindow(Toplevel):
         self.transient(root)
         self.withdraw()
 
-    def display(self, parent):
-        self.parent = parent
+    def display(self, xstr):
+        self.xstr = xstr
         self.grab_set()
         self.deiconify()
         root.after(100, lambda : self.listbox.focus_set())
@@ -155,7 +155,7 @@ class OptionWindow(Toplevel):
     def close(self):
         # When calling destroy or withdraw without 
         # self.deoiconify it doesnt give back 
-        # the focus to the parent window.
+        # the focus to the xstr window.
 
         self.deiconify()
         self.grab_release()
@@ -233,9 +233,9 @@ class LinePicker(OptionWindow):
         filename = self.options[index][1][0]
         line     = self.options[index][1][1]
 
-        if not self.parent.filename in filename:
-            self.parent.load_data(filename)
-        self.parent.setcur(line, 0)
+        if not self.xstr.filename in filename:
+            self.xstr.load_data(filename)
+        self.xstr.setcur(line, 0)
 
         self.close()
 
