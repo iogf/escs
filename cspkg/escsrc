@@ -143,10 +143,14 @@ load_module(undo)
 from cspkg.plugins import word_completion
 load_module(word_completion)
 
-# Auto completion using ycmd.
-from cspkg.plugins.ycmd import client
-client.YcmdCompletion.setup('~/projects/ycmd-code/ycmd')
-load_module(client)
+from cspkg.plugins import jedi
+load_module(jedi)
+
+# Auto completion using ycmd. 
+# Warning: Don't use it with jedi auto completion.
+# from cspkg.plugins.ycmd import client
+# client.YcmdCompletion.setup('~/projects/ycmd-code/ycmd')
+# load_module(client)
 
 ##############################################################################
 # Syntax plugin is used to highlight code.

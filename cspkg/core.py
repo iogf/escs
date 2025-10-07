@@ -48,6 +48,12 @@ class Plugin:
         """
         pass
 
+    def flush(self, mode, seq):
+        """
+        """
+        code = 'MODE:%s:%s' % (self.xstr, mode.__name__)
+        self.xstr.unbind_class(mode, seq)
+
     def add_kmap(self, namespace, mode, seq, handle, 
         spread=False, add=True):
         """
