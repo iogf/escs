@@ -78,8 +78,8 @@ class Spider(Plugin):
         self.xstr = xstr
         self.max  = max
 
-        self.add_kmap(SyntaxNS, Main, '<<LoadData>>', self.update_all)
-        self.add_kmap(SyntaxNS, Main, '<<SaveData>>', self.update_all)
+        self.add_kmap(SyntaxNS, Main, '<<LoadData>>', self.update_all, True)
+        self.add_kmap(SyntaxNS, Main, '<<SaveData>>', self.update_all, True)
         self.add_kmap(SyntaxNS, Main, '<Escape>', self.update)
 
         if self.style.background_color:
