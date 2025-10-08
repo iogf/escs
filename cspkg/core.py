@@ -1,4 +1,5 @@
 from os.path import expanduser, join, exists, dirname
+from cspkg.stderr import printd
 from tkinter import Tk, Grid
 from functools import wraps
 from cspkg.cmdout import CmdOut
@@ -9,6 +10,7 @@ from os import mkdir
 
 rcenv = dict()
 rcmod = list()
+kscheme = dict()
 
 def load_module(module, *args, **kwargs):
     rcmod.append((module.install, args, kwargs))
@@ -40,31 +42,33 @@ def mkwrapper(handle):
 class Plugin:
     def __init__(self, xstr):
         self.xstr = xstr
-        self.kmaps = dict()
         self.mode = None
 
-    def del_kmap(self, namespace, mode, seq, handle=None):
-        """
-        """
-        pass
-
-    def flush(self, mode, seq):
+    def flush_kmap(self, mode, seq):
         """
         """
         code = 'MODE:%s:%s' % (self.xstr, mode.__name__)
-        self.xstr.unbind_class(mode, seq)
+        self.xstr.unbind_class(code, seq)
 
     def add_kmap(self, namespace, mode, seq, handle, 
         spread=False, add=True):
         """
         """
 
-        code = 'MODE:%s:%s' % (self.xstr, mode.__name__)
-
-        # if self.bind_class(code, seq):
-            # printd('Warning: %s %s already binded!' % (mode, seq))
         if spread is False:
             handle = mkwrapper(handle)
+
+        data = kscheme.setdefault(namespace, 
+        {(mode, seq):((mode, seq), )})
+        for mode, seq in data.setdefault((mode, seq), ((mode, seq), )):
+            self.hook_class(mode, seq, handle, spread, add)
+
+    def hook_class(self, mode, seq, handle, 
+        spread=False, add=True):
+        code = 'MODE:%s:%s' % (self.xstr, mode.__name__)
+
+        if self.xstr.bind_class(code, seq):
+            printd('Warning: %s %s already binded!' % (mode, seq))
         self.xstr.bind_class(code, seq, handle, add)
 
     def chmode(self, mode):
@@ -78,12 +82,9 @@ class Plugin:
         self.xstr.bindtags(taglist)
         self.mode = mode
         self.xstr.event_generate('<<Chmode>>')
-        # self.xstr.event_generate('<<Chmode-%s>>' % mode.__name__)
 
-def lsmap(namespace=None, mode=None, seqcode=None):
-    """
-    """
-    pass
+def chkmap(namespace, kmap):
+    kscheme[namespace] = kmap
 
 class EscsApp(Tk):
     def __init__(self, *args, **kwargs):

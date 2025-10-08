@@ -26,7 +26,7 @@ class Jedi(Plugin):
         trigger = lambda event: self.add_kmap(JediNS, Extra, 
         '<Key-period>', self.complete, add=False)
     
-        remove_trigger = lambda event: self.flush(JediNS, Extra)
+        remove_trigger = lambda event: self.flush_kmap(Extra, '<Key-period>')
     
         self.add_kmap(JediNS, Main, '<<Load/*.py>>', trigger, True)
         self.add_kmap(JediNS, Main, '<<Save/*.py>>', trigger, True)

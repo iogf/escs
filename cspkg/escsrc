@@ -7,8 +7,20 @@ sys.path.append(join(expanduser('~'), '.escs'))
 ##############################################################################
 # Functions used to load the plugins.
 
-from cspkg.core import load_module, load_cls
+from cspkg.core import load_module, load_cls, chkmap
 from cspkg.stderr import printd
+##############################################################################
+# Use chkmap to remap keystrokes.
+# Example:
+# Useful for keyboards that have ccedilla key.
+# It is handy to get in EXTRA mode quickly.
+# from cspkg.plugins.extra_mode import Extra
+# from cspkg.plugins.normal_mode import Normal
+# from cspkg.core import Main
+# chkmap(Extra, {
+# (Main, '<Alt-v>'): ((Main, '<Alt-v>'), 
+# (Normal, '<Key-ccedilla>'))})
+
 ##############################################################################
 # Set homedir.
 # from cspkg.xstr import Xstr
