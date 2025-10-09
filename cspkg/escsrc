@@ -172,6 +172,9 @@ load_module(cursor_status)
 from cspkg.plugins import pane_resize
 load_module(pane_resize)
 
+from cspkg.plugins import page_scroll
+load_module(page_scroll)
+
 # Auto completion using ycmd. 
 # Warning: Don't use it with jedi auto completion.
 # from cspkg.plugins.ycmd import client
