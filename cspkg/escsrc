@@ -169,6 +169,9 @@ load_cls(Mc)
 from cspkg.plugins import cursor_status
 load_module(cursor_status)
 
+from cspkg.plugins import pane_resize
+load_module(pane_resize)
+
 # Auto completion using ycmd. 
 # Warning: Don't use it with jedi auto completion.
 # from cspkg.plugins.ycmd import client
