@@ -9,10 +9,18 @@ from tkinter.filedialog import askopenfilename, asksaveasfilename
 from cspkg.start import root
 import os
 
-from cspkg.core import Namespace, Plugin, Main
+from cspkg.core import Namespace, Plugin, Main, Command
 
 class XopenNS(Namespace):
     pass
+
+@Command('ox')
+def load_path(xstr, filename):
+    """
+    """
+
+    xstr.load_data(filename)
+    root.status.set_msg('Loaded %s' % filename)
 
 class Xopen(Plugin):
     def __init__(self, xstr):

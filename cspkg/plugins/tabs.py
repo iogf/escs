@@ -8,15 +8,7 @@ from cspkg.xstr import Xstr
 class TabsNS(Namespace):
     pass
 
-@Command('lo')
-def load_split(xstr, filename):
-    """
-    """
-
-    xstr.load_data(filename)
-    root.status.set_msg('Loaded %s' % filename)
-
-@Command('to')
+@Command('ot')
 def load_tab(xstr, filename):
     """
     """

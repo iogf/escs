@@ -45,7 +45,7 @@ class Xsave(Plugin):
         filename = asksaveasfilename()
     
         if not filename: 
-            return 'break'
+            return None
 
         try:
             self.xstr.save_data_as(filename)
@@ -53,7 +53,7 @@ class Xsave(Plugin):
             root.status.set_msg('It failed to save data.')
         else:
             root.status.set_msg('Data saved.')
-        return 'break'
+        return None
         
     def save(self, event):
         """
@@ -65,13 +65,8 @@ class Xsave(Plugin):
             root.status.set_msg('It failed to save data.')
         else:
             root.status.set_msg('Data saved.')
-        return 'break'
+        return None
     
 install = Xsave
-
-
-
-
-
 
 
