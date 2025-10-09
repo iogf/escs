@@ -11,10 +11,10 @@ class CursorStatus(Plugin):
         self.timeout = timeout
         self.funcid  = None
         self.add_kmap(CursorStatusNS, Main, '<FocusIn>', 
-        lambda event: self.update())
+        lambda event: self.update(), True)
 
         self.add_kmap(CursorStatusNS, Main, '<FocusOut>', 
-        lambda event: self.xstr.after_cancel(self.funcid))
+        lambda event: self.xstr.after_cancel(self.funcid), True)
 
     def update(self):
         """

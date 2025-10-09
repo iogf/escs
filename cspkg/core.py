@@ -133,5 +133,3 @@ class Command:
     @classmethod
     def set_target(cls, xstr):
         cls.xstr = xstr
-
-

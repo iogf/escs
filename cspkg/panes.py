@@ -20,19 +20,21 @@ class PanedHorizontalWindow(PanedWindow):
         scrollbar.pack(side='right', fill=Y)
 
         from cspkg.core import rcmod
-
         for handle, args, kwargs in rcmod:
             handle(xstr, *args, **kwargs)
 
-        xstr.focus_set()
         xstr.pack(expand=True, side='left', fill=BOTH)
         self.add(frame)
 
-        def save_focus(event):
-            self.master.focused_xstr = xstr
+        def set_xstr(event):
+            self.master.tab_xstr = xstr
 
-        self.master.focused_xstr = xstr
-        xstr.bind('<FocusIn>', save_focus)
+        xstr.bind_class('MODE:%s:%s' % (xstr, 'Main'), 
+        '<FocusIn>', set_xstr, add=True)
+
+        self.master.tab_xstr = xstr
+        xstr.focus_set()
+        self.after(200, lambda :xstr.focus_set())
         return xstr
 
     def load(self, filename):
@@ -49,7 +51,7 @@ class PanedVerticalWindow(PanedWindow):
 
     def __init__(self, *args, **kwargs):
         PanedWindow.__init__(self, orient=VERTICAL, *args, **kwargs)
-        self.focused_xstr = None
+        self.tab_xstr = None
 
     def create(self, filename='none'):
         """
