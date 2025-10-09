@@ -75,7 +75,7 @@ class Tabs(Plugin):
         wid  = root.note.nametowidget(root.note.select())
         seq  = Xstr.xstr_widgets(wid)
         xstr = next(seq)
-        xstr.focus_set()
+        wid.tab_xstr.focus_set()
     
         # We don't need to call forget after destroy.
         # It seems the method forget from note doesnt destroy
