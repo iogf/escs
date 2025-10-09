@@ -1,10 +1,23 @@
 
 from cspkg.start import root
 from cspkg.core import Plugin, Namespace, Main
+from cspkg.core import Command
 from cspkg.xstr import Xstr
 
 class SplitsNS(Namespace):
     pass
+
+@Command('vsplit')
+def vsplit(xstr):
+    """
+    """
+    xstr.master.master.master.create()
+
+@Command('hsplit')
+def hsplit(xstr):
+    """    
+    """
+    xstr.master.master.create()
 
 class Splits(Plugin):
     def __init__(self, xstr):
