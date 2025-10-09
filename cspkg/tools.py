@@ -38,3 +38,19 @@ def error(handle):
             root.status.set_msg('Error :%s' % e)
             raise
     return shell
+
+def get_project_root(path):
+    """
+    Return the project root or the file path.
+    """
+
+    # In case it receives '/file'
+    # and there is '/__init__.py' file.
+    if path == dirname(path):
+        return path
+
+    while True:
+        tmp = dirname(path)
+        if not exists(join(tmp, '__init__.py')):
+            return path
+        path = tmp

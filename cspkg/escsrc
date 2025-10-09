@@ -38,6 +38,9 @@ load_module(normal_mode)
 from cspkg.plugins import extra_mode
 load_module(extra_mode)
 
+from cspkg.plugins import python_mode
+load_module(python_mode)
+
 ##############################################################################
 from cspkg.plugins import tabs
 load_module(tabs)
@@ -174,6 +177,9 @@ load_module(pane_resize)
 
 from cspkg.plugins import page_scroll
 load_module(page_scroll)
+
+from cspkg.plugins import yrefactor
+load_module(yrefactor)
 
 # Auto completion using ycmd. 
 # Warning: Don't use it with jedi auto completion.
