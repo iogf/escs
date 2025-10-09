@@ -115,9 +115,6 @@ class Xstr(Text):
         self.filename     = os.path.abspath(filename)
         _, self.extension = os.path.splitext(self.filename)
 
-        self.event_generate('<<Pre-LoadData>>')
-        self.event_generate('<<Pre-LoadData/*%s>>' % self.extension)
-
         fd   = open(self.filename, 'rb')
         data = fd.read()
         fd.close()

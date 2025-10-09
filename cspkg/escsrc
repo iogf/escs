@@ -201,6 +201,8 @@ from cspkg.plugins.syntax.spider import Spider
 from cspkg.plugins.syntax.default_style import EscStyle
 Spider.c_style(EscStyle)
 load_cls(Spider)
+##############################################################################
+from cspkg.plugins import codec
 
 ##############################################################################
 # Setup Xstr font type, color and cursor.
