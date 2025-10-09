@@ -26,6 +26,7 @@ class PanedHorizontalWindow(PanedWindow):
         xstr.pack(expand=True, side='left', fill=BOTH)
         self.add(frame)
 
+        # The last focused xstr for a given tab..
         def set_xstr(event):
             self.master.tab_xstr = xstr
 

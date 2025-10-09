@@ -6,13 +6,29 @@ Overview
 
 # from tkinter.messagebox import *
 from tkinter.filedialog import askopenfilename, asksaveasfilename
+from cspkg.core import Namespace, Plugin, Main
+from cspkg.core import Command
 from cspkg.start import root
 import os
 
-from cspkg.core import Namespace, Plugin, Main
-
 class XsaveNS(Namespace):
     pass
+
+@Command('s')
+def save(xstr):
+    """
+    Save the contents of the targeted areavi to disk.
+    """
+    xstr.save_data()
+    root.status.set_msg('File saved!')
+
+@Command('ss')
+def save_as(xstr, filename):
+    """
+    """
+
+    xstr.save_data_as(filename)
+    root.status.set_msg('File saved as %s!' % filename)
 
 class Xsave(Plugin):
     def __init__(self, xstr):
