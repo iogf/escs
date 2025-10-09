@@ -3,9 +3,23 @@ from cspkg.start import root
 from cspkg.core import Namespace, Plugin
 from cspkg.plugins.normal_mode import Normal
 from cspkg.plugins.extra_mode import Extra
+from cspkg.core import Command
 
 class ClipboardNS(Namespace):
     pass
+
+@Command()
+def cpsel(xstr, sep='\n'):
+    """
+    """
+
+    xstr.cpsel(sep)
+
+@Command()
+def ctsel(xstr, sep='\n'):
+    """
+    """
+    xstr.ctsel(sep)
 
 class Clipboard(Plugin):
     def __init__(self, xstr):

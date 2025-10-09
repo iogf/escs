@@ -27,9 +27,6 @@ from cspkg.stderr import printd
 # Xstr.homedir = expanduser('~')
 # printd('Setting home dir:', Xstr.homedir)
 ##############################################################################
-from cspkg.plugins import text_commands
-##############################################################################
-
 # Basic core modes.
 
 from cspkg.plugins import insert_mode
@@ -203,6 +200,8 @@ Spider.c_style(EscStyle)
 load_cls(Spider)
 ##############################################################################
 from cspkg.plugins import codec
+from cspkg.plugins import text_strips
+from cspkg.plugins import cwords
 
 ##############################################################################
 # Setup Xstr font type, color and cursor.
