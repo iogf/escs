@@ -197,6 +197,10 @@ from cspkg.plugins.snakerr import PythonChecker
 PythonChecker.c_path('pyflakes')
 load_cls(PythonChecker)
 
+from cspkg.plugins.type_checker import TypeChecker
+TypeChecker.c_path('mypy')
+load_cls(TypeChecker)
+
 ##############################################################################
 # Syntax plugin is used to highlight code.
 # It uses python pygments styles to highlight code :)
