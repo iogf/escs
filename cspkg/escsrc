@@ -181,6 +181,9 @@ load_module(page_scroll)
 from cspkg.plugins import yrefactor
 load_module(yrefactor)
 
+from cspkg.plugins import xleaps
+load_module(xleaps)
+
 # Auto completion using ycmd. 
 # Warning: Don't use it with jedi auto completion.
 # from cspkg.plugins.ycmd import client
