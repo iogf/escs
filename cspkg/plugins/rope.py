@@ -13,39 +13,38 @@ from cspkg.core import Namespace, Plugin, Mode
 from cspkg.plugins.normal_mode import Normal
 from os.path import dirname
 
-class YrefactorNS(Namespace):
+class RopeNS(Namespace):
     pass
 
 class Python(Mode):
     pass
 
-class PythonRefactor(Plugin):
+class Rope(Plugin):
     def __init__(self, xstr):
         super().__init__(xstr)
         self.files = None
-        self.add_kmap(YrefactorNS, Python, '<Key-r>', self.rename)
-        self.add_kmap(YrefactorNS, Python, '<Key-a>', self.static_analysis)
-        self.add_kmap(YrefactorNS, Python, '<Key-m>', self.move)
+        self.add_kmap(RopeNS, Python, '<Key-r>', self.rename)
+        self.add_kmap(RopeNS, Python, '<Key-a>', self.static_analysis)
+        self.add_kmap(RopeNS, Python, '<Key-m>', self.move)
 
     def static_analysis(self, event):
         path = (self.xstr.project if self.xstr.project 
         else get_project_root(self.xstr.filename))
 
         project = Project(path)
-        mod     = path_to_resource(project, self.xstr.filename)
+        mod = path_to_resource(project, self.xstr.filename)
 
         libutils.analyze_module(project, mod)
         project.close()
 
-    def on_general_case(self, change):
+    def rename_struct(self, change):
         """
         Should be called when self.files is updated.
         """
-
         for ind in change.get_changed_resources():
-           instance = self.files.get(ind.real_path)
-           if instance is not None: 
-               instance.load_data(ind.real_path)
+           xstr = self.files.get(ind.real_path)
+           if xstr is not None: 
+               xstr.load_data(ind.real_path)
 
     @error
     def move(self, event):
@@ -70,7 +69,7 @@ class PythonRefactor(Plugin):
         self.update_instances(changes)
         project.close()
 
-        self.xstr.chmode(Normal)
+        self.chmode(Normal)
         root.status.set_msg('Resources moved!')
 
         
@@ -82,19 +81,20 @@ class PythonRefactor(Plugin):
         self.files = Xstr.get_opened_files(root)
         for ind in changes.changes:
             if isinstance(ind, (MoveResource,)):
-                self.on_move_resource(ind)
+                self.move_resource(ind)
             else:
-                self.on_general_case(ind)
+                self.rename_struct(ind)
 
-    def on_move_resource(self, change):
+    def move_resource(self, change):
         """
         Should be called when self.files is updated.
         """
         old, new = change.get_changed_resources()
-        instance = self.files.get(old.real_path)
+        xstr = self.files.get(old.real_path)
 
         # When the file is not updated then no need to load it.
-        if instance: instance.load_data(new.real_path)
+        if  xstr is not None: 
+            xstr.load_data(new.real_path)
 
     @error
     def rename(self, name):
@@ -121,5 +121,5 @@ class PythonRefactor(Plugin):
         root.status.set_msg('Resources renamed!')
         project.close()
 
-install = PythonRefactor
+install = Rope
 

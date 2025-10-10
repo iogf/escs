@@ -178,8 +178,8 @@ load_module(pane_resize)
 from cspkg.plugins import page_scroll
 load_module(page_scroll)
 
-from cspkg.plugins import yrefactor
-load_module(yrefactor)
+from cspkg.plugins import rope
+load_module(rope)
 
 from cspkg.plugins import xleaps
 load_module(xleaps)
