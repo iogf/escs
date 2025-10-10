@@ -184,6 +184,9 @@ load_module(yrefactor)
 from cspkg.plugins import xleaps
 load_module(xleaps)
 
+from cspkg.plugins import bracket_jumps
+load_module(bracket_jumps)
+
 # Auto completion using ycmd. 
 # Warning: Don't use it with jedi auto completion.
 # from cspkg.plugins.ycmd import client
