@@ -37,15 +37,28 @@ class CodeFix(Plugin):
         libutils.analyze_module(project, mod)
         project.close()
 
-    def rename_struct(self, change):
+    def on_rename(self, change):
         """
-        Should be called when self.files is updated.
+        Update xstr instances when a rename struct is performed.
         """
-        for ind in change.get_changed_resources():
-           xstr = self.files.get(ind.real_path)
-           print('rename struct type:', type(ind))
-           if xstr is not None: 
-               xstr.load_data(ind.real_path)
+
+        resources = change.get_changed_resources() 
+        resources = ((ind.real_path, self.files[ind.real_path]) 
+        for ind in resources if ind.real_path in self.files)
+
+        for path, xstr in resources:
+            xstr.load_data(path)
+
+    def on_move(self, change):
+        """
+        Update xstr instances when it is performed a move struct.
+        """
+
+        resource0, resource1 = change.get_changed_resources()
+        xstr = self.files.get(resource0.real_path)
+
+        if  xstr is not None: 
+            xstr.load_data(resource1.real_path)
 
     @error
     def move(self, event):
@@ -73,7 +86,6 @@ class CodeFix(Plugin):
         self.chmode(Normal)
         root.status.set_msg('Resources moved!')
 
-        
     def update_instances(self, changes):
         """
         """
@@ -81,22 +93,10 @@ class CodeFix(Plugin):
         # Avoid having to calculate it multiple times.
         self.files = Xstr.get_opened_files(root)
         for ind in changes.changes:
-            if isinstance(ind, (MoveResource,)):
-                self.move_resource(ind)
+            if not isinstance(ind, (MoveResource,)):
+                self.on_rename(ind)
             else:
-                self.rename_struct(ind)
-
-    def move_resource(self, change):
-        """
-        Should be called when self.files is updated.
-        """
-        old, new = change.get_changed_resources()
-        xstr = self.files.get(old.real_path)
-        print('move resource type:', type(change))
-
-        # When the file is not updated then no need to load it.
-        if  xstr is not None: 
-            xstr.load_data(new.real_path)
+                self.on_move(ind)
 
     @error
     def rename(self, name):
