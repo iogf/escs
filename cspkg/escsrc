@@ -14,6 +14,7 @@ from cspkg.stderr import printd
 # Example:
 # Useful for keyboards that have ccedilla key.
 # It is handy to get in EXTRA mode quickly.
+
 # from cspkg.plugins.extra_mode import Extra
 # from cspkg.plugins.normal_mode import Normal
 # from cspkg.core import Main
@@ -22,7 +23,8 @@ from cspkg.stderr import printd
 # (Normal, '<Key-ccedilla>'))})
 
 ##############################################################################
-# Set homedir.
+# Set homedir manually.
+
 # from cspkg.xstr import Xstr
 # Xstr.homedir = expanduser('~')
 # printd('Setting home dir:', Xstr.homedir)
@@ -44,21 +46,25 @@ load_module(python_mode)
 ##############################################################################
 # Used to manage tabs. It implements keystrokes to open, remove tabs
 # also select focus.
+
 from cspkg.plugins import tabs
 load_module(tabs)
 ##############################################################################
 # Used to perform incremental search over opened tabs. It can search forwards
 # or backwards using incremental search.
+
 from cspkg.plugins import tab_search
 load_module(tab_search)
 ##############################################################################
 # It implements keystrokes to create and delete panes. These can be created
 # vertically or horizontally.
+
 from cspkg.plugins import splits
 load_module(splits)
 ##############################################################################
 # Keystrokes for common text jumps. It implements keystrokes in Normal mode
 # and shortcuts in Main mode.
+
 from cspkg.plugins import text_jumps
 load_module(text_jumps)
 ##############################################################################
@@ -75,47 +81,58 @@ from cspkg.plugins import cursor_status
 load_module(cursor_status)
 ##############################################################################
 # Keystrokes to save data.
+
 from cspkg.plugins import xsave
 load_module(xsave)
 ##############################################################################
 # Keystrokes to load files.
+
 from cspkg.plugins import xopen
 load_module(xopen)
 ##############################################################################
 # Keystroke to rename current opened resource.
+
 from cspkg.plugins import xrename
 load_module(xrename)
 ##############################################################################
 # It implements mechanisms to jump through opened splits/panes.
+
 from cspkg.plugins import pane_jumps
 load_module(pane_jumps)
 ##############################################################################
 # Keystrokes to scroll line up or down.
+
 from cspkg.plugins import line_scroll
 load_module(line_scroll)
 ##############################################################################
 # Range selection to copy/cut text.
+
 from cspkg.plugins import range_sel
 load_module(range_sel)
 ##############################################################################
 # Block selection mechanism to copy/cut text.
+
 from cspkg.plugins import block_sel
 load_module(block_sel)
 ##############################################################################
 # Used to search/replace text based on regex patterns.
+
 from cspkg.plugins.find import Find
 Find.c_appearance(background='green', foreground='white')
 load_cls(Find)
 ##############################################################################
 # Keystrokes to copy/cut text selection.
+
 from cspkg.plugins import clipboard
 load_module(clipboard)
 ##############################################################################
 # Shift left/right selected text i.e it does spacing of blocks of text.
+
 from cspkg.plugins import text_shift
 load_module(text_shift)
 ##############################################################################
 # It allows to use custom spacing for programming languages.
+
 from cspkg.plugins import spacing
 load_module(spacing)
 
@@ -129,31 +146,37 @@ spacing.TabSpacing.set_scheme({
 '':(4, ' '), })
 ##############################################################################
 # Keystrokes to add/remove programming language comments to text code.
+
 from cspkg.plugins import code_comments
 load_module(code_comments)
 ##############################################################################
 # It allows to quickly jump back/next to characters. It is useful to select
 # text strings rapidly.
+
 from cspkg.plugins import sneak
 load_module(sneak)
 ##############################################################################
 # It is used to open files quickly. It makes usage of unix locate program.
+
 from cspkg.plugins import fsniffer
 load_module(fsniffer)
 ##############################################################################
 # Used to set project variable. It searches a root directory of control
 # version systems.
+
 from cspkg.plugins.project import Project
 load_cls(Project)
 Project.c_sentinels('.git', '.svn', '.hg', '._')
 ##############################################################################
 # Keystrokes to do incremental search up/down.
+
 from cspkg.plugins.qsearch import QSearch
 QSearch.c_appearance(background='yellow', foreground='black')
 load_cls(QSearch)
 ##############################################################################
 # Mechanism to search strings along project files. It uses Silver Searcher to
 # perform the search through directories.
+
 from cspkg.plugins.sniper import Sniper
 load_cls(Sniper)
 
@@ -162,54 +185,66 @@ load_cls(Sniper)
 ##############################################################################
 # It allows to view sys.stdout log over a floating window text. It is useful
 # to check plugins output or when running commands on runtime.
+
 from cspkg.plugins import syslog
 load_module(syslog)
 ##############################################################################
 # The escs command line plugin. It allows user to execute python code 
 # on runtime that affects/changes Xstr instances.
+
 from cspkg.plugins import cmd_exec
 load_module(cmd_exec)
 ##############################################################################
 # Keystrokes to insert line up/down the cursor position.
+
 from cspkg.plugins import line_feed
 load_module(line_feed)
 ##############################################################################
 # Mechanism to jump to line/col based on coordinates like "line column".
+
 from cspkg.plugins import line_index
 load_module(line_index)
 ##############################################################################
 # Keystroke to toggle text selection for cursor line.
+
 from cspkg.plugins import line_sel
 load_module(line_sel)
 ##############################################################################
 # Keystroke to select a word over the cursor.
+
 from cspkg.plugins import word_sel
 load_module(word_sel)
 ##############################################################################
 # Keystroke to select non-blank sequences of characters.
+
 from cspkg.plugins import seq_sel
 load_module(seq_sel)
 ##############################################################################
 # Mechanisms to do/redo text changes.
+
 from cspkg.plugins import undo
 load_module(undo)
 ##############################################################################
 # It inplements a keystroke to show up a floating window with possible 
 # completions for a given word that is over the cursor.
+
 from cspkg.plugins import word_completion
 load_module(word_completion)
 ##############################################################################
 # Auto completion for python that uses jedi library.
+
 from cspkg.plugins import jedi
 load_module(jedi)
 ##############################################################################
 # Keystroke to select strings that are wrapped by (), [] or {}.
+
 from cspkg.plugins import bck_sel
 load_module(bck_sel)
 ##############################################################################
 # The mc filenamanager.
 # Configure your color scheme with 
 # Mc.c_appearance method..
+
 from cspkg.plugins.mc import Mc
 load_cls(Mc)
 # Mc.c_appearance(dir={'foreground': 'red'}, 
@@ -217,49 +252,59 @@ load_cls(Mc)
 ##############################################################################
 # Keystrokes to resize panes/splits. It can be resized horizontally
 # or vertically.
+
 from cspkg.plugins import pane_resize
 load_module(pane_resize)
 ##############################################################################
 # Keystrokes to scroll up/down pages.
+
 from cspkg.plugins import page_scroll
 load_module(page_scroll)
 ##############################################################################
 # Python code refactoring tool that uses rope framework.
+
 from cspkg.plugins import code_fix
 load_module(code_fix)
 ##############################################################################
 # Mechanism to add marks along text to perform jumps based on mark names.
+
 from cspkg.plugins import xleaps
 load_module(xleaps)
 ##############################################################################
 # Jump quickly backwards/forwards to (), [] or {}. It is useful when dealing
 # with programming source codes.
+
 from cspkg.plugins import bracket_jumps
 load_module(bracket_jumps)
 ##############################################################################
 # Auto completion using ycmd. 
 # Warning: Don't use it with jedi auto completion.
+
 # from cspkg.plugins.ycmd import client
 # load_module(client)
 # client.YcmdCompletion.setup('~/projects/ycmd-code/ycmd')
 ##############################################################################
 # Keystrokes to perform static analysis it uses pyflakes framework.
+
 from cspkg.plugins.code_scan import CodeScan
 CodeScan.c_path('pyflakes')
 load_cls(CodeScan)
 ##############################################################################
 # Keystrokes to perform type checking in python code it uses mypy.
+
 from cspkg.plugins.type_checker import TypeChecker
 TypeChecker.c_path('mypy')
 load_cls(TypeChecker)
 ##############################################################################
 # It implements C mode.
+
 from cspkg.plugins import c_mode
 load_module(c_mode)
 ##############################################################################
 # Syntax plugin is used to highlight code.
 # It uses python pygments styles to highlight code :)
 # Note: When uncommenting a theme dont forget to comment the previously used one.
+
 from cspkg.plugins.syntax.spider import Spider
 
 # Check out more pygments styles.
@@ -281,13 +326,20 @@ Spider.c_style(EscStyle)
 load_cls(Spider)
 ##############################################################################
 # A command to decode text based on charge.
+
 from cspkg.plugins import codec
 ##############################################################################
 # Command to strip off specific chars from selected region of text.
+
 from cspkg.plugins import text_strips
 ##############################################################################
 # A command to count the number of words.
+
 from cspkg.plugins import cwords
+##############################################################################
+# Commands to lower/upper case selected text.
+
+from cspkg.plugins import caps
 ##############################################################################
 # Setup Xstr font type, color and cursor.
 
