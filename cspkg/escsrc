@@ -125,7 +125,7 @@ load_cls(QSearch)
 
 from cspkg.plugins.sniper import Sniper
 # Sniper.c_dirs('/home/user/projects')
-Sniper.c_path('ag')
+# Sniper.c_path('ag')
 load_cls(Sniper)
 
 from cspkg.plugins import syslog
@@ -178,8 +178,8 @@ load_module(pane_resize)
 from cspkg.plugins import page_scroll
 load_module(page_scroll)
 
-from cspkg.plugins import rope
-load_module(rope)
+from cspkg.plugins import code_fix
+load_module(code_fix)
 
 from cspkg.plugins import xleaps
 load_module(xleaps)
@@ -193,9 +193,9 @@ load_module(bracket_jumps)
 # client.YcmdCompletion.setup('~/projects/ycmd-code/ycmd')
 # load_module(client)
 
-from cspkg.plugins.snakerr import PythonChecker
-PythonChecker.c_path('pyflakes')
-load_cls(PythonChecker)
+from cspkg.plugins.code_scan import CodeScan
+CodeScan.c_path('pyflakes')
+load_cls(CodeScan)
 
 from cspkg.plugins.type_checker import TypeChecker
 TypeChecker.c_path('mypy')

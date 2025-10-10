@@ -10,19 +10,19 @@ from cspkg.stderr import printd
 from re import findall
 import sys
 
-class SnakerrNS(Namespace):
+class CodeScanNS(Namespace):
     pass
 
-class PythonChecker(Plugin):
+class CodeScan(Plugin):
     options = LinePicker()
     path    = 'pyflakes'
 
     def  __init__(self, xstr):
         super().__init__(xstr)
 
-        self.add_kmap(SnakerrNS, Python, '<Key-c>', self.check_module)
-        self.add_kmap(SnakerrNS, Python, '<Key-h>', self.display_errors)
-        self.add_kmap(SnakerrNS, Python, '<Key-l>', self.check_all)
+        self.add_kmap(CodeScanNS, Python, '<Key-c>', self.check_module)
+        self.add_kmap(CodeScanNS, Python, '<Key-h>', self.display_errors)
+        self.add_kmap(CodeScanNS, Python, '<Key-l>', self.check_all)
 
     @classmethod
     def c_path(cls, path):
@@ -70,8 +70,8 @@ class PythonChecker(Plugin):
         
 @Command()
 def py_errors(xstr):
-    python_checker = PythonChecker(xstr)
-    python_checker.check_all()
+    checker = CodeScan(xstr)
+    checker.check_all()
 
-install = PythonChecker
+install = CodeScan
 

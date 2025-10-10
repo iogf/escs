@@ -13,19 +13,19 @@ from cspkg.core import Namespace, Plugin, Mode
 from cspkg.plugins.normal_mode import Normal
 from os.path import dirname
 
-class RopeNS(Namespace):
+class CodeFixNS(Namespace):
     pass
 
 class Python(Mode):
     pass
 
-class Rope(Plugin):
+class CodeFix(Plugin):
     def __init__(self, xstr):
         super().__init__(xstr)
         self.files = None
-        self.add_kmap(RopeNS, Python, '<Key-r>', self.rename)
-        self.add_kmap(RopeNS, Python, '<Key-a>', self.static_analysis)
-        self.add_kmap(RopeNS, Python, '<Key-m>', self.move)
+        self.add_kmap(CodeFixNS, Python, '<Key-r>', self.rename)
+        self.add_kmap(CodeFixNS, Python, '<Key-a>', self.static_analysis)
+        self.add_kmap(CodeFixNS, Python, '<Key-m>', self.move)
 
     def static_analysis(self, event):
         path = (self.xstr.project if self.xstr.project 
@@ -43,6 +43,7 @@ class Rope(Plugin):
         """
         for ind in change.get_changed_resources():
            xstr = self.files.get(ind.real_path)
+           print('rename struct type:', type(ind))
            if xstr is not None: 
                xstr.load_data(ind.real_path)
 
@@ -91,6 +92,7 @@ class Rope(Plugin):
         """
         old, new = change.get_changed_resources()
         xstr = self.files.get(old.real_path)
+        print('move resource type:', type(change))
 
         # When the file is not updated then no need to load it.
         if  xstr is not None: 
@@ -115,11 +117,11 @@ class Rope(Plugin):
 
         self.update_instances(changes)
 
-        print('\nRope - Renamed resource ..\n')
+        print('\nCodeFix - Renamed resource ..\n')
         print(changes.get_description())
         self.chmode(Normal)
         root.status.set_msg('Resources renamed!')
         project.close()
 
-install = Rope
+install = CodeFix
 
