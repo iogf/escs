@@ -156,7 +156,6 @@ class Sniper(Plugin):
         pattern = wid.get()
         root.status.set_msg('Set pattern:%s!' % pattern)
         output = self.run_cmd(pattern)
-        print(output)
 
         if output:
             self.fmt_output(output)

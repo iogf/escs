@@ -23,9 +23,9 @@ class PythonRefactor(Plugin):
     def __init__(self, xstr):
         super().__init__(xstr)
         self.files = None
-        self.add_kmap(YrefactorNS, Python, '<Key-R>', self.rename)
-        self.add_kmap(YrefactorNS, Python, '<Key-A>', self.static_analysis)
-        self.add_kmap(YrefactorNS, Python, '<Key-M>', self.move)
+        self.add_kmap(YrefactorNS, Python, '<Key-r>', self.rename)
+        self.add_kmap(YrefactorNS, Python, '<Key-a>', self.static_analysis)
+        self.add_kmap(YrefactorNS, Python, '<Key-m>', self.move)
 
     def static_analysis(self, event):
         path = (self.xstr.project if self.xstr.project 
