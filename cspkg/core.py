@@ -7,6 +7,7 @@ from cspkg.nbook import EscsBook
 from shutil import copyfile
 from functools import wraps
 from os import mkdir
+from os.path import basename
 
 rcenv = dict()
 rcmod = list()
@@ -22,6 +23,9 @@ class Namespace(tuple):
     def __new__(self):
         return tuple.__new__(Namespace, 
             (Namespace.__module__, Namespace.__name__))
+
+class CoreNS(Namespace):
+    pass
 
 class Mode(tuple):
     EDIT = False
@@ -133,3 +137,78 @@ class Command:
     @classmethod
     def set_target(cls, xstr):
         cls.xstr = xstr
+
+class TopbarStatus(Plugin):
+    def __init__(self, xstr):
+        super().__init__(xstr)
+        self.add_kmap(CoreNS, Main, 
+        '<FocusIn>', self.update_title, True)
+
+        self.add_kmap(CoreNS, Main, 
+        '<<LoadData>>', self.update_title, True)
+
+        self.add_kmap(CoreNS, Main, 
+        '<<SaveData>>', self.update_title, True)
+
+    def update_title(self, event):
+        root = self.xstr.winfo_toplevel()
+        root.title('Escs %s' % self.xstr.filename)
+
+class ModeStatus(Plugin):
+    def __init__(self, xstr):
+        super().__init__(xstr)
+        self.add_kmap(CoreNS, Main, '<<Chmode>>', self.update_mode, True)
+        self.add_kmap(CoreNS, Main, '<FocusIn>', self.update_mode, True)
+
+    def update_mode(self, event):
+        root = self.xstr.winfo_toplevel()
+        mode = self.xstr.bindtags()
+        mode = mode[1].rsplit(':')
+        mode = mode[-1].rsplit('.')
+        root.status.set_mode(mode[-1])
+
+class CursorStatus(Plugin):
+    def __init__(self, xstr, timeout=1000):
+        super().__init__(xstr)
+
+        self.timeout = timeout
+        self.funcid  = None
+        self.add_kmap(CoreNS, Main, '<FocusIn>', 
+        lambda event: self.update(), True)
+
+        self.add_kmap(CoreNS, Main, '<FocusOut>', 
+        lambda event: self.xstr.after_cancel(self.funcid), True)
+
+    def update(self):
+        """
+        It is used to update the line and col statusbar 
+        in TIME interval.
+        """
+        root = self.xstr.winfo_toplevel()
+
+        row, col = self.xstr.indexsplit('insert')
+        root.status.set_line(row)
+        root.status.set_column(col)
+        self.funcid = self.xstr.after(self.timeout, self.update)
+
+class TabStatus(Plugin):
+    def __init__(self, xstr):
+        super().__init__(xstr)
+        self.add_kmap(CoreNS, Main, 
+        '<FocusIn>', self.update_tabname, True)
+
+        self.add_kmap(CoreNS, Main, 
+        '<<SaveData>>', self.update_tabname, True)
+
+        self.add_kmap(CoreNS, Main, 
+        '<<LoadData>>', self.update_tabname, True)
+
+    def update_tabname(self, event):
+        root = self.xstr.winfo_toplevel()
+
+        root.note.tab(self.xstr.master.master.master,
+        text=basename(self.xstr.filename))
+
+rcmod.extend(((TopbarStatus, (), {}), (ModeStatus, (), {}), 
+(CursorStatus, (), {}), (TabStatus, (), {})))
+
