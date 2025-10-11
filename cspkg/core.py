@@ -1,4 +1,5 @@
 from os.path import expanduser, join, exists, dirname
+from untwisted.tkinter import extern
 from cspkg.stderr import printd
 from tkinter import Tk, Grid
 from functools import wraps
@@ -154,6 +155,12 @@ class TopbarStatus(Plugin):
         root = self.xstr.winfo_toplevel()
         root.title('Escs %s' % self.xstr.filename)
 
+class InstallReactor(Plugin):
+    def __init__(self, xstr):
+        super().__init__(xstr)
+        root = self.xstr.winfo_toplevel()
+        extern(root)
+
 class ModeStatus(Plugin):
     def __init__(self, xstr):
         super().__init__(xstr)
@@ -210,5 +217,5 @@ class TabStatus(Plugin):
         text=basename(self.xstr.filename))
 
 rcmod.extend(((TopbarStatus, (), {}), (ModeStatus, (), {}), 
-(CursorStatus, (), {}), (TabStatus, (), {})))
+(CursorStatus, (), {}), (TabStatus, (), {}), (InstallReactor, (), {})))
 

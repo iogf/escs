@@ -332,6 +332,12 @@ load_cls(Spider)
 
 from cspkg.plugins import codec
 ##############################################################################
+# Spawning processes.
+from cspkg.plugins.spawn import unix_platform
+
+# Spawning processes cross_platform.
+# from cspkg.plugins.spawn import cross_platform
+##############################################################################
 # Command to strip off specific chars from selected region of text.
 
 from cspkg.plugins import text_strips
@@ -352,3 +358,5 @@ def escs_setup(xstr):
     background='black', font=('Monospace', 8, 'bold'))
 
 load_cls(escs_setup) 
+##############################################################################
+
