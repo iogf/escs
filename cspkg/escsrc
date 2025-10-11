@@ -33,15 +33,22 @@ from cspkg.stderr import printd
 
 from cspkg.plugins import insert_mode
 load_module(insert_mode)
+##############################################################################
 
 from cspkg.plugins import normal_mode
 load_module(normal_mode)
+##############################################################################
 
 from cspkg.plugins import extra_mode
 load_module(extra_mode)
+##############################################################################
 
 from cspkg.plugins import python_mode
 load_module(python_mode)
+##############################################################################
+
+from cspkg.plugins import javascript_mode
+load_module(javascript_mode)
 
 ##############################################################################
 # Used to manage tabs. It implements keystrokes to open, remove tabs
