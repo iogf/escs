@@ -49,7 +49,10 @@ load_module(python_mode)
 
 from cspkg.plugins import javascript_mode
 load_module(javascript_mode)
+##############################################################################
 
+from cspkg.plugins import html_mode
+load_module(html_mode)
 ##############################################################################
 # Used to manage tabs. It implements keystrokes to open, remove tabs
 # also select focus.
