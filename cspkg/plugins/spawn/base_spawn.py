@@ -17,7 +17,7 @@ class HandleInput(Plugin):
     def __init__(self, xstr, spawn):
         super().__init__(xstr)
         self.add_kmap(SpawnNS, Main, '<Destroy>',
-        lambda event: self.spawn.terminate_process())
+        lambda event: spawn.terminate_process())
 
         self.add_kmap(SpawnNS, Normal, '<Key-b>', 
         lambda xstr: spawn.dump_line(), add=False)

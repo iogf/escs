@@ -1,21 +1,4 @@
 """
-Overview
-========
-
-Used to spawn processes and send/receive data. It is useful to talk with extern processes like interpreters.
-
-Key-Commands
-============
-
-Namespace: shell
-
-Mode: NORMAL
-Event: <F1>
-Description: Send the cursor line to the process.
-
-Mode: INSERT
-Event: <F1>
-Description: Send the cursor line to the process and insert a line down.
 """
 
 from untwisted.expect import Expect, LOAD, CLOSE
@@ -28,14 +11,14 @@ import shlex
 
 class Spawn(BaseSpawn):
     def __init__(self, cmd):
-        self.expect = Expect(*shlex.split(cmd), env=environ)
+        self.expect = Expect(cmd, env=environ)
 
     def install_events(self):
         super(Spawn, self).install_events()
 
         # When call.terminnate is called it may happen of having still data to be
-        # processed. It would attempt to write on an AreaVi instance that no more exist.
-        # So, it executes quietly the AreaVi.append method.
+        # processed. It would attempt to write on an xstrVi instance that no more exist.
+        # So, it executes quietly the xstrVi.append method.
         self.expect.add_map(LOAD, lambda expect, data: self.output.append(data))
         self.expect.add_map(CLOSE, self.handle_close)
         
@@ -60,18 +43,25 @@ class Spawn(BaseSpawn):
 class HSpawn(Spawn):
     def __init__(self, cmd):
         Spawn.__init__(self, cmd)
-        BaseSpawn.__init__(self, cmd, Command.area, 
-        Command.area.master.master.create())
+        BaseSpawn.__init__(self, cmd, Command.xstr, 
+        Command.xstr.master.master.create())
 
 class VSpawn(Spawn):
     def __init__(self, cmd):
         Spawn.__init__(self, cmd)
-        BaseSpawn.__init__(self, cmd, Command.area, 
-        Command.area.master.master.master.create())
+        BaseSpawn.__init__(self, cmd, Command.xstr, 
+        Command.xstr.master.master.master.create())
 
-Command('hspawn')(HSpawn)
-Command('vspawn')(VSpawn)
+@Command('hspawn')
+def hspawn(xstr, cmd):
+    HSpawn(cmd)
 
+@Command('vspawn')
+def hspawn(xstr, cmd):
+    VSpawn(cmd)
 
-
+Command('vbash')(lambda xstr: VSpawn('bash -i'))
+Command('hbash')(lambda xstr: HSpawn('bash -i'))
+Command('hpy') (lambda xstr: HSpawn('bash -c "tee -i >(stdbuf -o 0 python -i -u)"'))
+Command('vpy')(lambda xstr: VSpawn('bash -c "tee -i >(stdbuf -o 0 python -i -u)"'))
 

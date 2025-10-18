@@ -62,20 +62,16 @@ class VSpawn(Spawn):
         BaseSpawn.__init__(self, cmd, Command.xstr, 
         Command.xstr.master.master.master.create())
 
+@Command('hspawn')
+def hspawn(xstr, cmd):
+    HSpawn(cmd)
 
-Command('hspawn')(HSpawn)
-Command('vspawn')(VSpawn)
+@Command('vspawn')
+def vspawn(xstr, cmd):
+    VSpawn(cmd)
 
 Command('vbash')(lambda xstr: VSpawn('bash -i'))
 Command('hbash')(lambda xstr: HSpawn('bash -i'))
-# ENV['hpy'] = lambda : HSpawn('bash -c "tee -i >(stdbuf -o 0 python -i -u)"')
-# ENV['vpy'] = lambda : VSpawn('bash -c "tee -i >(stdbuf -o 0 python -i -u)"')
-
-# ENV['hrb'] = lambda : HSpawn('bash -c "stdbuf -o 0 irb --inf-ruby-mode"')
-# ENV['vrb'] = lambda : VSpawn('bash -c "stdbuf -o 0 irb --inf-ruby-mode"')
-
-
-
-
-
+Command('hpy') (lambda xstr: HSpawn('bash -c "tee -i >(stdbuf -o 0 python -i -u)"'))
+Command('vpy')(lambda xstr: VSpawn('bash -c "tee -i >(stdbuf -o 0 python -i -u)"'))
 

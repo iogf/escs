@@ -1,1 +1,7 @@
-
+vulture
+pyflakes
+untwisted==3.2.3
+jedi
+pygments
+rope
+mypy
