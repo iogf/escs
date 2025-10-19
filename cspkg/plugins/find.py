@@ -14,7 +14,7 @@ class Find(Plugin):
     }
 
     opts  = {'nolinestop': False, 'regexp': False,
-    'nocase': True, 'exact': False,'elide': False}
+    'nocase': False, 'exact': False,'elide': False}
 
     data  = ''
     regex = ''

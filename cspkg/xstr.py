@@ -565,3 +565,7 @@ class Xstr(Text):
         return self.get('%s linestart' % index, 
         '%s lineend' % index)
 
+    def set_breakpoint(self, line, conf):
+        self.tag_delete('(DebuggerPB)')
+        self.tag_add('(DebuggerPB)', '%s.0 linestart' % line, '%s.0 lineend' % line)
+        self.tag_config('(DebuggerPB)', **conf)

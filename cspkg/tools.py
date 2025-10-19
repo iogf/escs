@@ -1,6 +1,22 @@
 from os.path import exists, dirname, join
 from cspkg.start import root
 from re import split, escape
+from untwisted.splits import Terminator
+from re import search
+
+class RegexEvent:
+    def __init__(self, ssock, regstr, event, encoding='utf8'):
+        self.encoding = encoding
+        self.regstr   = regstr
+        self.event    = event
+        ssock.add_map(Terminator.FOUND, self.handle_found)
+
+    def handle_found(self, ssock, data):
+        data  = data.decode(self.encoding)
+        regex = search(self.regstr, data)
+
+        if regex is not None: 
+            ssock.drive(self.event, *regex.groups())
 
 def build_regex(data, delim='.+'):
     """
