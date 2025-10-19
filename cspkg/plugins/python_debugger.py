@@ -2,14 +2,14 @@
 """
 from cspkg.tools import RegexEvent
 from untwisted.splits import Terminator
-from cspkg.core import Namespace, Plugin
 from cspkg.plugins.python_mode import Python
 from cspkg.xscan import Xscan
-from cspkg.dap import DAP
 from cspkg.start import root
 import shlex
 import sys
 from cspkg.core import Namespace, Plugin, Mode
+from untwisted.expect import Expect, LOAD, CLOSE
+from os.path import abspath
 
 class PdbNS(Namespace):
     pass
@@ -17,11 +17,85 @@ class PdbNS(Namespace):
 class Pdb(Mode):
     pass
 
-class DebuggerProcess(DAP):
+class PythonDebugger(Plugin):
     path = 'python'
 
-    def __init__(self):
-        super().__init__()
+    bp_appearence={'background':'blue', 'foreground':'yellow'}
+    encoding='utf8'
+    expect = None
+
+    def __init__(self, xstr):
+        super().__init__(xstr)
+        self.auto_open = False
+
+        self.add_kmap(PdbNS, Python, '<Key-exclam>', self.switch_pdb_mode)
+        self.add_kmap(PdbNS, Pdb, '<Key-p>', self.evaluate_selection)
+        self.add_kmap(PdbNS, Pdb, '<Key-x>', self.evaluate_expression)
+        self.add_kmap(PdbNS, Pdb, '<Key-r>', self.run)
+        self.add_kmap(PdbNS, Pdb, '<Control-R>', self.run_args)
+        self.add_kmap(PdbNS, Pdb, '<Control-r>', self.send_restart)
+        self.add_kmap(PdbNS, Pdb, '<Key-m>', self.send_dcmd)
+        self.add_kmap(PdbNS, Pdb, '<Key-Q>', self.quit_db) 
+        self.add_kmap(PdbNS, Pdb, '<Key-c>', self.send_continue)
+        self.add_kmap(PdbNS, Pdb, '<Control-C>', self.dump_clear_all)
+        self.add_kmap(PdbNS, Pdb, '<Control-c>', self.remove_breakpoint)
+        self.add_kmap(PdbNS, Pdb, '<Key-B>',  self.send_tbreak)
+        self.add_kmap(PdbNS, Pdb, '<Key-s>',  self.send_step)
+        self.add_kmap(PdbNS, Pdb, '<Key-S>',  self.set_auto_open)
+        self.add_kmap(PdbNS, Pdb, '<Key-b>', self.send_break)
+
+    def c_path(self, path):
+        DebuggerProcess.path = path
+
+    def switch_pdb_mode(self, event):
+        self.chmode(Pdb)
+        root.status.set_msg('Pdb mode started.')
+
+    def create_process(self, cmd):
+
+        # Note: The data has to be decoded using the xstr charset
+        # because the xstr contents would be sometimes printed along
+        # the debugging.
+        PythonDebugger.expect = Expect(cmd)
+        self.expect.add_map(LOAD, lambda con, 
+        data: sys.stdout.write(data.decode(self.xstr.charset)))
+
+        # The expect has to be passed here otherwise when 
+        # starting the new one gets terminated.
+
+        self.expect.add_map(CLOSE, self.on_bkpipe)
+
+        self.install_handles(self.expect)
+        root.protocol("WM_DELETE_WINDOW", self.on_tk_quit)
+
+    def on_bkpipe(self, expect):
+        """
+        On broken pipe.
+        """
+        expect.terminate()
+        root.status.set_msg('Debugger: CLOSED!')
+
+    def on_tk_quit(self):
+        """
+        Necessary otherwise the thread hangs.
+        """
+        self.expect.terminate()
+        root.destroy()
+
+    def quit_db(self, event):
+        self.kill_process()
+        event.widget.chmode('NORMAL')
+
+    def kill_process(self):
+        if self.expect:
+            self.expect.terminate()
+
+    def handle_line(self, expect, filename, line):
+        xstr = root.note.find_line(filename, line, self.auto_open)
+
+        if xstr is not None:
+            xstr.set_breakpoint(line, self.bp_appearence)
+        root.status.set_msg('Debugger stopped at: %s:%s' % (filename, line))
 
     def evaluate_expression(self, event):
         xscan  = Xscan()
@@ -124,33 +198,5 @@ class DebuggerProcess(DAP):
         self.kill_process()
         # event.widget.chmode('NORMAL')
         sys.stdout.write('(pdb) Sent quit!')
-
-class PythonDebugger(Plugin):
-    debugger = DebuggerProcess()
-
-    def __init__(self, xstr):
-        super().__init__(xstr)
-        self.add_kmap(PdbNS, Python, '<Key-exclam>', self.switch_pdb_mode)
-        self.add_kmap(PdbNS, Pdb, '<Key-p>', self.debugger.evaluate_selection)
-        self.add_kmap(PdbNS, Pdb, '<Key-x>', self.debugger.evaluate_expression)
-        self.add_kmap(PdbNS, Pdb, '<Key-r>', self.debugger.run)
-        self.add_kmap(PdbNS, Pdb, '<Control-R>', self.debugger.run_args)
-        self.add_kmap(PdbNS, Pdb, '<Control-r>', self.debugger.send_restart)
-        self.add_kmap(PdbNS, Pdb, '<Key-m>', self.debugger.send_dcmd)
-        self.add_kmap(PdbNS, Pdb, '<Key-Q>', self.debugger.quit_db) 
-        self.add_kmap(PdbNS, Pdb, '<Key-c>', self.debugger.send_continue)
-        self.add_kmap(PdbNS, Pdb, '<Control-C>', self.debugger.dump_clear_all)
-        self.add_kmap(PdbNS, Pdb, '<Control-c>', self.debugger.remove_breakpoint)
-        self.add_kmap(PdbNS, Pdb, '<Key-B>',  self.debugger.send_tbreak)
-        self.add_kmap(PdbNS, Pdb, '<Key-s>',  self.debugger.send_step)
-        self.add_kmap(PdbNS, Pdb, '<Key-S>',  self.debugger.set_auto_open)
-        self.add_kmap(PdbNS, Pdb, '<Key-b>', self.debugger.send_break)
-
-    def c_path(self, path):
-        DebuggerProcess.path = path
-
-    def switch_pdb_mode(self, event):
-        self.chmode(Pdb)
-        root.status.set_msg('Pdb mode started.')
 
 install = PythonDebugger
