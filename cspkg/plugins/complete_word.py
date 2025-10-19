@@ -8,10 +8,10 @@ from cspkg.core import Plugin, Namespace
 from cspkg.plugins.insert_mode import Insert
 from cspkg.plugins.extra_mode import Extra
 
-class WordCompletionNS(Namespace):
+class CompleteWordNS(Namespace):
     pass
 
-class WordCompletionWindow(CompletionWindow):
+class CompleteWordWindow(CompletionWindow):
     """
     """
 
@@ -26,13 +26,13 @@ class WordCompletionWindow(CompletionWindow):
         CompletionWindow.__init__(self, xstr, 
         completions, *args, **kwargs)
 
-class WordCompletion(Plugin):
+class CompleteWord(Plugin):
     def __init__(self, xstr):
         super().__init__(xstr)
-        self.add_kmap(WordCompletionNS, Extra, '<Key-comma>', self.complete)
+        self.add_kmap(CompleteWordNS, Extra, '<Key-comma>', self.complete)
 
     def complete(self, event):
-        WordCompletionWindow(event.widget)
+        CompleteWordWindow(event.widget)
         self.chmode(Insert)
 
-install = WordCompletion
+install = CompleteWord
