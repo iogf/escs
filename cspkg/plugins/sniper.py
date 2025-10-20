@@ -132,8 +132,9 @@ class Sniper(Plugin):
         else:
             cmd.extend(['-Q', pattern])
 
-        # When the project path isn't set it searches in the
-        # xstr filename dir.
+        # When the project path isn't set and wide search is False
+        # it searches in the xstr filename dir. When wide search is True
+        # and there is no Sniper.dirs set then it falls to the working dir.
         if not Sniper.wide:
             cmd.append(self.xstr.project 
                 if self.xstr.project else 

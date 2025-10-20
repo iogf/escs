@@ -229,7 +229,9 @@ class LinePicker(OptionWindow):
 
     def on_new_tab(self):
         index = self.listbox.index(ACTIVE)
-        root.note.find_line(*self.options[index][1], auto_open=True)
+        print('Values for lseek:', self.options[index][1])
+
+        root.note.lseek(*self.options[index][1][:2], auto_open=True)
         self.close()
 
     def on_current_xstr(self):

@@ -73,7 +73,7 @@ class EscsBook(Notebook):
         self.select(*args)
         self.after(30, lambda : wid.focus_set())
 
-    def find_xstr(self, filename, auto_open=False):
+    def xseek(self, filename, auto_open=False):
         filename = abspath(filename)
         wids = Xstr.get_opened_files(self)
         xstr = wids.get(filename)
@@ -83,11 +83,11 @@ class EscsBook(Notebook):
                 return self.open(filename)
         return xstr
 
-    def find_line(self, filename, line, col=0, auto_open=False):
+    def lseek(self, filename, line, auto_open=False):
         """
         """
 
-        xstr = self.find_xstr(filename, auto_open)
+        xstr = self.xseek(filename, auto_open)
         if xstr is not None:
             self.focus_line(xstr, line)
         return xstr

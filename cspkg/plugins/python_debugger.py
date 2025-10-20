@@ -91,7 +91,7 @@ class PythonDebugger(Plugin):
             self.expect.terminate()
 
     def handle_line(self, expect, filename, line):
-        xstr = root.note.find_line(filename, line, self.auto_open)
+        xstr = root.note.lseek(filename, line, self.auto_open)
 
         if xstr is not None:
             xstr.set_breakpoint(line, self.bp_appearence)
