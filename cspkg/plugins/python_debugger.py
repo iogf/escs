@@ -82,14 +82,6 @@ class PythonDebugger(Plugin):
         self.expect.terminate()
         root.destroy()
 
-    def quit_db(self, event):
-        self.kill_process()
-        event.widget.chmode('NORMAL')
-
-    def kill_process(self):
-        if self.expect:
-            self.expect.terminate()
-
     def handle_line(self, expect, filename, line):
         xstr = root.note.lseek(filename, line, self.auto_open)
 
@@ -114,7 +106,6 @@ class PythonDebugger(Plugin):
     def send_break(self, event):
         self.send('break %s:%s\r\n' % (event.widget.filename, 
         event.widget.indexsplit('insert')[0]))
-        # event.widget.chmode('NORMAL')
         root.status.set_msg('(pdb) Command break sent !')
 
     def send_step(self, event):
@@ -124,7 +115,6 @@ class PythonDebugger(Plugin):
     def send_tbreak(self, event):
         self.send('tbreak %s:%s\r\n' % (event.widget.filename, 
         event.widget.indexsplit('insert')[0]))
-        # event.widget.chmode('NORMAL')
         root.status.set_msg('(pdb) Command tbreak sent !')
 
     def send_continue(self, event):
@@ -144,7 +134,6 @@ class PythonDebugger(Plugin):
     def evaluate_selection(self, event):
         data = event.widget.tag_xjoin('sel', sep='\r\n')
         self.send('p %s' % data)
-        # event.widget.chmode('NORMAL')
         root.status.set_msg('(pdb) Sent text selection!')
 
     def install_handles(self, expect):
@@ -156,28 +145,25 @@ class PythonDebugger(Plugin):
         expect.add_map('LINE', self.handle_line)
 
     def run(self, event):
-        self.kill_process()
+        if self.expect:
+            self.expect.terminate()
         self.create_process(' '.join([self.path, '-u', 
         '-m', 'pdb', event.widget.filename]))
 
         root.status.set_msg('(pdb) Started !')
-        # event.widget.chmode('NORMAL')
 
     def run_args(self, event):
         xscan  = Xscan()
-        ARGS = '%s -u -m pdb %s %s' % (self.path, 
+        args = '%s -u -m pdb %s %s' % (self.path, 
         event.widget.filename, xscan.data)
-        self.kill_process()
 
-        ARGS = shlex.split(ARGS)
-        self.create_process(ARGS)
-        
+        if self.expect:
+            self.expect.terminate()
+        self.create_process(args)
         root.status.set_msg('(pdb) Started with Args: %s' % xscan.data)
-        # event.widget.chmode('NORMAL')
 
     def dump_clear_all(self, event):
         self.send('clear\r\nyes\r\n')
-        # event.widget.chmode('NORMAL')
         root.status.set_msg('(pdb) Command clearall sent!')
 
     def remove_breakpoint(self, event):
@@ -185,7 +171,6 @@ class PythonDebugger(Plugin):
         """
         line, col = event.widget.indexsplit('insert')
         self.send('clear %s:%s\r\n' % (event.widget.filename, line))
-        # event.widget.chmode('NORMAL')
         root.status.set_msg('(pdb) Command clear sent!')
 
     def send_dcmd(self, event):
@@ -195,8 +180,10 @@ class PythonDebugger(Plugin):
         root.status.set_msg('(pdb) Sent cmd!')
 
     def quit_db(self, event):
-        self.kill_process()
-        # event.widget.chmode('NORMAL')
+        if not self.expect:
+            root.status.set_msg('Debugger not started.')
+        else:
+            self.expect.terminate()
         sys.stdout.write('(pdb) Sent quit!')
 
 install = PythonDebugger
