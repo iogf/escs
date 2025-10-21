@@ -341,6 +341,9 @@ from cspkg.plugins.spawn import unix_platform
 from cspkg.plugins import python_debugger
 load_module(python_debugger)
 ##############################################################################
+from cspkg.plugins import c_debugger
+load_module(c_debugger)
+##############################################################################
 from cspkg.plugins import word_search
 load_module(word_search)
 ##############################################################################
