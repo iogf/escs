@@ -80,6 +80,7 @@ class PythonDebugger(Plugin):
         Necessary otherwise the thread hangs.
         """
         self.expect.terminate()
+        root.destroy()
 
     def handle_line(self, expect, filename, line):
         xstr = root.note.lseek(filename, line, self.auto_open)
