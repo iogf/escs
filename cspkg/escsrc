@@ -187,6 +187,9 @@ load_cls(Sniper)
 from cspkg.plugins import syslog
 load_module(syslog)
 ##############################################################################
+from cspkg.plugins import outputs
+load_module(outputs)
+##############################################################################
 # The escs command line plugin. It allows user to execute python code 
 # on runtime that affects/changes Xstr instances.
 
