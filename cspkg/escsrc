@@ -159,6 +159,9 @@ load_module(sneak)
 from cspkg.plugins import fsniffer
 load_module(fsniffer)
 ##############################################################################
+from cspkg.plugins import fsearch
+load_module(fsearch)
+##############################################################################
 # Used to set project variable. It searches a root directory of control
 # version systems.
 
