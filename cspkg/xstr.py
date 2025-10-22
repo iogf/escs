@@ -529,7 +529,7 @@ class Xstr(Text):
             for indj in it:
                 yield indi, indj
 
-    def bck_check(self, lhs, rhs, index, max, backwards=False):
+    def check_brackets(self, lhs, rhs, index, max, backwards=False):
         """
         """
 
@@ -539,6 +539,7 @@ class Xstr(Text):
 
         matches = self.find(regex, index, '%s %s%sc' % (
             index, sign, max), backwards, regexp=True)
+
         for data, pos0, pos1 in matches:
             count = count + (1 
                 if data == lhs else -1)

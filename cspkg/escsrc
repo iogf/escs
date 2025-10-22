@@ -307,6 +307,9 @@ load_cls(TypeChecker)
 from cspkg.plugins import c_mode
 load_module(c_mode)
 ##############################################################################
+from cspkg.plugins import golang_mode
+load_module(golang_mode)
+##############################################################################
 # Syntax plugin is used to highlight code.
 # It uses python pygments styles to highlight code :)
 # Note: When uncommenting a theme dont forget to comment the previously used one.

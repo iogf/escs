@@ -18,12 +18,12 @@ class BckSel(Plugin):
         token = self.xstr.get('insert', 'insert +1c')
         if token in self.lhs:
             self.xstr.tag_add('sel', 'insert +1c', 
-                self.xstr.bck_check(token, self.lhs[token], 
+                self.xstr.check_brackets(token, self.lhs[token], 
                     'insert', self.MAX)[0])
         elif token in self.rhs:
-            self.xstr.tag_add('sel', self.xstr.bck_check(self.rhs[token], 
-                token, 'insert +1c', 
-                    self.MAX, True)[1], 'insert')
+            self.xstr.tag_add('sel', 
+                self.xstr.check_brackets(self.rhs[token], token, 
+                    'insert +1c', self.MAX, True)[1], 'insert')
 
     def sel_all(self, event):
         """
@@ -32,11 +32,12 @@ class BckSel(Plugin):
 
         token = self.xstr.get('insert', 'insert +1c')
         if token in self.lhs:
-            self.xstr.tag_add('sel', 'insert', self.xstr.bck_check(
+            self.xstr.tag_add('sel', 'insert', self.xstr.check_brackets(
                 token,self.lhs[token], 'insert', self.MAX)[1])
         elif token in self.rhs:
-            self.xstr.tag_add('sel', self.xstr.bck_check(self.rhs[token], 
-                token, 'insert +1c', self.MAX, True)[0], 'insert +1c')
+            self.xstr.tag_add('sel', 
+                self.xstr.check_brackets(self.rhs[token], token, 
+                    'insert +1c', self.MAX, True)[0], 'insert +1c')
 
     lhs = {
         '(': ')',
