@@ -3,7 +3,7 @@
 from cspkg.tools import RegexEvent
 from untwisted.splits import Terminator
 from cspkg.plugins.python_mode import Python
-from cspkg.xscan import Xscan
+from cspkg.scan import Scan
 from cspkg.start import root
 import shlex
 import sys
@@ -90,9 +90,9 @@ class PythonDebugger(Plugin):
         root.status.set_msg('Debugger stopped at: %s:%s' % (filename, line))
 
     def evaluate_expression(self, event):
-        xscan  = Xscan()
+        scan  = Scan()
 
-        self.send("p %s\r\n" % xscan.data)
+        self.send("p %s\r\n" % scan.data)
         root.status.set_msg('(pdb) Sent expression!')
 
     def set_auto_open(self, event):
@@ -153,14 +153,14 @@ class PythonDebugger(Plugin):
         root.status.set_msg('(pdb) Started !')
 
     def run_args(self, event):
-        xscan  = Xscan()
+        scan  = Scan()
         args = '%s -u -m pdb %s %s' % (self.path, 
-        event.widget.filename, xscan.data)
+        event.widget.filename, scan.data)
 
         if self.expect:
             self.expect.terminate()
         self.create_process(args)
-        root.status.set_msg('(pdb) Started with Args: %s' % xscan.data)
+        root.status.set_msg('(pdb) Started with Args: %s' % scan.data)
 
     def dump_clear_all(self, event):
         self.send('clear\r\nyes\r\n')
@@ -174,9 +174,9 @@ class PythonDebugger(Plugin):
         root.status.set_msg('(pdb) Command clear sent!')
 
     def send_dcmd(self, event):
-        xscan  = Xscan()
+        scan  = Scan()
 
-        self.send('%s\r\n' % xscan.data)
+        self.send('%s\r\n' % scan.data)
         root.status.set_msg('(pdb) Sent cmd!')
 
     def quit_db(self, event):

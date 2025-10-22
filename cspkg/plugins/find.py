@@ -1,5 +1,5 @@
 
-from cspkg.xscan import Get
+from cspkg.scan import Read
 from cspkg.stderr import printd
 from cspkg.start import root
 from cspkg.core import Namespace, Plugin
@@ -35,7 +35,7 @@ class Find(Plugin):
         printd('Find - Setting confs = ', cls.confs)
 
     def start(self):
-        get = Get(events={
+        read = Read(events={
         '<Alt-q>': self.set_data,
         '<Alt-o>': self.up, '<Escape>': self.cancel, 
         '<Alt-p>': self.down, '<Return>': self.cancel,

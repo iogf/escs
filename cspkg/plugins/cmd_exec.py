@@ -1,7 +1,7 @@
 
 from traceback import print_exc as debug
 from cspkg.core import Command
-from cspkg.xscan import Xscan
+from cspkg.scan import Scan
 from cspkg.core import rcenv
 from cspkg.start import root
 from cspkg.core import Namespace, Main, Plugin
@@ -22,12 +22,12 @@ class CmdExec(Plugin):
         self.add_kmap(CmdExec, Main, '<Control-semicolon>',  self.exec_all)
 
     def exec_cmd(self, event):
-        xscan = Xscan()
+        scan = Scan()
         Command.set_target(self.xstr)
     
-        data = xscan.data.encode('utf-8')
+        data = scan.data.encode('utf-8')
 
-        print('\n(cmd) Executed code:\n>>> %s\n' % xscan.data)
+        print('\n(cmd) Executed code:\n>>> %s\n' % scan.data)
         self.runcode(data, rcenv)
 
     def exec_all(self, event):

@@ -8,7 +8,7 @@ from cspkg.fwin import LinePicker
 from cspkg.xstr import Xstr
 from cspkg.stderr import printd
 from cspkg.start import root
-from cspkg.xscan import Get
+from cspkg.scan import Read
 from re import findall
 
 class SniperNS(Namespace):
@@ -46,7 +46,7 @@ class Sniper(Plugin):
         self.options.display(self.xstr)
 
     def find_matches(self, event):
-        wid = Get(events = {
+        read = Read(events = {
         '<Return>':self.find, 
         '<Control-i>':self.set_ignore_regex, 
         '<Control-x>':self.set_type_lax, 

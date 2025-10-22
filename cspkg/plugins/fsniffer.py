@@ -1,7 +1,7 @@
 from cspkg.tools import build_regex
 from subprocess import Popen, STDOUT, PIPE
 from cspkg.fwin import LinePicker
-from cspkg.xscan import Get
+from cspkg.scan import Read
 from cspkg.start import root
 from os.path import basename
 from cspkg.core import Namespace, Plugin, Main
@@ -22,7 +22,7 @@ class FSniffer(Plugin):
         self.options.display(self.xstr)
 
     def find_matches(self, event):
-        Get(events={'<Return>' : self.find,
+        Read(events={'<Return>' : self.find,
         '<Control-w>':self.set_wide, 
         '<<Idle>>': self.update_pattern,
         '<Escape>': lambda wid: True})

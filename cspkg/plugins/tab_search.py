@@ -1,5 +1,5 @@
 from cspkg.core import Plugin, Namespace, Main
-from cspkg.xscan import Get
+from cspkg.scan import Read
 from cspkg.start import root
 
 class TabSearchNS(Namespace):
@@ -17,14 +17,14 @@ class TabSearch(Plugin):
         '<Alt-u>', self.on_back_mode)
 
     def on_next_mode(self, event):
-        get = Get(events={'<<Data>>': self.switch_next, 
+        read = Read(events={'<<Data>>': self.switch_next, 
         '<Alt-p>': self.switch_next, 
         '<Alt-o>': self.switch_back, 
         '<Escape>': self.stop, 
         '<Return>': self.stop})
 
     def on_back_mode(self, event):
-        get = Get(events={
+        read = Read(events={
         '<<Data>>': self.switch_back, 
         '<Alt-p>': self.switch_next, 
         '<Alt-o>': self.switch_back, 

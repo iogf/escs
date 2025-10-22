@@ -1,4 +1,4 @@
-from cspkg.xscan import Xscan
+from cspkg.scan import Scan
 from tkinter import TclError
 from cspkg.start import root
 from cspkg.core import Namespace, Main, Plugin
@@ -15,7 +15,7 @@ class LineIndex(Plugin):
 
     def set_index(self, xstr):
         root.status.set_msg('Line index:')
-        xscan = Xscan()
+        xscan = Scan()
         coords = match('([0-9]*) *([0-9]*)', xscan.data)
 
         try:

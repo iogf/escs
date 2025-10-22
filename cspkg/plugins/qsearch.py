@@ -2,7 +2,7 @@
 
 """
 
-from cspkg.xscan import Get
+from cspkg.scan import Read
 from cspkg.tools import build_regex
 from cspkg.stderr import printd
 from cspkg.start import root
@@ -39,7 +39,7 @@ class QSearch(Plugin):
         self.stopindex = 'end'
         self.backwards = False
 
-        Get(events = {
+        Read(events = {
         '<Alt-p>':self.search_down, 
         '<Alt-o>': self.search_up, 
         '<Alt-s>': self.clear_pattern, 
@@ -61,7 +61,7 @@ class QSearch(Plugin):
         self.backwards = True
         self.stopindex = '1.0'
 
-        Get(events = {
+        Read(events = {
         '<Alt-p>':self.search_down, 
         '<Alt-o>': self.search_up, 
         '<Alt-s>': self.clear_pattern, 

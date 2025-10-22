@@ -7,7 +7,7 @@ Overview
 # from tkinter.messagebox import *
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 from cspkg.start import root
-from cspkg.xscan import Xscan
+from cspkg.scan import Scan
 import os
 
 from cspkg.core import Namespace, Plugin, Main
@@ -29,9 +29,9 @@ class Xrename(Plugin):
 
         root.status.set_msg('Type a filename:')
     
-        xscan = Xscan()
+        scan = Scan()
         dir = os.path.dirname(self.xstr.filename)
-        dst = os.path.join(dir, xscan.data)
+        dst = os.path.join(dir, scan.data)
     
         try:
             os.rename(self.xstr.filename, dst)

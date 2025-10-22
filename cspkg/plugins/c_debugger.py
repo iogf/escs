@@ -4,7 +4,7 @@ from untwisted.expect import Expect, LOAD, CLOSE
 from tkinter.filedialog import askopenfilename
 from untwisted.splits import Terminator
 from cspkg.tools import RegexEvent
-from cspkg.xscan import Xscan
+from cspkg.scan import Scan
 from cspkg.start import root
 from cspkg.core import Namespace, Plugin, Mode
 from os.path import abspath
@@ -51,9 +51,9 @@ class CDebugger(Plugin):
         root.status.set_msg('(GDB) Auto open files: %s!' % self.auto_open)
 
     def evaluate_expression(self, event):
-        xscan  = Xscan()
+        scan  = Scan()
 
-        self.send("print %s\r\n" % xscan.data)
+        self.send("print %s\r\n" % scan.data)
         root.status.set_msg('(GDB) Sent expression!')
 
     def run(self, event):
@@ -61,8 +61,8 @@ class CDebugger(Plugin):
         root.status.set_msg('(GDB) Sent run!')
 
     def send_dcmd(self, event):
-        xscan  = Xscan()
-        self.send('%s\r\n' % xscan.data)
+        scan  = Scan()
+        self.send('%s\r\n' % scan.data)
         root.status.set_msg('(GDB) Sent cmd!')
 
     def evaluate_selection(self, event):

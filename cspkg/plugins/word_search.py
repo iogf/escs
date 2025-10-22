@@ -1,7 +1,7 @@
 from cspkg.fwin import LinePicker
 from cspkg.core import Plugin, Namespace
 from cspkg.plugins.normal_mode import Normal
-from cspkg.xscan import Xscan
+from cspkg.scan import Scan
 from itertools import groupby
 from re import escape
 from cspkg.start import root
@@ -23,8 +23,8 @@ class WordSearch(Plugin):
 
         """
 
-        xscan  = Xscan()
-        data = xscan.data.split(' ')
+        scan  = Scan()
+        data = scan.data.split(' ')
         find = lambda ind: self.xstr.find(
         escape(ind).lower(), '1.0', step='+1l linestart')
 

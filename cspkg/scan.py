@@ -4,7 +4,7 @@ from tkinter import Frame, Entry, BOTH
 from cspkg.start import root
 from cspkg.mixins import DataEvent, IdleEvent
 
-class XscanCancel(Exception):
+class ScanCancel(Exception):
     pass
 
 class InputBox:
@@ -28,7 +28,7 @@ class InputBox:
         self.frame.destroy()
         self.xstr.focus_set()
 
-class Get(InputBox, DataEvent, IdleEvent):
+class Read(InputBox, DataEvent, IdleEvent):
     def __init__(self, events={}, default_data=''):
         InputBox.__init__(self, default_data)
         DataEvent.__init__(self, self.entry)
@@ -44,7 +44,7 @@ class Get(InputBox, DataEvent, IdleEvent):
         if is_done == True: 
             self.done()
 
-class Xscan(InputBox):
+class Scan(InputBox):
     """
     """
 
@@ -56,7 +56,7 @@ class Xscan(InputBox):
         self.xstr.wait_window(self.frame)
 
         if self.data == None:
-            raise XscanCancel('Canceled input!')
+            raise ScanCancel('Canceled input!')
 
     def on_success(self):
         self.data = self.entry.get()

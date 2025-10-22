@@ -5,7 +5,7 @@ from cspkg.plugins.normal_mode import Normal
 from cspkg.stderr import printd
 from cspkg.tools import error
 from cspkg.start import root
-from cspkg.xscan import Xscan
+from cspkg.scan import Scan
 
 # Wrapper around these functions to get the
 # error shown on the statusbar.
@@ -126,8 +126,8 @@ class Mc(Plugin):
         'insert linestart', 'insert lineend')
 
         root.status.set_msg('(Mc) Rename file:')
-        xscan    = Xscan()
-        destin = join(dirname(path), xscan.data)
+        scan    = Scan()
+        destin = join(dirname(path), scan.data)
         code   = check_call('mv "%s" %s' % (path, 
         destin), shell=1)
 
@@ -145,8 +145,8 @@ class Mc(Plugin):
 
 
         root.status.set_msg('Type dir name:')
-        xscan  = Xscan()
-        path = join(path, xscan.data)
+        scan  = Scan()
+        path = join(path, scan.data)
         code = check_call('mkdir "%s"' % path, shell=1)
 
         root.status.set_msg('Folder created!')

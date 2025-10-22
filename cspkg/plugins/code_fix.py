@@ -1,5 +1,5 @@
 
-from cspkg.xscan import Xscan
+from cspkg.scan import Scan
 from rope.base.project import Project
 from cspkg.tools import get_project_root, error
 from cspkg.xstr import Xstr
@@ -64,7 +64,7 @@ class CodeFix(Plugin):
     def move(self, event):
         """
         """
-        xscan = Xscan()
+        scan = Scan()
 
         tmp0    = self.xstr.get('1.0', 'insert')
         offset  = len(tmp0)
@@ -76,7 +76,7 @@ class CodeFix(Plugin):
         project = Project(path)
         mod     = path_to_resource(project, self.xstr.filename)
         mover   = create_move(project, mod, offset)
-        destin  = path_to_resource(project, xscan.data)
+        destin  = path_to_resource(project, scan.data)
         changes = mover.get_changes(destin)
         project.do(changes)
 
@@ -100,7 +100,7 @@ class CodeFix(Plugin):
 
     @error
     def rename(self, name):
-        xscan = Xscan()
+        scan = Scan()
 
         tmp0    = self.xstr.get('1.0', 'insert')
         offset  = len(tmp0)
@@ -112,7 +112,7 @@ class CodeFix(Plugin):
         project = Project(path)
         mod     = path_to_resource(project, self.xstr.filename)
         renamer = Rename(project, mod, offset)
-        changes = renamer.get_changes(xscan.data)
+        changes = renamer.get_changes(scan.data)
         project.do(changes)
 
         self.update_instances(changes)
