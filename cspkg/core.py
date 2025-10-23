@@ -21,19 +21,13 @@ def load_cls(handle, *args, **kwargs):
     rcmod.append((handle, args, kwargs))
 
 class Namespace(tuple):
-    def __new__(self):
-        return tuple.__new__(Namespace, 
-            (Namespace.__module__, Namespace.__name__))
+    pass
 
 class CoreNS(Namespace):
     pass
 
 class Mode(tuple):
     EDIT = False
-
-    def __new__(self):
-        return tuple.__new__(Namespace, 
-            (Namespace.__module__, Namespace.__name__))
 
 class Main(Mode):
     pass
@@ -52,7 +46,9 @@ class Plugin:
     def flush_kmap(self, mode, seq):
         """
         """
-        code = 'MODE:%s:%s' % (self.xstr, mode.__name__)
+        code = 'MODE:%s:%s' % (self.xstr, 
+        mode.__module__, mode.__name__)
+
         self.xstr.unbind_class(code, seq)
 
     def add_kmap(self, namespace, mode, seq, handle, 
@@ -70,15 +66,20 @@ class Plugin:
 
     def hook_class(self, mode, seq, handle, 
         spread=False, add=True):
-        code = 'MODE:%s:%s' % (self.xstr, mode.__name__)
+
+        code = 'MODE:%s:%s:%s' % (self.xstr, 
+        mode.__module__, mode.__name__)
 
         if self.xstr.bind_class(code, seq):
             printd('Warning: %s %s already binded!' % (mode, seq))
         self.xstr.bind_class(code, seq, handle, add)
 
     def chmode(self, mode):
-        code0 = 'MODE:%s:%s' % (self.xstr, Main.__name__)
-        code1 = 'MODE:%s:%s' % (self.xstr, mode.__name__)
+        code0 = 'MODE:%s:%s:%s' % (self.xstr, 
+        Main.__module__, Main.__name__)
+
+        code1 = 'MODE:%s:%s:%s' % (self.xstr, 
+        mode.__module__, mode.__name__)
 
         taglist = [code0, code1, self]
         if mode.EDIT is True:
