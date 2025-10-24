@@ -23,9 +23,9 @@ class CodeFix(Plugin):
     def __init__(self, xstr):
         super().__init__(xstr)
         self.files = None
-        self.add_kmap(CodeFixNS, Python, '<Key-r>', self.rename)
-        self.add_kmap(CodeFixNS, Python, '<Key-a>', self.static_analysis)
-        self.add_kmap(CodeFixNS, Python, '<Key-m>', self.move)
+        self.add_kmap(CodeFixNS, Python, '<Key-n>', self.rename)
+        self.add_kmap(CodeFixNS, Python, '<Key-y>', self.static_analysis)
+        self.add_kmap(CodeFixNS, Python, '<Key-N>', self.move)
 
     def static_analysis(self, event):
         path = (self.xstr.project if self.xstr.project 

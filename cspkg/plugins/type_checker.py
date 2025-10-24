@@ -25,11 +25,11 @@ class TypeChecker(Plugin):
         self.add_kmap(TypeCheckerNS, Python, 
         '<Key-k>', self.check_module)
 
-        self.add_kmap(TypeCheckerNS, Python, 
-        '<Key-o>', lambda event: self.options.display(self.xstr))
+        self.add_kmap(TypeCheckerNS, Python, '<Key-o>', 
+        lambda event: self.options.display(self.xstr))
 
         self.add_kmap(TypeCheckerNS, Python, 
-        '<Key-p>', self.check_all)
+        '<Key-K>', self.check_all)
 
     @classmethod
     def c_path(cls, path):

@@ -28,28 +28,23 @@ class PythonDebugger(Plugin):
         super().__init__(xstr)
         self.auto_open = False
 
-        self.add_kmap(PdbNS, Python, '<Key-exclam>', self.switch_pdb_mode)
-        self.add_kmap(PdbNS, Pdb, '<Key-p>', self.evaluate_selection)
-        self.add_kmap(PdbNS, Pdb, '<Key-x>', self.evaluate_expression)
-        self.add_kmap(PdbNS, Pdb, '<Key-r>', self.run)
-        self.add_kmap(PdbNS, Pdb, '<Control-R>', self.run_args)
-        self.add_kmap(PdbNS, Pdb, '<Control-r>', self.send_restart)
-        self.add_kmap(PdbNS, Pdb, '<Key-m>', self.send_dcmd)
-        self.add_kmap(PdbNS, Pdb, '<Key-Q>', self.quit_db) 
-        self.add_kmap(PdbNS, Pdb, '<Key-c>', self.send_continue)
-        self.add_kmap(PdbNS, Pdb, '<Control-C>', self.dump_clear_all)
-        self.add_kmap(PdbNS, Pdb, '<Control-c>', self.remove_breakpoint)
-        self.add_kmap(PdbNS, Pdb, '<Key-B>',  self.send_tbreak)
-        self.add_kmap(PdbNS, Pdb, '<Key-s>',  self.send_step)
-        self.add_kmap(PdbNS, Pdb, '<Key-S>',  self.set_auto_open)
-        self.add_kmap(PdbNS, Pdb, '<Key-b>', self.send_break)
+        self.add_kmap(PdbNS, Python, '<Key-p>', self.evaluate_selection)
+        self.add_kmap(PdbNS, Python, '<Key-x>', self.evaluate_expression)
+        self.add_kmap(PdbNS, Python, '<Key-r>', self.run)
+        self.add_kmap(PdbNS, Python, '<Key-R>', self.run_args)
+        self.add_kmap(PdbNS, Python, '<Key-exclam>', self.send_restart)
+        self.add_kmap(PdbNS, Python, '<Key-m>', self.send_dcmd)
+        self.add_kmap(PdbNS, Python, '<Key-Q>', self.quit_db) 
+        self.add_kmap(PdbNS, Python, '<Key-c>', self.send_continue)
+        self.add_kmap(PdbNS, Python, '<Key-S>', self.dump_clear_all)
+        self.add_kmap(PdbNS, Python, '<Key-C>', self.remove_breakpoint)
+        self.add_kmap(PdbNS, Python, '<Key-B>',  self.send_tbreak)
+        self.add_kmap(PdbNS, Python, '<Key-s>',  self.send_step)
+        self.add_kmap(PdbNS, Python, '<Key-A>',  self.set_auto_open)
+        self.add_kmap(PdbNS, Python, '<Key-b>', self.send_break)
 
     def c_path(self, path):
         DebuggerProcess.path = path
-
-    def switch_pdb_mode(self, event):
-        self.chmode(Pdb)
-        root.status.set_msg('Pdb mode started.')
 
     def create_process(self, cmd):
 

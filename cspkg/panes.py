@@ -30,8 +30,12 @@ class PanedHorizontalWindow(PanedWindow):
         def set_xstr(event):
             self.master.tab_xstr = xstr
 
-        xstr.bind_class('MODE:%s:%s' % (xstr, 'Main'), 
-        '<FocusIn>', set_xstr, add=True)
+        # Suggests a redesign. When importing Main is imported
+        # it fails.
+        from cspkg.core import Main
+        xstr.bind_class('MODE:%s:%s:%s' % (xstr, 
+        Main.__module__, Main.__name__), '<FocusIn>', 
+        set_xstr, add=True)
 
         self.master.tab_xstr = xstr
         xstr.focus_set()

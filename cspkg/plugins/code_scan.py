@@ -20,9 +20,9 @@ class CodeScan(Plugin):
     def  __init__(self, xstr):
         super().__init__(xstr)
 
-        self.add_kmap(CodeScanNS, Python, '<Key-c>', self.check_module)
+        self.add_kmap(CodeScanNS, Python, '<Key-l>', self.check_module)
         self.add_kmap(CodeScanNS, Python, '<Key-h>', self.display_errors)
-        self.add_kmap(CodeScanNS, Python, '<Key-l>', self.check_all)
+        self.add_kmap(CodeScanNS, Python, '<Key-L>', self.check_all)
 
     @classmethod
     def c_path(cls, path):

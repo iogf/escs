@@ -46,7 +46,7 @@ class Plugin:
     def flush_kmap(self, mode, seq):
         """
         """
-        code = 'MODE:%s:%s' % (self.xstr, 
+        code = 'MODE:%s:%s:%s' % (self.xstr, 
         mode.__module__, mode.__name__)
 
         self.xstr.unbind_class(code, seq)

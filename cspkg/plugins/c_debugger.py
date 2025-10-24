@@ -25,18 +25,17 @@ class CDebugger(Plugin):
     def __init__(self, xstr):
         super().__init__(xstr)
         
-        self.add_kmap(GDBNS, C, '<Key-dollar>', self.switch_gdb_mode)
-        self.add_kmap(GDBNS, GDB, '<Key-p>', self.evaluate_selection)
-        self.add_kmap(GDBNS, GDB, '<Key-R>', self.ask_gdb_exec)
-        self.add_kmap(GDBNS, GDB, '<Key-r>', self.run)
-        self.add_kmap(GDBNS, GDB, '<Key-x>', self.evaluate_expression)
-        self.add_kmap(GDBNS, GDB, '<Key-Q>', self.quit_db)
-        self.add_kmap(GDBNS, GDB, '<Key-c>', self.send_continue)
-        self.add_kmap(GDBNS, GDB, '<Key-m>', self.send_dcmd)
-        self.add_kmap(GDBNS, GDB, '<Key-s>',  self.send_step)
-        self.add_kmap(GDBNS, GDB, '<Key-S>',  self.set_auto_open)
-        self.add_kmap(GDBNS, GDB, '<Control-c>', self.clear_breakpoint)
-        self.add_kmap(GDBNS, GDB, '<Key-b>', self.send_break)
+        self.add_kmap(GDBNS, C, '<Key-p>', self.evaluate_selection)
+        self.add_kmap(GDBNS, C, '<Key-R>', self.ask_gdb_exec)
+        self.add_kmap(GDBNS, C, '<Key-r>', self.run)
+        self.add_kmap(GDBNS, C, '<Key-x>', self.evaluate_expression)
+        self.add_kmap(GDBNS, C, '<Key-Q>', self.quit_db)
+        self.add_kmap(GDBNS, C, '<Key-c>', self.send_continue)
+        self.add_kmap(GDBNS, C, '<Key-m>', self.send_dcmd)
+        self.add_kmap(GDBNS, C, '<Key-s>',  self.send_step)
+        self.add_kmap(GDBNS, C, '<Key-A>',  self.set_auto_open)
+        self.add_kmap(GDBNS, C, '<Key-C>', self.clear_breakpoint)
+        self.add_kmap(GDBNS, C, '<Key-b>', self.send_break)
         self.auto_open = False
 
     def switch_gdb_mode(self, event):
