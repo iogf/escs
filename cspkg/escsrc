@@ -267,8 +267,8 @@ load_module(page_scroll)
 ##############################################################################
 # Python code refactoring tool that uses rope framework.
 
-from cspkg.plugins import code_fix
-load_module(code_fix)
+from cspkg.plugins import python_refactor
+load_module(python_refactor)
 ##############################################################################
 # Mechanism to add marks along text to perform jumps based on mark names.
 
@@ -295,15 +295,15 @@ load_module(dead_code)
 ##############################################################################
 # Keystrokes to perform static analysis it uses pyflakes framework.
 
-from cspkg.plugins.code_scan import CodeScan
-CodeScan.c_path('pyflakes')
-load_cls(CodeScan)
+from cspkg.plugins.python_scan import PythonScan
+PythonScan.c_path('pyflakes')
+load_cls(PythonScan)
 ##############################################################################
 # Keystrokes to perform type checking in python code it uses mypy.
 
-from cspkg.plugins.type_checker import TypeChecker
-TypeChecker.c_path('mypy')
-load_cls(TypeChecker)
+from cspkg.plugins.python_checker import PythonChecker
+PythonChecker.c_path('mypy')
+load_cls(PythonChecker)
 ##############################################################################
 # It implements C mode.
 

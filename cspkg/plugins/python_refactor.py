@@ -13,19 +13,19 @@ from cspkg.core import Namespace, Plugin, Mode
 from cspkg.plugins.normal_mode import Normal
 from os.path import dirname
 
-class CodeFixNS(Namespace):
+class PythonRefactorNS(Namespace):
     pass
 
 class Python(Mode):
     pass
 
-class CodeFix(Plugin):
+class PythonRefactor(Plugin):
     def __init__(self, xstr):
         super().__init__(xstr)
         self.files = None
-        self.add_kmap(CodeFixNS, Python, '<Key-n>', self.rename)
-        self.add_kmap(CodeFixNS, Python, '<Key-y>', self.static_analysis)
-        self.add_kmap(CodeFixNS, Python, '<Key-N>', self.move)
+        self.add_kmap(PythonRefactorNS, Python, '<Key-n>', self.rename)
+        self.add_kmap(PythonRefactorNS, Python, '<Key-y>', self.static_analysis)
+        self.add_kmap(PythonRefactorNS, Python, '<Key-N>', self.move)
 
     def static_analysis(self, event):
         path = (self.xstr.project if self.xstr.project 
@@ -117,11 +117,11 @@ class CodeFix(Plugin):
 
         self.update_instances(changes)
 
-        print('\nCodeFix - Renamed resource ..\n')
+        print('\nPythonRefactor - Renamed resource ..\n')
         print(changes.get_description())
         self.chmode(Normal)
         root.status.set_msg('Resources renamed!')
         project.close()
 
-install = CodeFix
+install = PythonRefactor
 

@@ -13,22 +13,22 @@ from cspkg.stderr import printd
 from re import findall
 import sys
 
-class TypeCheckerNS(Namespace):
+class PythonCheckerNS(Namespace):
     pass
 
-class TypeChecker(Plugin):
+class PythonChecker(Plugin):
     options = LinePicker()
     path    = 'mypy'
 
     def  __init__(self, xstr):
         super().__init__(xstr)
-        self.add_kmap(TypeCheckerNS, Python, 
+        self.add_kmap(PythonCheckerNS, Python, 
         '<Key-k>', self.check_module)
 
-        self.add_kmap(TypeCheckerNS, Python, '<Key-o>', 
+        self.add_kmap(PythonCheckerNS, Python, '<Key-o>', 
         lambda event: self.options.display(self.xstr))
 
-        self.add_kmap(TypeCheckerNS, Python, 
+        self.add_kmap(PythonCheckerNS, Python, 
         '<Key-K>', self.check_all)
 
     @classmethod
@@ -70,8 +70,8 @@ class TypeChecker(Plugin):
             self.options.display(self.xstr)
 
 
-install = TypeChecker
+install = PythonChecker
 @Command()
 def py_static(xstr):
-    checker = TypeChecker(xstr)
+    checker = PythonChecker(xstr)
     checker.check_all()
