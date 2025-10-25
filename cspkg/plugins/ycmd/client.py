@@ -67,7 +67,10 @@ class YcmdServer:
         '--idle_suicide_seconds', str(self.idle_suicide)]
 
         self.daemon = Popen(self.cmd,  cwd=self.path)
-        atexit.register(self.daemon.terminate)
+        atexit.register(self.kill)
+
+    def kill(self):
+        self.daemon.kill()
 
     def load_conf(self, path):
         """
