@@ -21,6 +21,7 @@ class GDB(Mode):
 class CDebugger(Plugin):
     expect  = None
     bp_appearence={'background':'blue', 'foreground':'yellow'}
+    encoding='utf8'
 
     def __init__(self, xstr):
         super().__init__(xstr)
@@ -72,7 +73,7 @@ class CDebugger(Plugin):
     def install_handles(self, expect):
         Terminator(expect, delim=b'\n')
         regstr = '(\032\032|\(gdb\) \032\032)(.+):([0-9]+):[0-9]+:.+:.+'
-        RegexEvent(expect, regstr, 'LINE', self.xstr.charset)
+        RegexEvent(expect, regstr, 'LINE', self.encoding)
         expect.add_map('LINE', self.handle_line)
 
     def ask_gdb_exec(self, event):
@@ -97,7 +98,7 @@ class CDebugger(Plugin):
         root.status.set_msg('(GDB) Sent breakpoint !')
 
     def send(self, data):
-        self.expect.send(data.encode(self.xstr.charset))
+        self.expect.send(data.encode(self.encoding))
         print('GDB Cmd: ', data)
 
     def send_continue(self, event):
@@ -127,7 +128,7 @@ class CDebugger(Plugin):
         CDebugger.expect = Expect(cmd)
 
         self.expect.add_map(LOAD, lambda con, 
-        data: sys.stdout.write(data.decode(self.xstr.charset)))
+        data: sys.stdout.write(data.decode(self.encoding)))
 
         self.expect.add_map(CLOSE, self.on_bkpipe)
 

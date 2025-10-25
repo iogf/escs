@@ -53,7 +53,7 @@ class PythonDebugger(Plugin):
         # the debugging.
         PythonDebugger.expect = Expect(cmd)
         self.expect.add_map(LOAD, lambda con, 
-        data: sys.stdout.write(data.decode(self.xstr.charset)))
+        data: sys.stdout.write(data.decode(self.encoding)))
 
         # The expect has to be passed here otherwise when 
         # starting the new one gets terminated.
@@ -99,8 +99,8 @@ class PythonDebugger(Plugin):
         print('Pdb Cmd: ', data)
 
     def send_break(self, event):
-        self.send('break %s:%s\r\n' % (event.widget.filename, 
-        event.widget.indexsplit('insert')[0]))
+        self.send('break %s:%s\r\n' % (self.xstr.filename, 
+        self.xstr.indexsplit('insert')[0]))
         root.status.set_msg('(pdb) Command break sent !')
 
     def send_step(self, event):
@@ -108,8 +108,8 @@ class PythonDebugger(Plugin):
         root.status.set_msg('(pdb) Command step sent !')
 
     def send_tbreak(self, event):
-        self.send('tbreak %s:%s\r\n' % (event.widget.filename, 
-        event.widget.indexsplit('insert')[0]))
+        self.send('tbreak %s:%s\r\n' % (self.xstr.filename, 
+        self.xstr.indexsplit('insert')[0]))
         root.status.set_msg('(pdb) Command tbreak sent !')
 
     def send_continue(self, event):
@@ -127,30 +127,30 @@ class PythonDebugger(Plugin):
         root.status.set_msg('(pdb) Sent restart !')
 
     def evaluate_selection(self, event):
-        data = event.widget.tag_xjoin('sel', sep='\r\n')
+        data = self.xstr.tag_xjoin('sel', sep='\r\n')
         self.send('p %s' % data)
         root.status.set_msg('(pdb) Sent text selection!')
 
     def install_handles(self, expect):
         Terminator(expect, delim=b'\n')
 
-        regstr0 = '\> (.+)\(([0-9]+)\).+'
+        regstr = '\> (.+)\(([0-9]+)\).+'
 
-        RegexEvent(expect, regstr0, 'LINE', self.encoding)
+        RegexEvent(expect, regstr, 'LINE', self.encoding)
         expect.add_map('LINE', self.handle_line)
 
     def run(self, event):
         if self.expect:
             self.expect.terminate()
         self.create_process(' '.join([self.path, '-u', 
-        '-m', 'pdb', event.widget.filename]))
+        '-m', 'pdb', self.xstr.filename]))
 
         root.status.set_msg('(pdb) Started !')
 
     def run_args(self, event):
         scan  = Scan()
         args = '%s -u -m pdb %s %s' % (self.path, 
-        event.widget.filename, scan.data)
+        self.xstr.filename, scan.data)
 
         if self.expect:
             self.expect.terminate()
@@ -164,8 +164,8 @@ class PythonDebugger(Plugin):
     def remove_breakpoint(self, event):
         """
         """
-        line, col = event.widget.indexsplit('insert')
-        self.send('clear %s:%s\r\n' % (event.widget.filename, line))
+        line, col = self.xstr.indexsplit('insert')
+        self.send('clear %s:%s\r\n' % (self.xstr.filename, line))
         root.status.set_msg('(pdb) Command clear sent!')
 
     def send_dcmd(self, event):

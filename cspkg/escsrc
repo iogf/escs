@@ -240,6 +240,14 @@ load_module(complete_word)
 from cspkg.plugins import jedi
 load_module(jedi)
 ##############################################################################
+from cspkg.plugins import golang_debugger
+load_module(golang_debugger)
+##############################################################################
+# Auto completion for golang.
+
+# from cspkg.plugins import golang_hints
+# load_module(golang_hints)
+##############################################################################
 # Keystroke to select strings that are wrapped by (), [] or {}.
 
 from cspkg.plugins import bck_sel
