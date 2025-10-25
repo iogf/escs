@@ -237,8 +237,8 @@ load_module(complete_word)
 ##############################################################################
 # Auto completion for python that uses jedi library.
 
-from cspkg.plugins import jedi
-load_module(jedi)
+# from cspkg.plugins import jedi
+# load_module(jedi)
 ##############################################################################
 from cspkg.plugins import golang_debugger
 load_module(golang_debugger)

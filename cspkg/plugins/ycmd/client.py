@@ -28,7 +28,7 @@ HMAC_LENGTH  = 32
 FILETYPES = {
 '.c': 'c',
 '.py': 'python',
-'.go': 'golang',
+'.go': 'go',
 '.c++':'cpp',
 '.js':'javascript',
 '.java': 'java'
@@ -300,13 +300,12 @@ class YcmdWindow(CompletionWindow):
 
         completions = server.completions(line, col + 1, 
         xstr.filename, data, dirname(xstr.filename))
-
         CompletionWindow.__init__(self, xstr, completions, *args, **kwargs)
 
 class YcmdCompletion(Plugin):
     server = None
     def __init__(self, xstr):
-        self.xstr       = xstr
+        super().__init__(xstr)
         self.err_picker = LinePicker()
         # completions     = lambda event: YcmdWindow(event.widget, self.server)
         wrapper         = lambda event: xstr.after(1000, self.on_ready)
@@ -316,8 +315,8 @@ class YcmdCompletion(Plugin):
             self.server.is_alive()
             xstr.after(250000, keep)
         xstr.after(250000, keep)
-
         # xstr.master.bind('<Destroy>', self.on_unload)
+
         self.add_kmap(YcmdNS, Extra, '<Key-period>', self.completions)
         self.add_kmap(YcmdNS, Main, '<<LoadData>>', wrapper, True)
         self.add_kmap(YcmdNS, Main, '<<SaveData>>', wrapper, True)
@@ -348,7 +347,6 @@ class YcmdCompletion(Plugin):
         then it is loaded automatically otherwise a message is
         displayed to the user to load it using lycm.
         """
-
         data = {self.xstr.filename:  
         {'filetypes': [FILETYPES[self.xstr.extension]], 
         'contents': self.xstr.get('1.0', 'end')}}
@@ -369,7 +367,8 @@ class YcmdCompletion(Plugin):
         ind['location']['line_num'], ind['text']) 
         for ind in rsp]
 
-        self.err_picker(ranges, display=False)
+        self.err_picker.extend(ranges)
+        self.err_picker.display(self.xstr)
         root.status.set_msg('Ycmd found errors. Displaying diagnostics!')
 
     def on_exc(self, rsp):
