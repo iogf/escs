@@ -54,7 +54,7 @@ class YcmdServer:
           self.settings = json.loads(fd.read())
 
         hmac_secret = b64encode(self.hmac_secret).decode('utf8 ')
-        self.settings[ 'hmac_secret' ] = hmac_secret
+        self.settings['hmac_secret'] = hmac_secret
 
         with NamedTemporaryFile(mode = 'w+', delete = False) as tmpfile:
             json.dump(self.settings, tmpfile)
@@ -308,23 +308,20 @@ class YcmdCompletion(Plugin):
     server = None
     def __init__(self, xstr):
         super().__init__(xstr)
-        self.err_picker = LinePicker()
-        # completions     = lambda event: YcmdWindow(event.widget, self.server)
-        wrapper         = lambda event: xstr.after(1000, self.on_ready)
+        wrapper = lambda event: xstr.after(1000, self.on_ready)
 
         # Used to keep the server alive.
-        def keep():
-            self.server.is_alive()
-            xstr.after(250000, keep)
-        xstr.after(250000, keep)
-        # xstr.master.bind('<Destroy>', self.on_unload)
-
-        self.add_kmap(YcmdNS, Extra, '<Key-period>', self.completions)
+        self.xstr.after(250000, self.keep_alive)
+        self.add_kmap(YcmdNS, Main, '<Destroy>', self.on_unload)
+        self.add_kmap(YcmdNS, Extra, '<Key-period>', self.complete)
         self.add_kmap(YcmdNS, Main, '<<LoadData>>', wrapper, True)
         self.add_kmap(YcmdNS, Main, '<<SaveData>>', wrapper, True)
-        # self.add_kmap(YcmdNS, Extra, '<Control-greater>', lambda event: self.err_picker.display())
 
-    def completions(self, event):
+    def keep_alive(self):
+        self.server.is_alive()
+        self.xstr.after(250000, self.keep_alive)
+
+    def complete(self, event):
         YcmdWindow(event.widget, self.server)
         self.chmode(Insert)
 
@@ -333,7 +330,7 @@ class YcmdCompletion(Plugin):
         """
         data = {self.xstr.filename:  
         {'filetypes': [FILETYPES[self.xstr.extension]], 
-        'contents': self.xstr.get('1.0', 'end')}}
+        'contents': ''}}
 
         req = self.server.buffer_unload(1, 1, self.xstr.filename, data)
         printd('Ycmd - BufferUnload status', req.status_code)
@@ -358,20 +355,6 @@ class YcmdCompletion(Plugin):
 
         if req.status_code == 500:
             self.on_exception(rsp)
-        elif req.status_code == 200 and rsp:
-            self.on_diagnostics(rsp)
-
-    def on_diagnostics(self, rsp):
-        """
-        """
-
-        ranges = [(ind['location']['filepath'], 
-        ind['location']['line_num'], ind['text']) 
-        for ind in rsp]
-
-        self.err_picker.extend(ranges)
-        self.err_picker.display(self.xstr)
-        root.status.set_msg('Ycmd found errors. Displaying diagnostics!')
 
     def on_exception(self, rsp):
         exc = rsp.get('exception')
@@ -383,32 +366,14 @@ class YcmdCompletion(Plugin):
         When ycmd finds a .ycm_extra_conf.py it automatically loads
         the file.
         """
-        # gxconf = expanduser('~')
-        # gxconf = join(gxconf, '.ycm_extra_conf.py')
-# 
-        # if xconf == gxconf:
-            # self.server.load_conf(gxconf)
-        # else:
-            # root.status.set_msg((('Found %s!' 
-                # ' lycm(path) to load.') % xconf))
-
         self.server.load_conf(xconf)
-        # Once it is loaded then we send FileReadyToParse again.
+
+        # We send FileReadyToParse again.
         data = {self.xstr.filename:  
         {'filetypes': [FILETYPES[self.xstr.extension]], 
         'contents': self.xstr.get('1.0', 'end')}}
 
         req = self.server.ready(1, 1, self.xstr.filename, data)
-
-    @classmethod
-    def cycm(cls, path=expanduser('~')):
-        """
-        Create a .ycm_extra_conf.py in the specified path. The default path
-        it is home dir.
-        """
-        path = join(path, '.ycm_extra_conf.py') 
-        if not exists(path): 
-            copyfile(join(dirname(__file__), 'ycm_extra_conf.py'), path)
 
     @classmethod
     def setup(cls, path, xconf=expanduser('~')):
@@ -427,7 +392,7 @@ class YcmdCompletion(Plugin):
             copyfile(join(dirname(__file__), 
                 'default_settings.json'), settings_file)
 
-        port        = random.randint(1000, 9999)
+        port = random.randint(1000, 9999)
         cls.server  = YcmdServer(path, port,  settings_file)
         rcenv['lycm'] = cls.lycm
         rcenv['dycm'] = cls.dycm
