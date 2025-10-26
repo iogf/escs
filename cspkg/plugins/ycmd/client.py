@@ -8,10 +8,9 @@ from cspkg.fwin import LinePicker
 from tempfile import NamedTemporaryFile
 from subprocess import Popen
 from shutil import copyfile
-from cspkg.core import Plugin, Namespace, Command, rcenv, Main, rcenv
+from cspkg.core import Plugin, Namespace, Command, rcenv, Main
 from cspkg.plugins.extra_mode import Extra
 from cspkg.plugins.insert_mode import Insert
-from cspkg.plugins.normal_mode import Normal
 from cspkg.start import root
 from cspkg.stderr import printd
 import atexit
@@ -358,7 +357,7 @@ class YcmdCompletion(Plugin):
         rsp = req.json()
 
         if req.status_code == 500:
-            self.on_exc(rsp)
+            self.on_exception(rsp)
         elif req.status_code == 200 and rsp:
             self.on_diagnostics(rsp)
 
@@ -374,21 +373,42 @@ class YcmdCompletion(Plugin):
         self.err_picker.display(self.xstr)
         root.status.set_msg('Ycmd found errors. Displaying diagnostics!')
 
-    def on_exc(self, rsp):
-       exc = rsp.get('exception')
-       if exc and exc.get('TYPE') == 'UnknownExtraConf':
-           self.is_gxconf(exc['extra_conf_file'])
-   
-    @classmethod
-    def is_gxconf(cls, xconf):
-        gxconf = expanduser('~')
-        gxconf = join(gxconf, '.ycm_extra_conf.py')
+    def on_exception(self, rsp):
+        exc = rsp.get('exception')
+        if exc and exc.get('TYPE') == 'UnknownExtraConf':
+            self.on_load_xconf(exc['extra_conf_file'])
+ 
+    def on_load_xconf(self, xconf):
+        """
+        When ycmd finds a .ycm_extra_conf.py it automatically loads
+        the file.
+        """
+        # gxconf = expanduser('~')
+        # gxconf = join(gxconf, '.ycm_extra_conf.py')
+# 
+        # if xconf == gxconf:
+            # self.server.load_conf(gxconf)
+        # else:
+            # root.status.set_msg((('Found %s!' 
+                # ' lycm(path) to load.') % xconf))
 
-        if xconf == gxconf:
-            cls.server.load_conf(gxconf)
-        else:
-            root.status.set_msg((('Found %s!' 
-                ' lycm(path) to load.') % xconf))
+        self.server.load_conf(xconf)
+        # Once it is loaded then we send FileReadyToParse again.
+        data = {self.xstr.filename:  
+        {'filetypes': [FILETYPES[self.xstr.extension]], 
+        'contents': self.xstr.get('1.0', 'end')}}
+
+        req = self.server.ready(1, 1, self.xstr.filename, data)
+
+    @classmethod
+    def cycm(cls, path=expanduser('~')):
+        """
+        Create a .ycm_extra_conf.py in the specified path. The default path
+        it is home dir.
+        """
+        path = join(path, '.ycm_extra_conf.py') 
+        if not exists(path): 
+            copyfile(join(dirname(__file__), 'ycm_extra_conf.py'), path)
 
     @classmethod
     def setup(cls, path, xconf=expanduser('~')):
@@ -407,10 +427,6 @@ class YcmdCompletion(Plugin):
             copyfile(join(dirname(__file__), 
                 'default_settings.json'), settings_file)
 
-        xconf = join(xconf, '.ycm_extra_conf.py')
-        if not exists(xconf): 
-            copyfile(join(dirname(__file__), 'ycm_extra_conf.py'), xconf)
-    
         port        = random.randint(1000, 9999)
         cls.server  = YcmdServer(path, port,  settings_file)
         rcenv['lycm'] = cls.lycm
