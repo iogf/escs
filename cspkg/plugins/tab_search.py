@@ -37,7 +37,13 @@ class TabSearch(Plugin):
         data = wid.get()
         seq  = root.note.next(lambda text: data in text)
         elem = next(seq)
-        root.note.on(elem)
+
+        wid=root.note.focus_get()
+        root.note.select(elem)
+
+        # Looks like in some Tk versions it loses
+        # focus in the Entry widget after a tab is selected.
+        root.after(30, lambda : wid.focus_set())
 
         wid  = root.note.nametowidget(root.note.select())
         root.title('Escs %s' % wid.tab_xstr.filename)
@@ -49,7 +55,10 @@ class TabSearch(Plugin):
         data = wid.get()
         seq  = root.note.back(lambda text: data in text)
         elem = next(seq)
-        root.note.on(elem)
+
+        wid=root.note.focus_get()
+        root.note.select(elem)
+        root.after(30, lambda : wid.focus_set())
 
         wid  = root.note.nametowidget(root.note.select())
         root.title('Escs %s' % wid.tab_xstr.filename)

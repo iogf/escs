@@ -65,14 +65,6 @@ class EscsBook(Notebook):
             if func(self.tab(ind, 'text')):
                 yield ind
 
-    def on(self, *args):
-        """
-        """
-
-        wid=self.focus_get()
-        self.select(*args)
-        self.after(30, lambda : wid.focus_set())
-
     def xseek(self, filename, auto_open=False):
         filename = abspath(filename)
         wids = Xstr.get_opened_files(self)

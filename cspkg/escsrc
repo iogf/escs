@@ -299,7 +299,7 @@ load_module(dead_code)
 
 # from cspkg.plugins.ycmd import client
 # load_module(client)
-# client.YcmdCompletion.setup('~/projects/ycmd-code/ycmd')
+# client.YcmdCompletion.setup('~/projects/ycmd-code/')
 ##############################################################################
 # Keystrokes to perform static analysis it uses pyflakes framework.
 
@@ -341,8 +341,8 @@ from cspkg.plugins.syntax.spider import Spider
 # from pygments.styles.vim import VimStyle
 
 # Import and configure VyStyle to highligh code.
-from cspkg.plugins.syntax.default_style import EscStyle
-Spider.c_style(EscStyle)
+from cspkg.plugins.syntax.default_style import EscsStyle
+Spider.c_style(EscsStyle)
 load_cls(Spider)
 ##############################################################################
 # A command to decode text based on charge.

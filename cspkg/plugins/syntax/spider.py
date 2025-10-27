@@ -29,7 +29,7 @@ class SyntaxNS(Namespace):
 def findlexer(filename, text, **opts):
     """
     The pygments guess_lexer_for_filename works only when there is
-    a lexer has a pattern in filename.
+    a lexer for filename.
     
     When get_lexer_for_filename fails it uses the value in text
     to guess the lexer using pygments guess_lexer.
@@ -71,7 +71,11 @@ class TkTxtFormatter(Formatter):
 
 class Spider(Plugin):
     style = None
-    guesslex = True
+
+    # The pygments guess_lexer might hang up for some language codes.
+    # It attempts to guess a lexer based on the contents of the opened
+    # file instead of the filename string.
+    guesslex = False
 
     def  __init__(self, xstr, max=10):
         super().__init__(xstr)
@@ -84,7 +88,7 @@ class Spider(Plugin):
 
         if self.style.background_color:
             self.xstr.configure(background=self.style.background_color)
-        default_style = getattr(self.style, 'default_style')
+        default_style = getattr(self.style, 'default_style', None)
 
         # Set foreground as pygments style.default_style value.
         if default_style:
