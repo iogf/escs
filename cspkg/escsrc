@@ -199,6 +199,9 @@ load_module(outputs)
 from cspkg.plugins import cmd_exec
 load_module(cmd_exec)
 ##############################################################################
+from cspkg.plugins import run_proc
+load_module(run_proc)
+##############################################################################
 # Keystrokes to insert line up/down the cursor position.
 
 from cspkg.plugins import line_feed
