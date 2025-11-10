@@ -19,7 +19,7 @@ class HandleInput(Plugin):
         self.add_kmap(SpawnNS, Main, '<Destroy>',
         lambda event: spawn.terminate_process())
 
-        self.add_kmap(SpawnNS, Normal, '<Key-b>', 
+        self.add_kmap(SpawnNS, Normal, '<F1>', 
         lambda xstr: spawn.dump_line(), add=False)
 
 class BaseSpawn:

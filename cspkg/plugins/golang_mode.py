@@ -1,7 +1,7 @@
 from cspkg.core import Namespace, Main, Plugin, Mode
 from cspkg.plugins.normal_mode import Normal
 
-class GolangNS(Namespace):
+class GolangModeNS(Namespace):
     pass
 
 class Golang(Mode):
@@ -10,7 +10,7 @@ class Golang(Mode):
 class GolangMode(Plugin):
     def __init__(self, xstr):
         super().__init__(xstr)
-        self.add_kmap(GolangNS, Normal, 
+        self.add_kmap(GolangModeNS, Normal, 
         '<Key-numbersign>', self.golang_mode)
 
     def golang_mode(self, event):
