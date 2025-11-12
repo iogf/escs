@@ -205,8 +205,8 @@ load_module(outputs)
 from cspkg.plugins import cmd_exec
 load_module(cmd_exec)
 ##############################################################################
-from cspkg.plugins import run_proc
-load_module(run_proc)
+from cspkg.plugins import run_process
+load_module(run_process)
 ##############################################################################
 # Keystrokes to insert line up/down the cursor position.
 

@@ -6,14 +6,13 @@ from cspkg.plugins.normal_mode import Normal
 from subprocess import Popen, PIPE
 import shlex
 
-class RunProcNS(Namespace):
+class RunProcessNS(Namespace):
     pass
 
-class RunProc(Plugin):
+class RunProcess(Plugin):
     def __init__(self, xstr):
         super().__init__(xstr)
-        self.add_kmap(RunProc, Normal, 
-        '<Key-Z>',  self.run)
+        self.add_kmap(RunProcessNS, Normal, '<Key-Z>',  self.run)
 
     def run(self, event):
         scan = Scan()
@@ -25,5 +24,5 @@ class RunProc(Plugin):
         self.xstr.append(err)
         root.status.set_msg('Executed shell command: %s' % scan.data)
     
-install = RunProc
+install = RunProcess
 
