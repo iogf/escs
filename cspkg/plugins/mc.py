@@ -125,7 +125,7 @@ class Mc(Plugin):
         path = self.xstr.get(
         'insert linestart', 'insert lineend')
 
-        root.status.set_msg('(Mc) Rename file:')
+        root.status.set_msg('Rename file:')
         scan    = Scan()
         destin = join(dirname(path), scan.data)
         code   = check_call('mv "%s" %s' % (path, 

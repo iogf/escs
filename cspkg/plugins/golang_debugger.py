@@ -39,7 +39,7 @@ class GolangDebugger(Plugin):
 
     def set_auto_open(self, event):
         self.auto_open = False if self.auto_open else True
-        root.status.set_msg('(Delve) Auto open files: %s!' % self.auto_open)
+        root.status.set_msg('(delve) Auto open files: %s!' % self.auto_open)
 
     def evaluate_expression(self, event):
         ask  = Scan()
