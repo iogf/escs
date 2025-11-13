@@ -71,7 +71,7 @@ class CodeSnippet(Plugin):
         super().__init__(xstr)
 
         self.add_kmap(CodeSnippetNS, Normal, '<Control-r>', self.ask_title)
-        self.add_kmap(CodeSnippetNS, Normal, '<Control-e>', self.reload)
+        self.add_kmap(CodeSnippetNS, Normal, '<Control-e>', self.display_matches)
         self.add_kmap(CodeSnippetNS, Normal, '<Control-f>', self.ask_pattern)
 
         # Create table
@@ -112,11 +112,9 @@ class CodeSnippet(Plugin):
         """
         
         matches = self.build_sql(data)
-
-        if not len(matches):
-            root.status.set_msg('No snippet found')
-        else:
-            self.choices(matches)
+        self.picker.extend(matches)
+        self.picker.display(self.xstr)
+        root.status.set_msg('Found %s snippets!' % len(matches))
 
     def build_sql(self, pattern):
         tmp = '(title LIKE ? or data LIKE ?)'
@@ -131,13 +129,9 @@ class CodeSnippet(Plugin):
         matches = self.cursor.fetchall()
         return matches
 
-    def reload(self, event):
+    def display_matches(self, event):
         self.picker.display(self.xstr)
-
-    def choices(self, matches):
-        root.status.set_msg('Found snippets!')
-        self.picker.extend(matches)
-        self.picker.display(self.xstr)
+        root.status.set_msg('Displaying %s snippets' % len(self.picker.options))
 
 install = CodeSnippet
 
