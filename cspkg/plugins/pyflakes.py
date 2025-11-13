@@ -10,19 +10,19 @@ from cspkg.stderr import printd
 from re import findall
 import sys
 
-class PythonScanNS(Namespace):
+class PyflakesNS(Namespace):
     pass
 
-class PythonScan(Plugin):
+class Pyflakes(Plugin):
     options = LinePicker()
     path    = 'pyflakes'
 
     def  __init__(self, xstr):
         super().__init__(xstr)
 
-        self.add_kmap(PythonScanNS, Python, '<Key-l>', self.check_module)
-        self.add_kmap(PythonScanNS, Python, '<Key-h>', self.display_errors)
-        self.add_kmap(PythonScanNS, Python, '<Key-L>', self.check_all)
+        self.add_kmap(PyflakesNS, Python, '<Key-l>', self.check_module)
+        self.add_kmap(PyflakesNS, Python, '<Key-h>', self.display_errors)
+        self.add_kmap(PyflakesNS, Python, '<Key-L>', self.check_all)
 
     @classmethod
     def c_path(cls, path):
@@ -70,8 +70,8 @@ class PythonScan(Plugin):
         
 @Command()
 def py_errors(xstr):
-    checker = PythonScan(xstr)
+    checker = Pyflakes(xstr)
     checker.check_all()
 
-install = PythonScan
+install = Pyflakes
 

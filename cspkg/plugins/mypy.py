@@ -13,28 +13,30 @@ from cspkg.stderr import printd
 from re import findall
 import sys
 
-class PythonCheckerNS(Namespace):
+class MypyNS(Namespace):
     pass
 
-class PythonChecker(Plugin):
+class Mypy(Plugin):
     options = LinePicker()
     path    = 'mypy'
 
     def  __init__(self, xstr):
         super().__init__(xstr)
-        self.add_kmap(PythonCheckerNS, Python, 
+        self.add_kmap(MypyNS, Python, 
         '<Key-k>', self.check_module)
 
-        self.add_kmap(PythonCheckerNS, Python, '<Key-o>', 
-        lambda event: self.options.display(self.xstr))
-
-        self.add_kmap(PythonCheckerNS, Python, 
-        '<Key-K>', self.check_all)
+        self.add_kmap(MypyNS, Python, '<Key-o>', self.display_errors)
+        self.add_kmap(MypyNS, Python, '<Key-K>', self.check_all)
 
     @classmethod
     def c_path(cls, path):
-        printd('Snakerr - Setting Mypy path = ', cls.path)
+        printd('Mypy - Setting Mypy path = ', cls.path)
         cls.path = path
+
+    def display_errors(self, event=None):
+        root.status.set_msg('Mypy errors!')
+        self.options.display(self.xstr)
+        self.chmode(Normal)
 
     def check_all(self, event=None):
         path  = get_project_root(self.xstr.filename)
@@ -70,8 +72,8 @@ class PythonChecker(Plugin):
             self.options.display(self.xstr)
 
 
-install = PythonChecker
+install = Mypy
 @Command()
 def py_static(xstr):
-    checker = PythonChecker(xstr)
+    checker = Mypy(xstr)
     checker.check_all()

@@ -11,21 +11,19 @@ from rope.base import libutils
 from rope.refactor.move import create_move
 from cspkg.core import Namespace, Plugin, Mode
 from cspkg.plugins.normal_mode import Normal
+from cspkg.plugins.python_mode import Python
 from os.path import dirname
 
-class PythonRefactorNS(Namespace):
+class RopeNS(Namespace):
     pass
 
-class Python(Mode):
-    pass
-
-class PythonRefactor(Plugin):
+class Rope(Plugin):
     def __init__(self, xstr):
         super().__init__(xstr)
         self.files = None
-        self.add_kmap(PythonRefactorNS, Python, '<Key-n>', self.rename)
-        self.add_kmap(PythonRefactorNS, Python, '<Key-y>', self.static_analysis)
-        self.add_kmap(PythonRefactorNS, Python, '<Key-N>', self.move)
+        self.add_kmap(RopeNS, Python, '<Key-n>', self.rename)
+        self.add_kmap(RopeNS, Python, '<Key-y>', self.static_analysis)
+        self.add_kmap(RopeNS, Python, '<Key-N>', self.move)
 
     def static_analysis(self, event):
         path = (self.xstr.project if self.xstr.project 
@@ -117,11 +115,11 @@ class PythonRefactor(Plugin):
 
         self.update_instances(changes)
 
-        print('\nPythonRefactor - Renamed resource ..\n')
+        print('\nRope - Renamed resource ..\n')
         print(changes.get_description())
         self.chmode(Normal)
         root.status.set_msg('Resources renamed!')
         project.close()
 
-install = PythonRefactor
+install = Rope
 

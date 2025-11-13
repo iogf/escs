@@ -12,10 +12,10 @@ from cspkg.start import root
 import shlex
 import sys
 
-class GolangDebuggerNS(Namespace):
+class DelveNS(Namespace):
     pass
 
-class GolangDebugger(Plugin):
+class Delve(Plugin):
     expect = None
     encoding='utf8'
     bp_appearence={'background':'blue', 'foreground':'yellow'}
@@ -24,18 +24,18 @@ class GolangDebugger(Plugin):
         super().__init__(xstr)        
         self.auto_open = False
 
-        self.add_kmap(GolangDebuggerNS, Golang, '<Key-p>', self.evaluate_selection)
-        self.add_kmap(GolangDebuggerNS, Golang, '<Key-r>', self.run)
-        self.add_kmap(GolangDebuggerNS, Golang, '<Key-exclam>', self.send_restart)
-        self.add_kmap(GolangDebuggerNS, Golang, '<Key-x>', self.evaluate_expression)
-        self.add_kmap(GolangDebuggerNS, Golang, '<Key-R>', self.run_args)
-        self.add_kmap(GolangDebuggerNS, Golang, '<Key-Q>', self.quit_db)
-        self.add_kmap(GolangDebuggerNS, Golang, '<Key-c>', self.send_continue)
-        self.add_kmap(GolangDebuggerNS, Golang, '<Key-m>', self.send_dcmd)
-        self.add_kmap(GolangDebuggerNS, Golang, '<Key-S>', self.dump_clear_all)
-        self.add_kmap(GolangDebuggerNS, Golang, '<Key-C>', self.remove_breakpoint)
-        self.add_kmap(GolangDebuggerNS, Golang, '<Key-b>', self.send_break)
-        self.add_kmap(GolangDebuggerNS, Golang, '<Key-A>',  self.set_auto_open)
+        self.add_kmap(DelveNS, Golang, '<Key-p>', self.evaluate_selection)
+        self.add_kmap(DelveNS, Golang, '<Key-r>', self.run)
+        self.add_kmap(DelveNS, Golang, '<Key-t>', self.send_restart)
+        self.add_kmap(DelveNS, Golang, '<Key-x>', self.evaluate_expression)
+        self.add_kmap(DelveNS, Golang, '<Key-R>', self.run_args)
+        self.add_kmap(DelveNS, Golang, '<Key-Q>', self.quit_db)
+        self.add_kmap(DelveNS, Golang, '<Key-c>', self.send_continue)
+        self.add_kmap(DelveNS, Golang, '<Key-m>', self.send_dcmd)
+        self.add_kmap(DelveNS, Golang, '<Key-S>', self.dump_clear_all)
+        self.add_kmap(DelveNS, Golang, '<Key-C>', self.remove_breakpoint)
+        self.add_kmap(DelveNS, Golang, '<Key-b>', self.send_break)
+        self.add_kmap(DelveNS, Golang, '<Key-A>',  self.set_auto_open)
 
     def set_auto_open(self, event):
         self.auto_open = False if self.auto_open else True
@@ -169,5 +169,5 @@ class GolangDebugger(Plugin):
             xstr.set_breakpoint(line, self.bp_appearence)
         root.status.set_msg('Debugger stopped at: %s:%s' % (filename, line))
 
-install = GolangDebugger
+install = Delve
 

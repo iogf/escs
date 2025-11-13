@@ -86,7 +86,7 @@ git checkout *
 # install from pip requirements.
 cd ~/projects/escs-code
 sudo bash -i
-pip2 install -r requirements.txt
+pip install .
 ##############################################################################
 # install escs. 
 cd ~/projects/escs-code

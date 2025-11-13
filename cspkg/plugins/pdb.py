@@ -14,10 +14,7 @@ from os.path import abspath
 class PdbNS(Namespace):
     pass
 
-class Pdb(Mode):
-    pass
-
-class PythonDebugger(Plugin):
+class Pdb(Plugin):
     path = 'python'
 
     bp_appearence={'background':'blue', 'foreground':'yellow'}
@@ -51,7 +48,7 @@ class PythonDebugger(Plugin):
         # Note: The data has to be decoded using the xstr charset
         # because the xstr contents would be sometimes printed along
         # the debugging.
-        PythonDebugger.expect = Expect(cmd)
+        Pdb.expect = Expect(cmd)
         self.expect.add_map(LOAD, lambda con, 
         data: sys.stdout.write(data.decode(self.encoding)))
 
@@ -181,4 +178,4 @@ class PythonDebugger(Plugin):
             self.expect.terminate()
         sys.stdout.write('(pdb) Sent quit!')
 
-install = PythonDebugger
+install = Pdb

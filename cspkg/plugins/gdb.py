@@ -12,13 +12,10 @@ from cspkg.plugins.c_mode import C
 import shlex
 import sys
 
-class GDBNS(Namespace):
+class GdbNS(Namespace):
     pass
 
-class GDB(Mode):
-    pass
-
-class CDebugger(Plugin):
+class Gdb(Plugin):
     expect  = None
     bp_appearence={'background':'blue', 'foreground':'yellow'}
     encoding='utf8'
@@ -26,17 +23,17 @@ class CDebugger(Plugin):
     def __init__(self, xstr):
         super().__init__(xstr)
         
-        self.add_kmap(GDBNS, C, '<Key-p>', self.evaluate_selection)
-        self.add_kmap(GDBNS, C, '<Key-R>', self.ask_gdb_exec)
-        self.add_kmap(GDBNS, C, '<Key-r>', self.run)
-        self.add_kmap(GDBNS, C, '<Key-x>', self.evaluate_expression)
-        self.add_kmap(GDBNS, C, '<Key-Q>', self.quit_db)
-        self.add_kmap(GDBNS, C, '<Key-c>', self.send_continue)
-        self.add_kmap(GDBNS, C, '<Key-m>', self.send_dcmd)
-        self.add_kmap(GDBNS, C, '<Key-s>',  self.send_step)
-        self.add_kmap(GDBNS, C, '<Key-A>',  self.set_auto_open)
-        self.add_kmap(GDBNS, C, '<Key-C>', self.clear_breakpoint)
-        self.add_kmap(GDBNS, C, '<Key-b>', self.send_break)
+        self.add_kmap(GdbNS, C, '<Key-p>', self.evaluate_selection)
+        self.add_kmap(GdbNS, C, '<Key-R>', self.ask_gdb_exec)
+        self.add_kmap(GdbNS, C, '<Key-r>', self.run)
+        self.add_kmap(GdbNS, C, '<Key-x>', self.evaluate_expression)
+        self.add_kmap(GdbNS, C, '<Key-Q>', self.quit_db)
+        self.add_kmap(GdbNS, C, '<Key-c>', self.send_continue)
+        self.add_kmap(GdbNS, C, '<Key-m>', self.send_dcmd)
+        self.add_kmap(GdbNS, C, '<Key-s>',  self.send_step)
+        self.add_kmap(GdbNS, C, '<Key-A>',  self.set_auto_open)
+        self.add_kmap(GdbNS, C, '<Key-C>', self.clear_breakpoint)
+        self.add_kmap(GdbNS, C, '<Key-b>', self.send_break)
         self.auto_open = False
 
     def switch_gdb_mode(self, event):
@@ -125,7 +122,7 @@ class CDebugger(Plugin):
         sys.stdout.write('(GDB) Sent quit!')
 
     def create_process(self, cmd):
-        CDebugger.expect = Expect(cmd)
+        Gdb.expect = Expect(cmd)
 
         self.expect.add_map(LOAD, lambda con, 
         data: sys.stdout.write(data.decode(self.encoding)))
@@ -154,4 +151,4 @@ class CDebugger(Plugin):
             xstr.set_breakpoint(line, self.bp_appearence)
         root.status.set_msg('Debugger stopped at: %s:%s' % (filename, line))
 
-install = CDebugger
+install = Gdb
