@@ -287,6 +287,11 @@ load_module(page_scroll)
 from cspkg.plugins import rope
 load_module(rope)
 ##############################################################################
+# This plugin is used to store snippets of code into a sqlite db.
+
+from cspkg.plugins import code_snippet
+load_module(code_snippet)
+##############################################################################
 # Mechanism to add marks along text to perform jumps based on mark names.
 
 from cspkg.plugins import xleaps
