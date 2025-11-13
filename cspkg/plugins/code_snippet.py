@@ -38,11 +38,12 @@ class SnippetPicker(OptionWindow):
         self.close()
 
     def create_tab(self, title, data):
-        xstr = root.note.create(title[0:8])
+        xstr = root.note.create('%s ...' % title[0:8])
 
         xstr.insert('insert', data)
         xstr.see('insert')
         root.note.select(xstr.master.master.master)
+        root.status.set_msg('Snippet: %s' % title)
 
     def delete(self, event):
         index   = self.listbox.index(ACTIVE)
