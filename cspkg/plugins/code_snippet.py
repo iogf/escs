@@ -15,36 +15,41 @@ class CodeSnippetNS(Namespace):
     pass
 
 class SnippetPicker(OptionWindow):
-    def __init__(self, conn, cur):
-        self.cur  = cur
+    def __init__(self, conn, cursor):
+        self.cursor  = cursor
         self.conn = conn
         OptionWindow.__init__(self)
 
-        self.listbox.bind('<Return>', self.read_snippet)
+        self.listbox.bind('<Return>', self.fetch_snippet)
         self.listbox.bind('<Key-d>', self.delete)
 
-    def extend(self, options=[]):
-        options = zip(map(lambda ind: ind[1], options),
-        map(lambda ind: (ind[0], ind[2]), options))
-        options = list(options)
-        super().extend(options)
-        print(options)
-
-    def read_snippet(self, event):
+    def fetch_snippet(self, event):
         index   = self.listbox.index(ACTIVE)
-        snippet = self.options[index][1][1]
+        elem_id = self.options[index][1]
 
-        self.xstr.insert('insert', snippet)
-        self.xstr.see('insert')
-        root.status.set_msg('Snippet: %s!' % self.options[index][0])
+        query = f"SELECT data FROM snippet WHERE id = ?"
+        self.cursor.execute(query, (elem_id,))
+        elem = self.cursor.fetchone()
+
+        if not elem:
+            root.status.set_msg('Unavailable snippet!')
+        else:
+            self.create_tab(self.options[index][0], elem[0])
+
+    def create_tab(self, title, data):
+        xstr = root.note.create(title[0:8])
+
+        xstr.insert('insert', data)
+        xstr.see('insert')
+        root.note.select(xstr.master.master.master)
 
         self.close()
 
     def delete(self, event):
         index   = self.listbox.index(ACTIVE)
-        values = (self.options[index][1][0],)
+        values = (self.options[index][1],)
 
-        self.cur.execute('''DELETE FROM snippet where id=?''', values)
+        self.cursor.execute('''DELETE FROM snippet where id=?''', values)
         self.conn.commit()
         root.status.set_msg('Snippet deleted!')
         self.listbox.delete(index)
@@ -56,8 +61,8 @@ class CodeSnippet(Plugin):
     nocas   = True
     db_name = join(expanduser('~'), '.ysnippet.db')
     conn    = sqlite3.connect(db_name)
-    cur     = conn.cursor()
-    picker  = SnippetPicker(conn, cur)
+    cursor     = conn.cursor()
+    picker  = SnippetPicker(conn, cursor)
 
     def __init__(self, xstr):
         """
@@ -71,7 +76,7 @@ class CodeSnippet(Plugin):
         self.add_kmap(CodeSnippetNS, Normal, '<Control-f>', self.ask_pattern)
 
         # Create table
-        self.cur.execute('''CREATE TABLE if not exists 
+        self.cursor.execute('''CREATE TABLE if not exists 
         snippet (id integer PRIMARY KEY, title text, data text);''')
 
     def ask_title(self, event):
@@ -96,7 +101,7 @@ class CodeSnippet(Plugin):
 
         self.xstr.tag_remove('sel', 'sel.first', 'sel.last')
         
-        self.cur.execute('''INSERT INTO snippet 
+        self.cursor.execute('''INSERT INTO snippet 
         (title, data) VALUES (?, ?)''', values)
 
         self.conn.commit()
@@ -121,10 +126,10 @@ class CodeSnippet(Plugin):
         attrs = ['%' + '%s' % indi + '%' for indi in chks
             for indj in range(0, 2)]
 
-        sql = "SELECT * FROM snippet WHERE %s" % ' and '.join([tmp] * len(chks))
+        sql = "SELECT title, id FROM snippet WHERE %s" % ' and '.join([tmp] * len(chks))
 
-        self.cur.execute(sql, attrs)
-        matches = self.cur.fetchall()
+        self.cursor.execute(sql, attrs)
+        matches = self.cursor.fetchall()
         return matches
 
     def reload(self, event):
