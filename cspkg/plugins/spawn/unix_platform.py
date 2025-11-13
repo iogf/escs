@@ -72,6 +72,3 @@ def vspawn(xstr, cmd):
 
 Command('vbash')(lambda xstr: VSpawn('bash -i'))
 Command('hbash')(lambda xstr: HSpawn('bash -i'))
-Command('hpy') (lambda xstr: HSpawn('bash -c "tee -i >(stdbuf -o 0 python -i -u)"'))
-Command('vpy')(lambda xstr: VSpawn('bash -c "tee -i >(stdbuf -o 0 python -i -u)"'))
-
