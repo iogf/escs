@@ -35,6 +35,7 @@ class SnippetPicker(OptionWindow):
             root.status.set_msg('Unavailable snippet!')
         else:
             self.create_tab(self.options[index][0], elem[0])
+        self.close()
 
     def create_tab(self, title, data):
         xstr = root.note.create(title[0:8])
@@ -42,8 +43,6 @@ class SnippetPicker(OptionWindow):
         xstr.insert('insert', data)
         xstr.see('insert')
         root.note.select(xstr.master.master.master)
-
-        self.close()
 
     def delete(self, event):
         index   = self.listbox.index(ACTIVE)
