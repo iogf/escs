@@ -12,15 +12,15 @@ import os
 
 from cspkg.core import Namespace, Plugin, Main
 
-class XrenameNS(Namespace):
+class TextRenameNS(Namespace):
     pass
 
-class Xrename(Plugin):
+class TextRename(Plugin):
     def __init__(self, xstr):
         super().__init__(xstr)
         self.xstr = xstr
 
-        self.add_kmap(XrenameNS, Main, 
+        self.add_kmap(TextRenameNS, Main, 
         '<Alt-N>', self.rename)
     
     def rename(self, event):
@@ -43,7 +43,7 @@ class Xrename(Plugin):
         return 'break'
     
 
-install = Xrename
+install = TextRename
 
 
 

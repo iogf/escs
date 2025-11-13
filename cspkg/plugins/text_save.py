@@ -11,7 +11,7 @@ from cspkg.core import Command
 from cspkg.start import root
 import os
 
-class XsaveNS(Namespace):
+class TextSaveNS(Namespace):
     pass
 
 @Command('s')
@@ -30,13 +30,13 @@ def save_as(xstr, filename):
     xstr.save_data_as(filename)
     root.status.set_msg('File saved as %s!' % filename)
 
-class Xsave(Plugin):
+class TextSave(Plugin):
     def __init__(self, xstr):
         super().__init__(xstr)
         self.xstr = xstr
 
-        self.add_kmap(XsaveNS, Main, '<Alt-S>', self.save)
-        self.add_kmap(XsaveNS, Main, '<Alt-A>', self.save_as)
+        self.add_kmap(TextSaveNS, Main, '<Alt-S>', self.save)
+        self.add_kmap(TextSaveNS, Main, '<Alt-A>', self.save_as)
     
     def save_as(self, event):
         """
@@ -67,6 +67,6 @@ class Xsave(Plugin):
             root.status.set_msg('Data saved.')
         return None
     
-install = Xsave
+install = TextSave
 
 
