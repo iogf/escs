@@ -22,9 +22,7 @@ class Mypy(Plugin):
 
     def  __init__(self, xstr):
         super().__init__(xstr)
-        self.add_kmap(MypyNS, Python, 
-        '<Key-k>', self.check_module)
-
+        self.add_kmap(MypyNS, Python, '<Key-k>', self.check_module)
         self.add_kmap(MypyNS, Python, '<Key-o>', self.display_errors)
         self.add_kmap(MypyNS, Python, '<Key-K>', self.check_all)
 

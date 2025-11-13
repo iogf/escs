@@ -300,8 +300,8 @@ load_module(bracket_jumps)
 ##############################################################################
 # Perform python code analysis to find unused code. It uses vulture lib.
 
-from cspkg.plugins import dead_code
-load_module(dead_code)
+from cspkg.plugins import vulture
+load_module(vulture)
 ##############################################################################
 # Auto completion using ycmd. 
 # Warning: Don't use it with jedi auto completion.

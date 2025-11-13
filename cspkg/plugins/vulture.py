@@ -11,23 +11,23 @@ from cspkg.start import root
 from re import findall
 import sys
 
-class DeadCodeNS(Namespace):
+class VultureNS(Namespace):
     pass
 
-class DeadCode(Plugin):
+class Vulture(Plugin):
     options = LinePicker()
     path    = 'vulture'
 
     def  __init__(self, xstr):
         super().__init__(xstr)
-        self.add_kmap(DeadCodeNS, Python, 
+        self.add_kmap(VultureNS, Python, 
         '<Key-d>', self.check_module)
 
-        self.add_kmap(DeadCodeNS, Python, 
+        self.add_kmap(VultureNS, Python, 
         '<Key-f>', lambda event: 
         self.options.display(self.xstr))
 
-        self.add_kmap(DeadCodeNS, Python, 
+        self.add_kmap(VultureNS, Python, 
         '<Key-g>', self.check_all)
 
     @classmethod
@@ -68,9 +68,9 @@ class DeadCode(Plugin):
         if ranges:
             self.options.display(self.xstr)
         
-install = DeadCode
+install = Vulture
 @Command()
 def py_analysis(xstr):
-    python_analysis = DeadCode(xstr)
+    python_analysis = Vulture(xstr)
     python_analysis.check_all()
 
