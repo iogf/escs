@@ -1,19 +1,21 @@
 from cspkg.core import EscsApp, Main
 from cspkg.plugins.text_jumps import TextJumps, TextJumpsNS
 from cspkg.plugins.normal_mode import Normal
+from cspkg.core import Mode
 import unittest
 import time
+
+class TestMode(Mode):
+    pass
 
 class TestTextJumps(unittest.TestCase):
     def setUp(self):
         self.root = EscsApp()
         self.xstr = self.root.note.create('None')
-        # self.root.update() 
 
-        mod = TextJumps(self.xstr)
-        mod.chmode(Normal)
+        self.mod = TextJumps(self.xstr)
+        self.mod.chmode(Normal)
         self.root.update() 
-
 
     def tearDown(self):
         self.root.update() 
@@ -28,7 +30,7 @@ class TestTextJumps(unittest.TestCase):
         self.assertEqual(self.xstr.index('insert'), '1.0')
 
     def test1(self):
-        self.xstr.insert('end', 'Test end test.\n' * 10)
+        self.xstr.insert('end', 'Text end test.\n' * 10)
         self.xstr.mark_set('insert', '1.0')
         self.xstr.event_generate('<Alt-b>')
         self.assertEqual(self.xstr.index('insert'), 
@@ -131,6 +133,28 @@ class TestTextJumps(unittest.TestCase):
 
         self.xstr.event_generate('<Key-h>')
         self.assertEqual(self.xstr.index('insert'), '8.3')
+
+    def test11(self):
+        self.xstr.insert('end', 'Test slightly mode mechanism\n')
+
+        self.mod.chmode(TestMode)
+        self.xstr.mark_set('insert', '1.0 lineend')
+        self.xstr.event_generate('<Key-o>')
+        self.mod.chmode(Normal)
+        self.xstr.event_generate('<Key-o>')
+        self.assertEqual(self.xstr.index('insert'), self.xstr.index('1.0'))
+
+    def test12(self):
+        self.xstr.insert('end', 'Test slightly mode mechanism.\n')
+
+        self.mod.chmode(TestMode)
+        self.xstr.mark_set('insert', '1.0')
+        self.xstr.event_generate('<Key-p>')
+
+        self.mod.chmode(Normal)
+        self.xstr.event_generate('<Key-p>')
+        self.assertEqual(self.xstr.index('insert'), 
+        self.xstr.index('1.0 lineend'))
 
 
 if __name__ == '__main__':
