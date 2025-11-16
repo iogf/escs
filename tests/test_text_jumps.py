@@ -1,7 +1,7 @@
-from cspkg.core import EscsApp, Main
-from cspkg.plugins.text_jumps import TextJumps, TextJumpsNS
+from cspkg.core import Main, Mode
+from cspkg.plugins.text_jumps import TextJumps
 from cspkg.plugins.normal_mode import Normal
-from cspkg.core import Mode
+from cspkg.start import root
 import unittest
 import time
 
@@ -9,25 +9,29 @@ class TestMode(Mode):
     pass
 
 class TestTextJumps(unittest.TestCase):
-    def setUp(self):
-        self.root = EscsApp()
-        self.xstr = self.root.note.create('None')
+    @classmethod
+    def setUpClass(cls):
+        cls.xstr = root.note.create('None')
+        root.update() 
 
-        self.mod = TextJumps(self.xstr)
-        self.mod.chmode(Normal)
-        self.root.update() 
+        cls.mod = TextJumps(cls.xstr)
+        cls.mod.chmode(Normal)
+        cls.xstr.focus_set()
+
+    def setUp(self):
+        pass
 
     def tearDown(self):
-        self.root.update() 
-        # time.sleep(3)
-
-        self.root.destroy()
+        self.xstr.delete('1.0', 'end')
+        self.xstr.update()
 
     def test0(self):
         self.xstr.insert('end', 'Text start test.\n' * 10)
         self.xstr.mark_set('insert', 'end')
+
         self.xstr.event_generate('<Alt-g>')
         self.assertEqual(self.xstr.index('insert'), '1.0')
+
 
     def test1(self):
         self.xstr.insert('end', 'Text end test.\n' * 10)
@@ -41,7 +45,7 @@ class TestTextJumps(unittest.TestCase):
         self.xstr.mark_set('insert', 'end')
         self.xstr.event_generate('<Key-s>')
         self.assertEqual(self.xstr.index('insert'), '1.0')
-# 
+
     def test3(self):
         self.xstr.mark_set('insert', '1.0')
         self.xstr.insert('end', 'Text end test.\n' * 10)

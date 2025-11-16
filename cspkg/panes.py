@@ -38,7 +38,8 @@ class PanedHorizontalWindow(PanedWindow):
         set_xstr, add=True)
 
         self.master.tab_xstr = xstr
-        xstr.focus_set()
+        # xstr.focus_set()
+
         self.after(200, lambda :xstr.focus_set())
         return xstr
 
