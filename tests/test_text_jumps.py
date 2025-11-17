@@ -12,11 +12,11 @@ class TestTextJumps(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.xstr = root.note.create('None')
-        root.update() 
 
         cls.mod = TextJumps(cls.xstr)
         cls.mod.chmode(Normal)
         cls.xstr.focus_set()
+        root.update() 
 
     def setUp(self):
         pass

@@ -54,7 +54,6 @@ class Tabs(Plugin):
 
     def create_tab(self, event):
         root.note.create('none')
-        self.chmode(Normal)
     
     def remove_tab(self, event):
         """
