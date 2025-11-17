@@ -20,16 +20,14 @@ class TabSearch(Plugin):
         read = Read(events={'<<Data>>': self.switch_next, 
         '<Alt-p>': self.switch_next, 
         '<Alt-o>': self.switch_back, 
-        '<Escape>': self.stop, 
-        '<Return>': self.stop})
+        '<Escape>': self.stop})
 
     def on_back_mode(self, event):
         read = Read(events={
         '<<Data>>': self.switch_back, 
         '<Alt-p>': self.switch_next, 
         '<Alt-o>': self.switch_back, 
-        '<Escape>': self.stop, 
-        '<Return>': self.stop})
+        '<Escape>': self.stop})
 
     def switch_next(self, wid):
         """
@@ -38,14 +36,17 @@ class TabSearch(Plugin):
         seq  = root.note.next(lambda text: data in text)
         elem = next(seq)
 
-        wid=root.note.focus_get()
+        # The wid is an Entry/Read instance.
+        # wid=root.note.focus_get()
         root.note.select(elem)
 
         # Looks like in some Tk versions it loses
         # focus in the Entry widget after a tab is selected.
-        root.after(30, lambda : wid.focus_set())
+        # wid.focus_set()
+        # root.after(30, lambda : wid.focus_set())
 
         wid  = root.note.nametowidget(root.note.select())
+        # The wid is a PanedVerticalWindow
         root.title('Escs %s' % wid.active_xstr.filename)
 
     def switch_back(self, wid):
@@ -56,9 +57,11 @@ class TabSearch(Plugin):
         seq  = root.note.back(lambda text: data in text)
         elem = next(seq)
 
-        wid=root.note.focus_get()
+        # wid=root.note.focus_get()
         root.note.select(elem)
-        root.after(30, lambda : wid.focus_set())
+
+        # wid.focus_set()
+        # root.after(30, lambda : wid.focus_set())
 
         wid  = root.note.nametowidget(root.note.select())
         root.title('Escs %s' % wid.active_xstr.filename)
@@ -66,7 +69,6 @@ class TabSearch(Plugin):
     def stop(self, wid):
         wid  = root.note.nametowidget(root.note.select())
         wid.active_xstr.focus_set()
-
         return True
 
 install = TabSearch

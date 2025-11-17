@@ -16,46 +16,41 @@ class TestTextJumps(unittest.TestCase):
         cls.mod = TextJumps(cls.xstr)
         cls.mod.chmode(Normal)
         cls.xstr.focus_set()
+        cls.xstr.insert('end', 'Text start test.\n' * 10)
         root.update() 
 
     def setUp(self):
+        root.update() 
+
         pass
 
     def tearDown(self):
-        self.xstr.delete('1.0', 'end')
         self.xstr.update()
 
     def test0(self):
-        self.xstr.insert('end', 'Text start test.\n' * 10)
         self.xstr.mark_set('insert', 'end')
-        self.xstr.update()
-
         self.xstr.event_generate('<Alt-g>')
         self.assertEqual(self.xstr.index('insert'), '1.0')
 
 
     def test1(self):
-        self.xstr.insert('end', 'Text end test.\n' * 10)
         self.xstr.mark_set('insert', '1.0')
         self.xstr.event_generate('<Alt-b>')
         self.assertEqual(self.xstr.index('insert'), 
         self.xstr.index('end linestart -1c'))
 
     def test2(self):
-        self.xstr.insert('end', 'Text start test.\n' * 10)
         self.xstr.mark_set('insert', 'end')
         self.xstr.event_generate('<Key-s>')
         self.assertEqual(self.xstr.index('insert'), '1.0')
 
     def test3(self):
         self.xstr.mark_set('insert', '1.0')
-        self.xstr.insert('end', 'Text end test.\n' * 10)
         self.xstr.event_generate('<Key-c>')
         self.assertEqual(self.xstr.index('insert'), 
         self.xstr.index('end linestart -1c'))
 
     def test4(self):
-        self.xstr.insert('end', 'Line end test.\n')
         self.xstr.mark_set('insert', '1.0')
 
         self.xstr.event_generate('<Alt-e>')
@@ -63,7 +58,6 @@ class TestTextJumps(unittest.TestCase):
         self.xstr.index('insert lineend'))
 
     def test5(self):
-        self.xstr.insert('end', 'Line start test.\n')
         self.xstr.mark_set('insert', '1.0 lineend')
 
         self.xstr.event_generate('<Alt-a>')
@@ -71,8 +65,6 @@ class TestTextJumps(unittest.TestCase):
         self.xstr.index('insert linestart'))
 
     def test6(self):
-        self.xstr.insert('end', 'Line end test.\n')
-
         self.xstr.mark_set('insert', 'insert lineend')
 
         self.xstr.event_generate('<Alt-o>')
@@ -80,8 +72,6 @@ class TestTextJumps(unittest.TestCase):
         self.xstr.index('insert linestart'))
 
     def test7(self):
-        self.xstr.insert('end', 'Line start test.\n')
-
         self.xstr.mark_set('insert', '1.0')
 
         self.xstr.event_generate('<Key-p>')
@@ -89,37 +79,31 @@ class TestTextJumps(unittest.TestCase):
         self.xstr.index('insert lineend'))
 
     def test8(self):
-        self.xstr.insert('end', 'Next word test.\n')
-
         self.xstr.mark_set('insert', '1.0')
-
         self.xstr.event_generate('<Alt-l>')
         self.assertEqual(self.xstr.index('insert'), '1.4')
 
         self.xstr.event_generate('<Alt-l>')
-        self.assertEqual(self.xstr.index('insert'), '1.9')
+        self.assertEqual(self.xstr.index('insert'), '1.10')
 
     def test9(self):
-        self.xstr.insert('end', 'Next word test.\n')
-        self.xstr.mark_set('insert', 'end')
+        self.xstr.mark_set('insert', '1.0 lineend')
 
         self.xstr.event_generate('<Alt-h>')
-        self.assertEqual(self.xstr.index('insert'), '1.14')
+        self.xstr.event_generate('<Alt-h>')
+
+        self.assertEqual(self.xstr.index('insert'), '1.10')
 
         self.xstr.event_generate('<Alt-h>')
-        self.assertEqual(self.xstr.index('insert'), '1.9')
+        self.assertEqual(self.xstr.index('insert'), '1.4')
 
     def test10(self):
-        self.xstr.insert('end', 'Line up test.\n' * 10)
         self.xstr.mark_set('insert', 'end linestart')
         self.xstr.event_generate('<Key-k>')
         self.xstr.event_generate('<Alt-f>')
-
-        self.assertEqual(self.xstr.index('insert'), '9.0')
+        self.assertEqual(self.xstr.index('insert'), self.xstr.index('end -3l'))
 
     def test11(self):
-        self.xstr.insert('end', 'Test slightly mode mechanism\n')
-
         self.mod.chmode(TestMode)
         self.xstr.mark_set('insert', '1.0 lineend')
         self.xstr.event_generate('<Key-o>')
@@ -128,8 +112,6 @@ class TestTextJumps(unittest.TestCase):
         self.assertEqual(self.xstr.index('insert'), self.xstr.index('1.0'))
 
     def test12(self):
-        self.xstr.insert('end', 'Test slightly mode mechanism.\n')
-
         self.mod.chmode(TestMode)
         self.xstr.mark_set('insert', '1.0')
         self.xstr.event_generate('<Key-p>')
@@ -140,17 +122,15 @@ class TestTextJumps(unittest.TestCase):
         self.xstr.index('1.0 lineend'))
 
     def test13(self):
-        self.xstr.insert('end', 'Line down test.\n' * 10)
         self.xstr.mark_set('insert', '1.0 linestart')
         self.xstr.event_generate('<Key-j>')
         self.xstr.event_generate('<Alt-d>')
 
-        self.assertEqual(self.xstr.index('insert'), '3.0')
+        self.assertEqual(self.xstr.index('insert'), self.xstr.index('1.0 +2l'))
 
         pass
 
     def test14(self):
-        self.xstr.insert('end', 'Line left test.\n')
         self.xstr.mark_set('insert', '1.0 lineend')
         self.xstr.event_generate('<Key-h>')
         self.xstr.event_generate('<Alt-n>')
@@ -159,7 +139,6 @@ class TestTextJumps(unittest.TestCase):
         self.xstr.index('1.0 lineend -2c'))
 
     def test15(self):
-        self.xstr.insert('end', 'Line right test.\n')
         self.xstr.mark_set('insert', '1.0')
         self.xstr.event_generate('<Key-l>')
         self.xstr.event_generate('<Alt-m>')
