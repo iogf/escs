@@ -73,9 +73,7 @@ class Tabs(Plugin):
         root.note.select(0)
 
         wid  = root.note.nametowidget(root.note.select())
-        seq  = Xstr.xstr_widgets(wid)
-        xstr = next(seq)
-        wid.tab_xstr.focus_set()
+        wid.active_xstr.focus_set()
     
         # We don't need to call forget after destroy.
         # It seems the method forget from note doesnt destroy
@@ -89,7 +87,7 @@ class Tabs(Plugin):
     
         root.note.select(root.note.index(root.note.select()) - 1)
         wid  = root.note.nametowidget(root.note.select())
-        wid.tab_xstr.focus_set()
+        wid.active_xstr.focus_set()
     
     def select_right(self, event):
         """
@@ -97,6 +95,6 @@ class Tabs(Plugin):
     
         root.note.select(root.note.index(root.note.select()) + 1)
         wid  = root.note.nametowidget(root.note.select())
-        wid.tab_xstr.focus_set()
+        wid.active_xstr.focus_set()
 
 install = Tabs

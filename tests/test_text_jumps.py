@@ -28,6 +28,7 @@ class TestTextJumps(unittest.TestCase):
     def test0(self):
         self.xstr.insert('end', 'Text start test.\n' * 10)
         self.xstr.mark_set('insert', 'end')
+        self.xstr.update()
 
         self.xstr.event_generate('<Alt-g>')
         self.assertEqual(self.xstr.index('insert'), '1.0')

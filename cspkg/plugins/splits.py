@@ -46,7 +46,6 @@ class Splits(Plugin):
     
         for ind in range(0, len(wids) - 1):
             vpane.sash_place(ind,  0,  (ind + 1) * height)
-        # self.xstr.chmode('EXTRA')
 
     def add_horizontal_xstr(self, event):
         """

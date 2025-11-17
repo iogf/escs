@@ -12,12 +12,15 @@ class TestQSearch(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.xstr = root.note.create('None')
-        root.update() 
-        
         cls.mod = QSearch(cls.xstr)
         cls.mod.chmode(Normal)
         cls.xstr.insert('end', 'QSearch plugin test.\n' * 10)
+
         cls.xstr.focus_set()
+        root.update() 
+
+    def setUP(self):
+        pass
 
     def tearDown(self):
         pass
@@ -34,8 +37,6 @@ class TestQSearch(unittest.TestCase):
         read.event_generate('<Alt-p>')
         read.event_generate('<Alt-p>')
         read.event_generate('<Alt-p>')
-
-        print('Focused widget:', read)
         read.event_generate('<Escape>')
 
         self.assertEqual(self.xstr.index('insert'), '8.17')

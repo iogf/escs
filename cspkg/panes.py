@@ -27,20 +27,20 @@ class PanedHorizontalWindow(PanedWindow):
         self.add(frame)
 
         # The last focused xstr for a given tab..
-        def set_xstr(event):
-            self.master.tab_xstr = xstr
+        def set_active_xstr(event):
+            self.master.active_xstr = xstr
 
         # Suggests a redesign. When importing Main is imported
         # it fails.
         from cspkg.core import Main
         xstr.bind_class('MODE:%s:%s:%s' % (xstr, 
         Main.__module__, Main.__name__), '<FocusIn>', 
-        set_xstr, add=True)
+        set_active_xstr, add=True)
 
-        self.master.tab_xstr = xstr
-        # xstr.focus_set()
-
+        self.master.active_xstr = xstr
         self.after(200, lambda :xstr.focus_set())
+        self.master.set_active_xstr = xstr
+
         return xstr
 
     def load(self, filename):
@@ -57,7 +57,7 @@ class PanedVerticalWindow(PanedWindow):
 
     def __init__(self, *args, **kwargs):
         PanedWindow.__init__(self, orient=VERTICAL, *args, **kwargs)
-        self.tab_xstr = None
+        self.active_xstr = None
 
     def create(self, filename='none'):
         """
