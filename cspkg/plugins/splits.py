@@ -38,8 +38,9 @@ class Splits(Plugin):
         """
     
         vpane = self.xstr.master.master.master
-        vpane.create()
-    
+        xstr = vpane.create()
+        xstr.focus_set()
+
         wids  = vpane.panes()
         height = root.winfo_height()//(len(wids) + 1)
         root.update()
@@ -53,8 +54,9 @@ class Splits(Plugin):
         """
     
         hpane = self.xstr.master.master
-        hpane.create()
-    
+        xstr = hpane.create()
+        xstr.focus_set()
+
         wids  = hpane.panes()
         width = root.winfo_width()//(len(wids) + 1)
         root.update()

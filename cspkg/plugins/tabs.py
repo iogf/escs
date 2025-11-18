@@ -53,7 +53,7 @@ class Tabs(Plugin):
         self.chmode(Normal)
 
     def create_tab(self, event):
-        root.note.create('none')
+        root.note.create('null')
     
     def remove_tab(self, event):
         """
@@ -71,29 +71,20 @@ class Tabs(Plugin):
         wid.destroy()
         root.note.select(0)
 
-        wid  = root.note.nametowidget(root.note.select())
-        wid.active_xstr.focus_set()
-    
-        # We don't need to call forget after destroy.
-        # It seems the method forget from note doesnt destroy
-        # the widget at all consequently the event <Destroy> isn't
-        # spreaded.
-        # root.note.forget(wid)
-    
+        root.focus_restore()
+
     def select_left(self, event):
         """
         """
     
         root.note.select(root.note.index(root.note.select()) - 1)
-        wid  = root.note.nametowidget(root.note.select())
-        wid.active_xstr.focus_set()
+        root.note.focus_restore()
     
     def select_right(self, event):
         """
         """
     
         root.note.select(root.note.index(root.note.select()) + 1)
-        wid  = root.note.nametowidget(root.note.select())
-        wid.active_xstr.focus_set()
+        root.note.focus_restore()
 
 install = Tabs

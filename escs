@@ -31,10 +31,10 @@ if __name__ == '__main__':
     if not args.verbose: 
         logger.setLevel(logging.ERROR)
     root.create_escsrc()
+    xstr = root.note.create('null')
+    xstr.focus_set()
 
-    if not lst: 
-        root.note.create('none')
-    else: 
+    if lst is not []: 
         root.note.load(*lst)
 
     def tk_xhook(exctype, value, tb):

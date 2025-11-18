@@ -2,14 +2,16 @@ from cspkg.panes import PanedVerticalWindow
 from os.path import abspath, exists
 from cspkg.xstr import Xstr
 from tkinter.ttk import Notebook
-from os.path import exists
 from tkinter import BOTH
-import sys
 
 class EscsBook(Notebook):
     def __init__(self, *args, **kwargs):
         Notebook.__init__(self, *args, **kwargs)
         self.bindtags((self, '.', 'all'))
+
+    def focus_restore(self):
+        wid  = self.nametowidget(self.select())
+        wid.fwidget.focus_set()
 
     def create(self, filename):
         """

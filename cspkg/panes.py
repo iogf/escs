@@ -9,7 +9,7 @@ class PanedHorizontalWindow(PanedWindow):
     def __init__(self, *args, **kwargs):
         PanedWindow.__init__(self, orient=HORIZONTAL, *args, **kwargs)
 
-    def create(self, filename='none'):
+    def create(self, filename='null'):
         """
         """
         frame     = Frame(master=self)
@@ -26,21 +26,14 @@ class PanedHorizontalWindow(PanedWindow):
         xstr.pack(expand=True, side='left', fill=BOTH)
         self.add(frame)
 
-        # The last focused xstr for a given tab..
-        def set_active_xstr(event):
-            self.master.active_xstr = xstr
-
-        # Suggests a redesign. When importing Main is imported
-        # it fails.
         from cspkg.core import Main
+        root = self.winfo_toplevel()
+
         xstr.bind_class('MODE:%s:%s:%s' % (xstr, 
         Main.__module__, Main.__name__), '<FocusIn>', 
-        set_active_xstr, add=True)
+        lambda event: self.master.focus_save(xstr), add=True)
 
-        self.master.active_xstr = xstr
-        self.after(200, lambda :xstr.focus_set())
-        self.master.set_active_xstr = xstr
-
+        self.master.focus_save(xstr)
         return xstr
 
     def load(self, filename):
@@ -57,9 +50,12 @@ class PanedVerticalWindow(PanedWindow):
 
     def __init__(self, *args, **kwargs):
         PanedWindow.__init__(self, orient=VERTICAL, *args, **kwargs)
-        self.active_xstr = None
+        self.fwidget = None
 
-    def create(self, filename='none'):
+    def focus_save(self, widget):
+        self.fwidget = widget
+
+    def create(self, filename='null'):
         """
         """
 
