@@ -27,7 +27,6 @@ class PanedHorizontalWindow(PanedWindow):
         self.add(frame)
 
         from cspkg.core import Main
-        root = self.winfo_toplevel()
 
         xstr.bind_class('MODE:%s:%s:%s' % (xstr, 
         Main.__module__, Main.__name__), '<FocusIn>', 
