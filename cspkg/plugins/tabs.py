@@ -71,7 +71,7 @@ class Tabs(Plugin):
         wid.destroy()
         root.note.select(0)
 
-        root.focus_restore()
+        root.note.focus_restore()
 
     def select_left(self, event):
         """
