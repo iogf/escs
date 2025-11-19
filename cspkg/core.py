@@ -60,9 +60,10 @@ class Plugin:
             handle = mkwrapper(handle)
 
         data = kscheme.setdefault(namespace, 
-        {(mode, seq):((mode, seq), )})
-        for mode, seq in data.setdefault((mode, seq), ((mode, seq), )):
-            self.hook_class(mode, seq, handle, spread, add)
+        {(mode, seq):[((mode, seq), spread, add)]})
+        for kmap, spread, add  in data.setdefault(
+                (mode, seq), [((mode, seq), spread, add)]):
+            self.hook_class(kmap[0], kmap[1], handle, spread, add)
 
     def hook_class(self, mode, seq, handle, 
         spread=False, add=True):
@@ -89,8 +90,10 @@ class Plugin:
         self.mode = mode
         self.xstr.event_generate('<<Chmode>>')
 
-def chkmap(namespace, kmap):
-    kscheme[namespace] = kmap
+def chkmap(namespace, kmap0, kmap1, spread=False, add=False):
+    kdict = kscheme.setdefault(namespace, {})
+    klist = kdict.setdefault(kmap0, [])
+    klist.append((kmap1, spread, add))
 
 class EscsApp(Tk):
     def __init__(self, *args, **kwargs):

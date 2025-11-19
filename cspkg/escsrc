@@ -15,19 +15,32 @@ from cspkg.stderr import printd
 
 # Example:
 
-# from cspkg.plugins.extra_mode import ExtraModeNS
-# from cspkg.plugins.normal_mode import Normal
-# from cspkg.core import Main
-# chkmap(ExtraModeNS, {
-# (Main, '<Alt-v>'): ((Main, '<Alt-v>'), 
-# (Normal, '<apostrophe>'))})
-##############################################################################
-# from cspkg.plugins.spawn.base_spawn import SpawnNS
-# from cspkg.plugins.normal_mode import Normal
-# 
-# chkmap(SpawnNS, {
-# (Normal, '<F1>'):((Normal, '<Key-ccedilla>'), )})
+from cspkg.plugins.extra_mode import ExtraModeNS
+from cspkg.plugins.normal_mode import Normal
+from cspkg.core import Main
 
+# First it maps <Alt-v> to <apostrophe>.
+chkmap(ExtraModeNS, (Main, '<Alt-v>'), (Normal, '<apostrophe>'))
+
+# It keeps <Alt-v> initial keymap so there will exist a shortcut
+# for <Alt-v> that is <apostrophe> in Normal mode.
+
+chkmap(ExtraModeNS, (Main, '<Alt-v>'), (Main, '<Alt-v>'))
+
+# Note: Whatever is mapped to <apostrophe> will be lost unless it is passed
+# add = True to chkmap.
+
+##############################################################################
+# It remaps <F1> to <Key-cedilla> in keyboards with such a key.
+
+from cspkg.plugins.spawn.base_spawn import SpawnNS
+from cspkg.plugins.normal_mode import Normal
+
+# In this case, the handle/action mapped to <F1> will be lost.
+# There will exist only one keystroke mapped to the action that is
+# <Key-cedilla>.
+
+chkmap(SpawnNS, (Normal, '<F1>'), (Normal, '<Key-ccedilla>'))
 ##############################################################################
 # Set homedir manually.
 
