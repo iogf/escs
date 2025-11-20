@@ -412,4 +412,22 @@ def escs_setup(xstr):
 
 load_cls(escs_setup) 
 ##############################################################################
+# The escs irc mode.
+from cspkg.plugins.esirc import IrcMode
 
+# Uncomment these lines to set up your custom color scheme.
+# It accepts all available config options for Tkinter Text widget.
+# IrcMode.TAGCONF = {'(ESIRC-PRIVMSG)': {'foreground': '#688B96'},
+# '(ESIRC-JOIN)': {'foreground': '#F06EF0'},
+# '(ESIRC-PART)': {'foreground': '#F0BDAD'},
+# '(ESIRC-QUIT)': {'foreground': '#4EDB1F'},
+# '(ESIRC-NICK)': {'foreground': '#E9F0AD'},
+# '(ESIRC-KICK)': {'foreground': '#FC8D9A'},
+# '(ESIRC-353)': {'foreground': '#BF9163'},
+# '(ESIRC-332)': {'foreground': '#81BFFC'},
+# '(ESIRC-CLOSE)': {'foreground': '#A7F2E9'}}
+
+# Here, the network connections can be defined. 
+def irc_someserver(addr='irc.someserver.chat', port=6667, user='escs escs escs :escsirc', nick='esirc', 
+             irccmd='PRIVMSG nickserv :identify nick_password', channels=['#not-math', '#escs']):
+    IrcMode(addr, port, user, nick, irccmd, channels)

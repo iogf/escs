@@ -1,6 +1,7 @@
 vulture
 pyflakes
 untwisted==3.2.3
+quickirc==1.2.0
 jedi
 pygments
 rope
