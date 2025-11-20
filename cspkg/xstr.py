@@ -570,3 +570,9 @@ class Xstr(Text):
         self.tag_delete('(DebuggerPB)')
         self.tag_add('(DebuggerPB)', '%s.0 linestart' % line, '%s.0 lineend' % line)
         self.tag_config('(DebuggerPB)', **conf)
+
+    def tag_update(self, **confs):
+        for indi, indj in confs.items():
+            self.tag_config(indi, **indj)
+        pass
+

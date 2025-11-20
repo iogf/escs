@@ -180,6 +180,8 @@ class IrcCommon(Plugin):
         self.add_kmap(EsircNS, Esirc, 
         '<Control-c>',  self.open_private_channel)
 
+        self.xstr.tag_update(**self.irc.confs)
+
     def send_cmd(self, event):
         """
         Used to drop irc commands.
@@ -250,12 +252,12 @@ class ServerController(Plugin):
             xstr = self.create_private_channel(nick)
         xstr.append(H1 % (nick, msg))
 
-class IrcMode:
+class IrcConnect:
     """
     Controls basic irc events and installs basic commands.
     """
 
-    TAGCONF = {
+    confs = {
     '(ESIRC-PRIVMSG)': {'foreground': '#688B96'},
     '(ESIRC-JOIN)': {'foreground': '#F06EF0'},
     '(ESIRC-PART)': {'foreground': '#F0BDAD'},
@@ -282,6 +284,10 @@ class IrcMode:
         self.irccmd   = irccmd
         self.channels = channels
         self.encoding = encoding
+
+    @classmethod
+    def c_appearence(cls, confs):
+        cls.confs.update(confs)
 
     def on_connect(self, con):
         xstr = root.note.create(self.addr)
