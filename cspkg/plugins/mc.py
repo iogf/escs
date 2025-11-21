@@ -39,20 +39,17 @@ class Mc(Plugin):
         self.add_kmap(McNS, Normal, '<Key-I>', self.load_path)
         self.add_kmap(McNS, Normal, '<Key-J>', lambda e:self.ls(self.ph))
 
-        for indi, indj in self.confs.items():
-            self.xstr.tag_config(indi, **indj)
+        self.xstr.tag_update(**self.confs)
 
     @classmethod
-    def c_appearance(cls, dir, file):
+    def c_appearance(cls, confs):
         """
         Used to configure foreground/background for directory entries.
 
         Check Tkinter Text widget tags for more info.
         """
 
-        cls.confs['(MC-DIRECTORY)'] = dir
-        cls.confs['(MC-FILE)']      = file
-
+        cls.confs.update(confs)
         printd('(Mc) Setting dir/file appearance confs = ', cls.confs)
 
     def list_clipboard(self):

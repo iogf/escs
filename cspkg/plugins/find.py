@@ -10,7 +10,7 @@ class FindNS(Namespace):
 
 class Find(Plugin):
     confs = {
-        'background':'green', 'foreground':'white'
+        '(FIND)':{'background':'green', 'foreground':'white'}
     }
 
     opts  = {'nolinestop': False, 'regexp': False,
@@ -21,13 +21,13 @@ class Find(Plugin):
 
     def __init__(self, xstr):
         super().__init__(xstr)
-        xstr.tag_config('(CATCHED)', self.confs)
+        xstr.tag_update(**self.confs)
 
         self.add_kmap(FindNS, Normal,
         '<Alt-slash>', lambda event: self.start())
 
     @classmethod
-    def c_appearance(cls, **confs):
+    def c_appearance(cls, confs):
         """
         """
 
@@ -78,33 +78,33 @@ class Find(Plugin):
 
     def cancel(self, wid):
         Find.regex = wid.get()
-        self.xstr.tag_remove('(CATCHED)', '1.0', 'end')
+        self.xstr.tag_remove('(FIND)', '1.0', 'end')
         return True
 
     def up(self, wid):
         regex = wid.get()
-        index = self.xstr.ipick('(CATCHED)', regex, index='insert', 
+        index = self.xstr.ipick('(FIND)', regex, index='insert', 
         stopindex='1.0', backwards=True, **self.opts)
 
     def down(self, wid):
         regex = wid.get()
-        index = self.xstr.ipick('(CATCHED)', regex, 
+        index = self.xstr.ipick('(FIND)', regex, 
         index='insert', stopindex='end', **self.opts)
 
     def selection_matches(self, wid):
         """
         """
 
-        self.xstr.tag_remove('(CATCHED)', '1.0', 'end')
+        self.xstr.tag_remove('(FIND)', '1.0', 'end')
         regex = wid.get()
 
         matches = self.xstr.check_ranges(
         'sel', regex, **self.opts)
 
         for _, index0, index1 in matches:
-            self.xstr.tag_add('(CATCHED)', index0, index1)
+            self.xstr.tag_add('(FIND)', index0, index1)
 
-        count = len(self.xstr.tag_ranges('(CATCHED)'))
+        count = len(self.xstr.tag_ranges('(FIND)'))
         root.status.set_msg('Found: %s' % count)
 
     def sub_current(self, wid):
@@ -112,7 +112,7 @@ class Find(Plugin):
         """
 
         regex = wid.get()
-        index = self.xstr.tag_nextrange('(CATCHED)', '1.0')
+        index = self.xstr.tag_nextrange('(FIND)', '1.0')
         self.xstr.replace(regex, Find.data, index[0], **self.opts)
 
     def sub_selected(self, wid):

@@ -14,20 +14,21 @@ class QSearchNS(Namespace):
 
 class QSearch(Plugin):
     confs = {
-        'background':'yellow', 'foreground':'black'
+        '(QSEARCH)': {
+        'background':'yellow', 'foreground':'black'}
     }
 
     def __init__(self, xstr, nocase=True):
         super().__init__(xstr)
         self.xstr   = xstr
         self.nocase = nocase
-        xstr.tag_config('(QSEARCH)', self.confs)
+        xstr.tag_update(**self.confs)
 
         self.add_kmap(QSearchNS, Main, '<Alt-k>', self.backwards)
         self.add_kmap(QSearchNS, Main, '<Alt-j>', self.forwards)
 
     @classmethod
-    def c_appearance(cls, **confs):
+    def c_appearance(cls, confs):
         """
         """
 

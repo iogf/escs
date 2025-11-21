@@ -135,7 +135,9 @@ load_module(block_sel)
 # Used to search/replace text based on regex patterns.
 
 from cspkg.plugins.find import Find
-Find.c_appearance(background='green', foreground='white')
+Find.c_appearance({'(FIND)': {
+'background':'green', 'foreground':'white'}})
+
 load_cls(Find)
 ##############################################################################
 # Keystrokes to copy/cut text selection.
@@ -191,7 +193,8 @@ Project.c_sentinels('.git', '.svn', '.hg', '._')
 # Keystrokes to do incremental search up/down.
 
 from cspkg.plugins.qsearch import QSearch
-QSearch.c_appearance(background='yellow', foreground='black')
+QSearch.c_appearance({'(QSEARCH)': {
+'background':'yellow', 'foreground':'black'}})
 load_cls(QSearch)
 ##############################################################################
 # Mechanism to search strings along project files. It uses Silver Searcher to
@@ -280,9 +283,9 @@ load_module(bck_sel)
 # Mc.c_appearance method..
 
 from cspkg.plugins.mc import Mc
+Mc.c_appearance({'(MC-DIR)':{'foreground': 'red'}, 
+'(MC-FILE)':{'foreground': 'yellow'}})
 load_cls(Mc)
-# Mc.c_appearance(dir={'foreground': 'red'}, 
-# file={'foreground': 'yellow'})
 ##############################################################################
 # Keystrokes to resize panes/splits. It can be resized horizontally
 # or vertically.
