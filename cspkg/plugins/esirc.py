@@ -8,7 +8,7 @@ from untwisted.sock_writer  import SockWriter
 from untwisted.sock_reader import SockReader
 from untwisted.event import CLOSE, CONNECT_ERR, CONNECT
 from untwisted.splits import Terminator
-from cspkg.core import Mode, Namespace, Plugin, Main
+from cspkg.core import Namespace, Plugin, Main
 from cspkg.plugins.extra_mode import Extra
 from os.path import basename
 from cspkg.scan import Scan, Read
@@ -28,9 +28,6 @@ H10 = '>>> Connection is down ! <<<\n'
 H11 = '>>> %s [%s@%s] has quit :%s <<<\n' 
 
 class EsircNS(Namespace):
-    pass
-
-class Esirc(Mode):
     pass
 
 class ChannelController(Plugin):
@@ -71,12 +68,14 @@ class ChannelController(Plugin):
         # When xstr is destroyed, it sends a PART.
         xstr.bind('<Destroy>', lambda event: 
         send_cmd(irc.con, 'PART %s' % chan), add=True)
-    
+
+        self.chmode(Extra)
+
         # Hook to send msgs.
-        self.add_kmap(EsircNS, Esirc, '<Key-i>', lambda event: Read(
+        self.add_kmap(EsircNS, Extra, '<Key-m>', lambda event: Read(
         events={'<Escape>': lambda wid: True, 
         '<Tab>' : self.c_nick, '<Return>': lambda wid: 
-        self.send_cmsg(wid, chan)}))
+        self.send_cmsg(wid, chan)}), add=False)
 
         # It unbinds the above callback.
         # In case the part command was sent by text
@@ -150,9 +149,10 @@ class PMsgController(Plugin):
     def __init__(self, xstr, irc, nick):
         super().__init__(xstr)
         self.irc = irc
-        self.add_kmap(EsircNS, Esirc, '<Key-i>', 
+        self.chmode(Extra)
+        self.add_kmap(EsircNS, Extra, '<Key-m>', 
         lambda event: Read(events={'<Escape>': lambda wid: True, 
-        '<Return>': lambda wid: self.send_umsg(wid, nick)}))
+        '<Return>': lambda wid: self.send_umsg(wid, nick)}), add=False)
 
     def send_umsg(self, wid, target):
         """
@@ -167,18 +167,12 @@ class IrcCommon(Plugin):
     def __init__(self, xstr, irc):
         super().__init__(xstr)
         self.irc = irc
-        self.chmode(Esirc)
-        self.add_kmap(EsircNS, Extra, '<Key-i>', 
-        lambda event: self.chmode(Esirc))
 
-        self.add_kmap(EsircNS, Main, '<<Chmode-IRC>>', 
-        lambda event: xstr.mark_set('insert', 'end'))
+        self.add_kmap(EsircNS, Extra, 
+        '<Key-e>', self.send_cmd, add=False)
 
-        self.add_kmap(EsircNS, Esirc, 
-        '<Control-e>', self.send_cmd)
-
-        self.add_kmap(EsircNS, Esirc, 
-        '<Control-c>',  self.open_private_channel)
+        self.add_kmap(EsircNS, Extra, 
+        '<Key-M>',  self.open_private_channel, add=False)
 
         self.xstr.tag_update(**self.irc.confs)
 
@@ -193,7 +187,7 @@ class IrcCommon(Plugin):
     def open_private_channel(self, event):
         scan = Scan()
         xstr = root.note.create(scan.data)
-        IrcCommon(xstr, self)
+        IrcCommon(xstr, self.irc)
         PMsgController(xstr, self.irc, scan.data)
         return xstr
 
@@ -215,6 +209,7 @@ class ServerController(Plugin):
 
         send_cmd(irc.con, 'NICK %s' % self.irc.nick)
         send_cmd(irc.con, 'USER %s' % self.irc.user) 
+        self.chmode(Extra)
 
         self.add_kmap(EsircNS, Main, '<Destroy>', 
         lambda event: send_cmd(irc.con, 'QUIT :escs rules!'), add=True)
