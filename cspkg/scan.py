@@ -26,7 +26,7 @@ class InputBox:
         self.entry.pack(side='left', expand=True, fill=BOTH)
         self.frame.grid(row=1, sticky='we')
         self.matches = None
-        self.index = 0
+        self.pattern = ''
 
     def init_completer(self, pattern):
         for ind in self.complete_words:
@@ -39,9 +39,9 @@ class InputBox:
         index1  = data.rfind(' ', 0, index0) + 1
         index2  = data.find(' ', index0)
         index2  = index2 if index2 > -1 else len(data)
-        pattern = data[index1:index2].strip(' ')
+        pattern = data[index1:index2]
 
-        if self.index != index2:
+        if self.pattern != pattern or pattern == '':
             self.matches = self.init_completer(pattern)
         word = next(self.matches, '')
 
@@ -49,7 +49,7 @@ class InputBox:
         # pattern to restart again.
         self.entry.delete(index1, index2)
         self.entry.insert(index1, word)
-        self.index  = self.entry.index('insert')
+        self.pattern = word
 
     def done(self):
         self.entry.destroy()
