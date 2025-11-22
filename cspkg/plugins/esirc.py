@@ -63,11 +63,11 @@ class ChannelController(Plugin):
         irc.con.add_map('*KICK->%s' % chan, unset)
 
         self.add_kmap(EsircNS, Main, '<Destroy>', 
-        lambda event: unset(irc.con), add=True)
+        lambda event: unset(irc.con), True)
 
         # When xstr is destroyed, it sends a PART.
-        xstr.bind('<Destroy>', lambda event: 
-        send_cmd(irc.con, 'PART %s' % chan), add=True)
+        self.add_kmap(EsircNS, Main, '<Destroy>', lambda event: 
+        send_cmd(irc.con, 'PART %s' % chan), True)
 
         self.chmode(Extra)
 
@@ -82,7 +82,7 @@ class ChannelController(Plugin):
         # by the user. After part it should destroy the
         # xstr.
         irc.con.once('*PART->%s' % chan, lambda con, *args: 
-        xstr.unbind('<Destroy>'))
+        self.flush_kmap(Main, '<Destroy>'), True)
 
     def e_privmsg(self, con, nick, user, host, msg):
         self.xstr.append(H1 % (nick, msg), '(ESIRC-PRIVMSG)')
@@ -104,7 +104,8 @@ class ChannelController(Plugin):
         self.chan, msg), '(ESIRC-KICK)')
 
     def e_nick(self, con, nicka, user, host, nickb):
-        self.peers.remove(nicka.lower())
+        if nicka.lower() in self.peers:
+            self.peers.remove(nicka.lower())
         self.xstr.append(H5 % (nicka, nickb), '(ESIRC-NICK)')
         self.peers.add(nickb.lower())
 
@@ -119,9 +120,9 @@ class ChannelController(Plugin):
         self.xstr.append(H6 % peers, '(ESIRC-353)')
 
     def e_quit(self, con, nick, user, host, msg=''):
-        if not nick.lower() in self.peers: return
-        self.xstr.append(H11 % (nick, user, 
-        host, msg), '(ESIRC-QUIT)')
+        if nick.lower() in self.peers:
+            self.xstr.append(H11 % (nick, user, 
+                host, msg), '(ESIRC-QUIT)')
 
     def c_nick(self, wid):
         data = wid.get()
@@ -212,7 +213,7 @@ class ServerController(Plugin):
         self.chmode(Extra)
 
         self.add_kmap(EsircNS, Main, '<Destroy>', 
-        lambda event: send_cmd(irc.con, 'QUIT :escs rules!'), add=True)
+        lambda event: send_cmd(irc.con, 'QUIT :escs rules!'), True)
 
     def auto_join(self, con, *args):
         for ind in self.irc.channels:

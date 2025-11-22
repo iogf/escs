@@ -30,15 +30,6 @@ def build_regex(data, delim='.+'):
     pattern = pattern + escape(data[-1])
     return pattern
 
-def error(handle):
-    def shell(*args, **kwargs):
-        try:
-            return handle(*args, **kwargs)
-        except Exception as e:
-            root.status.set_msg('Error :%s' % e)
-            raise
-    return shell
-
 def match_sub_pattern(pattern, lst):
     # pattern = buffer(pattern)
     for indi in lst:
