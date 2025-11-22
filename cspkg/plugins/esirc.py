@@ -38,7 +38,7 @@ class ChannelController(Plugin):
         self.irc   = irc
         self.xstr  = xstr
         self.chan  = chan
-        self.peers = set()
+        self.peers = []
 
         events = (('PRIVMSG->%s' % chan , self.e_privmsg), 
         ('332->%s' % chan, self.e_332), 
@@ -71,24 +71,15 @@ class ChannelController(Plugin):
 
         self.chmode(Extra)
 
-        # Hook to send msgs.
         self.add_kmap(EsircNS, Extra, '<Key-m>', lambda event: Read(
-        events={'<Escape>': lambda wid: True, 
-        '<Tab>' : self.c_nick, '<Return>': lambda wid: 
-        self.send_cmsg(wid, chan)}), add=False)
-
-        # It unbinds the above callback.
-        # In case the part command was sent by text
-        # by the user. After part it should destroy the
-        # xstr.
-        irc.con.once('*PART->%s' % chan, lambda con, *args: 
-        self.flush_kmap(Main, '<Destroy>'), True)
+        events={'<Escape>': lambda wid: True, '<Return>': lambda wid: 
+        self.send_cmsg(wid, chan)}, complete_words = self.peers), add=False)
 
     def e_privmsg(self, con, nick, user, host, msg):
         self.xstr.append(H1 % (nick, msg), '(ESIRC-PRIVMSG)')
 
     def e_join(self, con, nick, user, host):
-        self.peers.add(nick.lower())
+        self.peers.append(nick)
         self.xstr.append(H4 % (nick, self.chan), '(ESIRC-JOIN)')
 
     def e_mode(self, con, nick, user, host, mode, target=''):
@@ -96,7 +87,7 @@ class ChannelController(Plugin):
         mode, target), '(ESIRC-MODE)')
 
     def e_part(self, con, nick, user, host, msg):
-        self.peers.remove(nick.lower())
+        self.peers.remove(nick)
         self.xstr.append(H3 % (nick, self.chan, msg), '(ESIRC-PART)')
 
     def e_kick(self, con, nick, user, host, target, msg):
@@ -104,10 +95,11 @@ class ChannelController(Plugin):
         self.chan, msg), '(ESIRC-KICK)')
 
     def e_nick(self, con, nicka, user, host, nickb):
-        if nicka.lower() in self.peers:
-            self.peers.remove(nicka.lower())
+        if nicka in self.peers:
+            self.peers.remove(nicka)
+        # self.peers.remove(nicka)
         self.xstr.append(H5 % (nicka, nickb), '(ESIRC-NICK)')
-        self.peers.add(nickb.lower())
+        self.peers.append(nickb)
 
     def e_close(self, con, *args):
         self.xstr.append(H7, '(ESIRC-CLOSE)')
@@ -116,26 +108,13 @@ class ChannelController(Plugin):
         self.xstr.append(H2 % msg, '(ESIRC-332)')
 
     def e_353(self, con, prefix, nick, mode, peers):
-        self.peers.update(peers.lower().split(' '))
+        self.peers.extend(peers.split(' '))
         self.xstr.append(H6 % peers, '(ESIRC-353)')
 
     def e_quit(self, con, nick, user, host, msg=''):
-        if nick.lower() in self.peers:
+        if nick in self.peers:
             self.xstr.append(H11 % (nick, user, 
                 host, msg), '(ESIRC-QUIT)')
-
-    def c_nick(self, wid):
-        data = wid.get()
-        size = len(data)
-        data = data.rsplit(' ', 1)[-1]
-
-        for ind in self.peers:
-            if ind.startswith(data):
-                index = size - len(data)
-                wid.delete(index, size)
-                wid.insert(index, ind)
-                break
-            pass
 
     def send_cmsg(self, wid, target):
         """
@@ -240,10 +219,10 @@ class ServerController(Plugin):
         # to the target/user.
         files = iter(Xstr.get_opened_files(root).items())
         targets = dict(list(map(lambda ind: 
-        (basename(ind[0].lower()), ind[1]), files)))
+        (basename(ind[0]), ind[1]), files)))
 
         try:
-            xstr = targets[nick.lower()]
+            xstr = targets[nick]
         except KeyError:
             xstr = self.create_private_channel(nick)
         xstr.append(H1 % (nick, msg))
