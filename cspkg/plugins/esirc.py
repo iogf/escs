@@ -33,44 +33,51 @@ class EsircNS(Namespace):
 class ChannelController(Plugin):
     """
     """
-    def __init__(self, xstr, irc, chan):
+    def __init__(self, xstr, server, chan):
         super().__init__(xstr)
-        self.irc   = irc
+        self.server   = server
         self.xstr  = xstr
         self.chan  = chan
         self.peers = []
 
-        events = (('PRIVMSG->%s' % chan , self.e_privmsg), 
-        ('332->%s' % chan, self.e_332), 
-        ('PART->%s' % chan, self.e_part), 
-        ('JOIN->%s' % chan, self.e_join), 
+        events = (('PRIVMSG->%s' % self.chan , self.e_privmsg), 
+        ('332->%s' % self.chan, self.e_332), 
+        ('PART->%s' % self.chan, self.e_part), 
+        ('JOIN->%s' % self.chan, self.e_join), 
         # ('*NICK', self.e_nick),
-        ('353->%s' % chan, self.e_353), 
-        ('KICK->%s' % chan, self.e_kick), 
-        ('MODE->%s' % chan, self.e_mode),
+        ('353->%s' % self.chan, self.e_353), 
+        ('KICK->%s' % self.chan, self.e_kick), 
+        ('MODE->%s' % self.chan, self.e_mode),
         (CLOSE, self.e_close))
 
         def unset(con, *args):
             for event, handle in events:
-                irc.con.del_map(event, handle)
+                server.irc.con.del_map(event, handle)
 
         for event, handle in events:
-            irc.con.add_map(event, handle)
+            server.irc.con.add_map(event, handle)
 
-        irc.con.once('*PART->%s' % chan, unset)
-        irc.con.add_map('*KICK->%s' % chan, unset)
+        self.server.ccontrollers.append(self)
+        self.server.irc.con.once('*PART->%s' % self.chan, 
+        lambda *args: self.server.ccontrollers.remove(self))
+
+        self.server.irc.con.add_map('*KICK->%s' % self.chan, 
+        lambda *args: self.server.ccontrollers.remove(self))
+
+        self.server.irc.con.once('*PART->%s' % self.chan, unset)
+        self.server.irc.con.add_map('*KICK->%s' % self.chan, unset)
 
         # self.add_kmap(EsircNS, Main, '<Destroy>', 
         # lambda event: unset(irc.con), True)
 
         # When xstr is destroyed, it sends a PART.
         self.add_kmap(EsircNS, Main, '<Destroy>', lambda event: 
-        send_cmd(irc.con, 'PART %s' % chan), True)
+        send_cmd(self.server.irc.con, 'PART %s' % self.chan), True)
         self.chmode(Extra)
 
         self.add_kmap(EsircNS, Extra, '<Key-m>', lambda event: Read(
         events={'<Escape>': lambda wid: True, '<Return>': lambda wid: 
-        self.send_cmsg(wid, chan)}, complete_words = self.peers), add=False)
+        self.send_cmsg(wid, self.chan)}, complete_words = self.peers), add=False)
     
     def e_privmsg(self, con, nick, user, host, msg):
         self.xstr.append(H1 % (nick, msg), '(ESIRC-PRIVMSG)')
@@ -118,40 +125,52 @@ class ChannelController(Plugin):
         """
 
         data = wid.get()
-        self.xstr.append(H1 % (self.irc.misc.nick, data))
-        send_msg(self.irc.con, target, data)
+        self.xstr.append(H1 % (self.server.irc.misc.nick, data))
+        send_msg(self.server.irc.con, target, data)
         wid.delete(0, 'end')
 
 class PMsgController(Plugin):
-    def __init__(self, xstr, irc, nick):
+    def __init__(self, xstr, server, nick):
         super().__init__(xstr)
-        self.irc = irc
+        self.server = server
+        self.nick = nick
         self.chmode(Extra)
         self.add_kmap(EsircNS, Extra, '<Key-m>', 
         lambda event: Read(events={'<Escape>': lambda wid: True, 
         '<Return>': lambda wid: self.send_umsg(wid, nick)}), add=False)
+
+        # Register itself in the pcontrollers in lower case
+        # in order to avoid opening other pchannel when user
+        # changes nick to upper case. 
+
+        # Its self.nick attribute should remain 
+        # identical to the peer's nick for later usage.
+        nick = nick.lower()
+        self.server.pcontrollers[nick] = self
+        self.add_kmap(EsircNS, Main, '<Destroy>',  lambda event: 
+        self.server.pcontrollers.pop(nick), add=False)
 
     def send_umsg(self, wid, target):
         """
         """
 
         data = wid.get()
-        self.xstr.append(H1 % (self.irc.misc.nick, data))
-        send_msg(self.irc.con, target, data)
+        self.xstr.append(H1 % (self.server.irc.misc.nick, data))
+        send_msg(self.server.irc.con, target, data)
         wid.delete(0, 'end')
 
 class IrcCommon(Plugin):
-    def __init__(self, xstr, irc):
+    def __init__(self, xstr, server):
         super().__init__(xstr)
-        self.irc = irc
+        self.server = server
 
         self.add_kmap(EsircNS, Extra, 
         '<Key-e>', self.send_cmd, add=False)
 
         self.add_kmap(EsircNS, Extra, 
-        '<Key-M>',  self.open_private_channel, add=False)
+        '<Key-M>',  self.open_pchannel, add=False)
 
-        self.xstr.tag_update(**self.irc.confs)
+        self.xstr.tag_update(**self.server.irc.confs)
 
     def send_cmd(self, event):
         """
@@ -159,14 +178,13 @@ class IrcCommon(Plugin):
         """
 
         scan = Scan()
-        send_cmd(self.irc.con, scan.data)
+        send_cmd(self.server.irc.con, scan.data)
 
-    def open_private_channel(self, event):
+    def open_pchannel(self, event):
         scan = Scan()
         xstr = root.note.create(scan.data)
-        IrcCommon(xstr, self.irc)
-        PMsgController(xstr, self.irc, scan.data)
-        return xstr
+        IrcCommon(xstr, self.server)
+        PMsgController(xstr, self.server, scan.data)
 
 class ServerController(Plugin):
     def __init__(self, xstr, irc):
@@ -177,7 +195,7 @@ class ServerController(Plugin):
         irc.con.add_map('PMSG', self.e_pmsg)
 
         irc.con.add_map('376', lambda con, *args: 
-        send_cmd(irc.con, self.irc.irccmd))
+        send_cmd(self.irc.con, self.irc.irccmd))
 
         irc.con.add_map('376', self.auto_join)
         irc.con.add_map('NICK', self.e_nick)
@@ -193,51 +211,38 @@ class ServerController(Plugin):
         self.add_kmap(EsircNS, Main, '<Destroy>', 
         lambda event: send_cmd(irc.con, 'QUIT :escs rules!'), True)
         self.ccontrollers = []
+        self.pcontrollers = {}
 
     def auto_join(self, con, *args):
         for ind in self.irc.channels:
             send_cmd(con, 'JOIN %s' % ind)
-
-    def e_mejoin(self, con, chan):
-        xstr = root.note.create(chan)
-        IrcCommon(xstr, self.irc)
-        ccontroller = ChannelController(xstr, self.irc, chan)
-        self.ccontrollers.append(ccontroller)
-
-        con.once('*PART->%s' % chan, 
-        lambda *args: self.ccontrollers.remove(ccontroller))
-
-        con.add_map('*KICK->%s' % chan, 
-        lambda *args: self.ccontrollers.remove(ccontroller))
-        return xstr
 
     def e_quit(self, con, nick, user, host, msg=''):
         for ind in self.ccontrollers:
             if nick in ind.peers:
                 ind.update_quit(nick, user, host, msg)
 
-    def create_private_channel(self, nick):
+    def e_mejoin(self, con, chan):
+        xstr = root.note.create(chan)
+        IrcCommon(xstr, self)
+        ChannelController(xstr, self, chan)
+
+    def create_pchannel(self, nick):
         xstr = root.note.create(nick)
-        IrcCommon(xstr, self.irc)
-        PMsgController(xstr, self.irc, nick)
-        return xstr
+        IrcCommon(xstr, self)
+        pcontroller = PMsgController(xstr, self, nick)
+        return pcontroller
 
     def e_pmsg(self, con, nick, user, host, target, msg):
         """
         Private messages sent to the user are handled here.
         """
 
-        # Attempt to retrieve the xstr which corresponds
-        # to the target/user.
-        files = iter(Xstr.get_opened_files(root).items())
-        targets = dict(list(map(lambda ind: 
-        (basename(ind[0]), ind[1]), files)))
+        pcontroller = self.pcontrollers.get(nick.lower())
 
-        try:
-            xstr = targets[nick]
-        except KeyError:
-            xstr = self.create_private_channel(nick)
-        xstr.append(H1 % (nick, msg))
+        if pcontroller is None:
+            pcontroller = self.create_pchannel(nick)
+        pcontroller.xstr.append(H1 % (nick, msg))
 
     def e_nick(self, con, nicka, user, host, nickb):
         for ind in self.ccontrollers:
@@ -289,8 +294,8 @@ class IrcConnect:
         Terminator(con)
         Irc(con)
         self.misc = Misc(con)
-        IrcCommon(xstr, self)
-        ServerController(xstr, self)
+        scontroller = ServerController(xstr, self)
+        IrcCommon(xstr, scontroller)
 
         con.add_map(CLOSE, lambda con, err: lose(con))
 
@@ -298,5 +303,5 @@ class IrcConnect:
         lambda con, data: xstr.append('%s\n' % data.decode(self.encoding)))
 
     def on_connect_err(self, con, err):
-        print('Not connected.')
+        print('esirc - Connection error: %s' % err)
 
