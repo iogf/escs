@@ -420,7 +420,7 @@ from cspkg.plugins.esirc import IrcMode
 
 # Uncomment these lines to set up your custom color scheme.
 # It accepts all available config options for Tkinter Text widget.
-# IrcConnect.c_appearence({'(ESIRC-PRIVMSG)': {'foreground': '#688B96'},
+# IrcConnect.c_appearence({'(ESIRC-PRIVMSG)': {'foreground': '#FA360C'},
 # '(ESIRC-JOIN)': {'foreground': '#F06EF0'},
 # '(ESIRC-PART)': {'foreground': '#F0BDAD'},
 # '(ESIRC-QUIT)': {'foreground': '#4EDB1F'},
