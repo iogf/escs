@@ -31,9 +31,9 @@ class ClassicStyle(Style):
         # Keyword.Reserved:          "#BDBD02",
         # Keyword.Type:              "#BDBD02",
 
-        Operator:                  "#F2F2E9",
+        Operator:                  "#FCF805",
         Operator.Word:             "#F2F2E9",
-        Punctuation:               "#F2F2E9",
+        Punctuation:               "#FCF805",
 
         Name:                      "#C7C7C3",
         Name.Attribute:            "#C7C7C3",

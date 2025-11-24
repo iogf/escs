@@ -18,10 +18,10 @@ class QSearch(Plugin):
         'background':'yellow', 'foreground':'black'}
     }
 
-    def __init__(self, xstr, nocase=True):
+    nocase = True
+    def __init__(self, xstr):
         super().__init__(xstr)
         self.xstr   = xstr
-        self.nocase = nocase
         xstr.tag_update(**self.confs)
 
         self.add_kmap(QSearchNS, Main, '<Alt-k>', self.backwards)
@@ -44,10 +44,15 @@ class QSearch(Plugin):
         '<Alt-p>':self.search_down, 
         '<Alt-o>': self.search_up, 
         '<Alt-s>': self.clear_pattern, 
+        '<Control-n>': self.toggle_nocase, 
         '<<Data>>': self.update, 
         '<BackSpace>': self.update,
         '<Escape>':  self.end_search})
         return 'break'
+
+    def toggle_nocase(self, wid):
+        self.nocase = False if self.nocase else True
+        root.status.set_msg('nocase=%s' % self.nocase)
 
     def end_search(self, wid):
         self.xstr.tag_remove('(QSEARCH)', '1.0', 'end')
