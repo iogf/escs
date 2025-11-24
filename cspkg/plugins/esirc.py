@@ -78,7 +78,16 @@ class ChannelController(Plugin):
         self.add_kmap(EsircNS, Extra, '<Key-m>', lambda event: Read(
         events={'<Escape>': lambda wid: True, '<Return>': lambda wid: 
         self.send_cmsg(wid, self.chan)}, complete_words = self.peers), add=False)
+
     
+        self.add_kmap(EsircNS, Extra, '<Key-e>', 
+        self.server.send_cmd, add=False)
+
+        self.add_kmap(EsircNS, Extra, '<Key-M>',  
+        self.server.open_pchannel, add=False)
+
+        self.xstr.tag_update(**self.server.irc.confs)
+
     def e_privmsg(self, con, nick, user, host, msg):
         self.xstr.append(H1 % (nick, msg), '(ESIRC-PRIVMSG)')
 
@@ -150,6 +159,12 @@ class PMsgController(Plugin):
         self.add_kmap(EsircNS, Main, '<Destroy>',  lambda event: 
         self.server.pcontrollers.pop(nick), add=False)
 
+        self.add_kmap(EsircNS, Extra, '<Key-e>', 
+        self.server.send_cmd, add=False)
+
+        self.add_kmap(EsircNS, Extra, '<Key-M>',  
+        self.server.open_pchannel, add=False)
+
     def send_umsg(self, wid, target):
         """
         """
@@ -158,33 +173,6 @@ class PMsgController(Plugin):
         self.xstr.append(H1 % (self.server.irc.misc.nick, data))
         send_msg(self.server.irc.con, target, data)
         wid.delete(0, 'end')
-
-class IrcCommon(Plugin):
-    def __init__(self, xstr, server):
-        super().__init__(xstr)
-        self.server = server
-
-        self.add_kmap(EsircNS, Extra, 
-        '<Key-e>', self.send_cmd, add=False)
-
-        self.add_kmap(EsircNS, Extra, 
-        '<Key-M>',  self.open_pchannel, add=False)
-
-        self.xstr.tag_update(**self.server.irc.confs)
-
-    def send_cmd(self, event):
-        """
-        Used to drop irc commands.
-        """
-
-        scan = Scan()
-        send_cmd(self.server.irc.con, scan.data)
-
-    def open_pchannel(self, event):
-        scan = Scan()
-        xstr = root.note.create(scan.data)
-        IrcCommon(xstr, self.server)
-        PMsgController(xstr, self.server, scan.data)
 
 class ServerController(Plugin):
     def __init__(self, xstr, irc):
@@ -210,6 +198,13 @@ class ServerController(Plugin):
 
         self.add_kmap(EsircNS, Main, '<Destroy>', 
         lambda event: send_cmd(irc.con, 'QUIT :escs rules!'), True)
+
+        self.add_kmap(EsircNS, Extra, '<Key-e>', 
+        self.send_cmd, add=False)
+
+        self.add_kmap(EsircNS, Extra, '<Key-M>',  
+        self.open_pchannel, add=False)
+
         self.ccontrollers = []
         self.pcontrollers = {}
 
@@ -224,12 +219,10 @@ class ServerController(Plugin):
 
     def e_mejoin(self, con, chan):
         xstr = root.note.create(chan)
-        IrcCommon(xstr, self)
         ChannelController(xstr, self, chan)
 
     def create_pchannel(self, nick):
         xstr = root.note.create(nick)
-        IrcCommon(xstr, self)
         pcontroller = PMsgController(xstr, self, nick)
         return pcontroller
 
@@ -248,6 +241,19 @@ class ServerController(Plugin):
         for ind in self.ccontrollers:
             if nicka in ind.peers:
                 ind.update_nick(nicka, nickb)
+
+    def send_cmd(self, event):
+        """
+        Used to drop irc commands.
+        """
+
+        scan = Scan()
+        send_cmd(self.irc.con, scan.data)
+
+    def open_pchannel(self, event):
+        scan = Scan()
+        xstr = root.note.create(scan.data)
+        PMsgController(xstr, self, scan.data)
 
 class IrcConnect:
     """
@@ -295,7 +301,6 @@ class IrcConnect:
         Irc(con)
         self.misc = Misc(con)
         scontroller = ServerController(xstr, self)
-        IrcCommon(xstr, scontroller)
 
         con.add_map(CLOSE, lambda con, err: lose(con))
 
