@@ -10,14 +10,16 @@ class FindNS(Namespace):
 
 class Find(Plugin):
     confs = {
-        '(FIND)':{'background':'green', 'foreground':'white'}
+        '(FIND)':{'background':'green', 'foreground':'red'}
     }
 
-    opts  = {'nolinestop': False, 'regexp': False,
-    'nocase': False, 'exact': False,'elide': False}
-
-    data  = ''
-    regex = ''
+    nolinestop = False
+    regexp = False
+    nocase = False
+    exact  = False
+    elide  = False
+    data   = ''
+    regex  = ''
 
     def __init__(self, xstr):
         super().__init__(xstr)
@@ -52,24 +54,24 @@ class Find(Plugin):
         default_data=Find.regex)
 
     def toggle_nocase(self, wid):
-        self.opts['nocase'] = False if self.opts['nocase'] else True
-        root.status.set_msg('nocase=%s' % self.opts['nocase'])
+        self.nocase = False if self.nocase else True
+        root.status.set_msg('nocase=%s' % self.nocase)
 
     def toggle_regexp(self, wid):
-        self.opts['regexp'] = False if self.opts['regexp'] else True
-        root.status.set_msg('regexp=%s' % self.opts['regexp'])
+        self.regexp = False if self.regexp else True
+        root.status.set_msg('regexp=%s' % self.regexp)
 
     def toggle_exact(self, wid):
-        self.opts['exact'] = False if self.opts['exact'] else True
-        root.status.set_msg('exact=%s' % self.opts['exact'])
+        self.exact = False if self.exact else True
+        root.status.set_msg('exact=%s' % self.exact)
 
     def toggle_elide(self, wid):
-        self.opts['elide'] = False if self.opts['elide'] else True
-        root.status.set_msg('elide=%s' % self.opts['elide'])
+        self.elide = False if self.elide else True
+        root.status.set_msg('elide=%s' % self.elide)
 
     def toggle_nolinestop(self, wid):
-        self.opts['nolinestop'] = False if self.opts['nolinestop'] else True
-        root.status.set_msg('nolinestop=%s' % self.opts['nolinestop'])
+        self.nolinestop = False if self.nolinestop else True
+        root.status.set_msg('nolinestop=%s' % self.nolinestop)
 
     def set_data(self, wid):
         Find.data = wid.get()
@@ -84,12 +86,16 @@ class Find(Plugin):
     def up(self, wid):
         regex = wid.get()
         index = self.xstr.ipick('(FIND)', regex, index='insert', 
-        stopindex='1.0', backwards=True, **self.opts)
+        stopindex='1.0', backwards=True, regexp=self.regexp, 
+        nocase=self.nocase, exact=self.exact, 
+        elide=self.elide)
 
     def down(self, wid):
         regex = wid.get()
         index = self.xstr.ipick('(FIND)', regex, 
-        index='insert', stopindex='end', **self.opts)
+        index='insert', stopindex='end', regexp=self.regexp, 
+        nocase=self.nocase, exact=self.exact, 
+        elide=self.elide)
 
     def selection_matches(self, wid):
         """
@@ -98,8 +104,9 @@ class Find(Plugin):
         self.xstr.tag_remove('(FIND)', '1.0', 'end')
         regex = wid.get()
 
-        matches = self.xstr.check_ranges(
-        'sel', regex, **self.opts)
+        matches = self.xstr.check_ranges('sel', regex, 
+        regexp=self.regexp, nocase=self.nocase, exact=self.exact, 
+        elide=self.elide)
 
         for _, index0, index1 in matches:
             self.xstr.tag_add('(FIND)', index0, index1)
@@ -113,14 +120,17 @@ class Find(Plugin):
 
         regex = wid.get()
         index = self.xstr.tag_nextrange('(FIND)', '1.0')
-        self.xstr.replace(regex, Find.data, index[0], **self.opts)
+        self.xstr.replace(regex, Find.data, index[0], 
+        regexp=self.regexp, nocase=self.nocase, 
+        exact=self.exact, elide=self.elide)
 
     def sub_selected(self, wid):
         """
         """
         regex = wid.get()
         count = self.xstr.replace_ranges('sel',
-        regex, Find.data, **self.opts)
+        regex, Find.data, regexp=self.regexp, nocase=self.nocase, 
+        exact=self.exact, elide=self.elide)
 
         root.status.set_msg('Replaced matches: %s' % count)
 
@@ -128,8 +138,9 @@ class Find(Plugin):
         """
         """
         regex = wid.get()
-        count = self.xstr.replace_all(regex, 
-            Find.data, '1.0', 'end', **self.opts)
+        count = self.xstr.replace_all(regex, Find.data, 
+        '1.0', 'end', regexp=self.regexp, nocase=self.nocase, 
+        exact=self.exact, elide=self.elide)
         root.status.set_msg('Replaced matches: %s' % count)
 
 install = Find
