@@ -12,7 +12,6 @@ class TestNormalMode(unittest.TestCase):
     def setUpClass(cls):
         cls.xstr = root.note.create('Tests')
         cls.mod = NormalMode(cls.xstr)
-        cls.mod.chmode(TestMode)
         cls.xstr.insert('end', 'NormalMode plugin tests.\n' * 10)
         cls.xstr.focus_set()
         root.update() 
@@ -22,11 +21,16 @@ class TestNormalMode(unittest.TestCase):
         root.destroy()
 
     def test0(self):
+        self.mod.chmode(TestMode)
         self.xstr.event_generate('<Escape>')
         self.assertEqual(self.mod.mode, Normal)
+        self.mod.chmode(TestMode)
+        self.assertEqual(self.mod.mode, TestMode)
+
         pass
 
     def test1(self):
+        self.mod.chmode(TestMode)
         self.xstr.tag_add('sel', '1.0', 'end')
         self.xstr.event_generate('<Escape>')
 
