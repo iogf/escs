@@ -151,11 +151,9 @@ from cspkg.plugins import text_shift
 load_module(text_shift)
 ##############################################################################
 # It allows to use custom spacing for programming languages.
+from cspkg.plugins.spacing import TabSpacing
 
-from cspkg.plugins import spacing
-load_module(spacing)
-
-spacing.TabSpacing.set_scheme({
+TabSpacing.c_tabsize({
 '.rb': (2, ' '),
 '.c' : (4, ' '),
 '.cpp' : (4, ' '),
@@ -163,6 +161,8 @@ spacing.TabSpacing.set_scheme({
 '.go':(1, '\t'),
 '.py': (4, ' '),
 '':(4, ' '), })
+
+load_cls(TabSpacing)
 ##############################################################################
 # Keystrokes to add/remove programming language comments to text code.
 
@@ -369,6 +369,8 @@ from cspkg.plugins.syntax.spider import Spider
 # from pygments.styles.igor import IgorStyle
 # from pygments.styles.paraiso_dark import ParaisoDarkStyle
 # from pygments.styles.vim import VimStyle
+# from cspkg.plugins.syntax.strong_style import StrongStyle
+# from cspkg.plugins.syntax.classic_style import ClassicStyle
 
 # Import and configure VyStyle to highligh code.
 from cspkg.plugins.syntax.default_style import EscsStyle
