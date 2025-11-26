@@ -11,12 +11,12 @@ class TestMode(Mode):
 class TestTextJumps(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.xstr = root.note.create('None')
+        cls.xstr = root.note.create('Tests')
 
         cls.mod = TextJumps(cls.xstr)
         cls.mod.chmode(Normal)
         cls.xstr.focus_set()
-        cls.xstr.insert('end', 'Text start test.\n' * 10)
+        cls.xstr.insert('end', 'TestJumps plugin tests.\n' * 10)
         root.update() 
 
     def setUp(self):

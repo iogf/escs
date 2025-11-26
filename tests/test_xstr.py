@@ -4,11 +4,12 @@ from cspkg.start import root
 import unittest
 import time
 
-class TestQSearch(unittest.TestCase):
+class TestXstr(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.xstr = root.note.create('None')
+        cls.xstr = root.note.create('Tests')
         cls.xstr.focus_set()
+
         root.update() 
 
     @classmethod
