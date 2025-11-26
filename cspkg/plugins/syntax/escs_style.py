@@ -3,7 +3,7 @@ from pygments.token import Keyword, Name, Comment, String, Error, \
      Number, Operator, Generic, Whitespace, Token, Punctuation, Text
 
 
-class ClassicStyle(Style):
+class EscsStyle(Style):
     """
     """
 
@@ -40,15 +40,15 @@ class ClassicStyle(Style):
         Name.Builtin:              "#F7F7F0",
         Name.Class:                "#FCF805",
         Name.Function:             "#FCF805",
-        Name.Constant:             "",
-        Name.Decorator:            "#8B8B6E",
+        Name.Constant:             "#C4C4C4",
+        Name.Decorator:            "#C4C4C4",
         # Name.Entity:               "",
         # Name.Label:                "",
         # Name.Namespace:            "",
         # Name.Other:                "",
         # Name.Tag:                  "",
-        Name.Exception:            "#666699",
-        Name.Variable:             "#00cdcd",
+        Name.Exception:            "#C4C4C4",
+        Name.Variable:             "#C4C4C4",
 
         String:                    "#FCF805",
         String.Single:             "#FCF805",
@@ -58,7 +58,7 @@ class ClassicStyle(Style):
         String.Doc:                "#FCF805",
         String.Regex:              "#FCF805",
         String.Symbol:             "#FCF805",
-        Number:                    "#FCF805",
+        Number:                    "#C4C4C4",
         
         Generic:                   "#CBCBF2",
         Generic.Heading:           "#CBCBF2",

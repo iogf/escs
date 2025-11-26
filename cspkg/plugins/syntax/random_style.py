@@ -3,7 +3,7 @@ from pygments.token import Keyword, Name, Comment, String, Error, \
      Number, Operator, Generic, Whitespace, Token, Punctuation, Text
 
 
-class EscsStyle(Style):
+class RandomStyle(Style):
     """
     """
 

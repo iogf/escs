@@ -369,11 +369,11 @@ from cspkg.plugins.syntax.spider import Spider
 # from pygments.styles.igor import IgorStyle
 # from pygments.styles.paraiso_dark import ParaisoDarkStyle
 # from pygments.styles.vim import VimStyle
-# from cspkg.plugins.syntax.strong_style import StrongStyle
-# from cspkg.plugins.syntax.classic_style import ClassicStyle
+# from cspkg.plugins.syntax.shark_style import SharkStyle
+# from cspkg.plugins.syntax.random_style import random_style
 
-# Import and configure VyStyle to highligh code.
-from cspkg.plugins.syntax.default_style import EscsStyle
+# Import and configure EscsStyle to highligh code.
+from cspkg.plugins.syntax.escs_style import EscsStyle
 Spider.c_style(EscsStyle)
 load_cls(Spider)
 ##############################################################################
