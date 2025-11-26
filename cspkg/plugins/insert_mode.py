@@ -18,7 +18,7 @@ class InsertMode(Plugin):
     def switch_insert(self, event):
         """
         """
+        self.xstr.tag_remove('sel', '1.0', 'end')
         self.chmode(Insert)
-        self.xstr.clear_selection()
 
 install = InsertMode

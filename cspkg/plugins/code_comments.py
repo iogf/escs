@@ -36,8 +36,8 @@ class CodeComments(Plugin):
         comment = table.get(os.path.splitext(self.xstr.filename)[1], self.default)
         self.xstr.replace_ranges('sel', '^ *|^\t*', 
         lambda data, index0, index1: '%s%s ' % (data, comment))
-        self.xstr.clear_selection()
         self.chmode(Normal)
+        self.xstr.tag_remove('sel', '1.0', 'end')
     
     def remove_comment(self, event):
         """
@@ -48,8 +48,8 @@ class CodeComments(Plugin):
         self.xstr.replace_ranges('sel', '^ *%s ?|^\t*%s ?' % (comment, comment), 
         lambda data, index0, index1: data.replace(
             '%s ' % comment, '').replace(comment, ''))
-        self.xstr.clear_selection()
         self.chmode(Normal)
+        self.xstr.tag_remove('sel', '1.0', 'end')
 
 install = CodeComments
 

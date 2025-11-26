@@ -18,9 +18,9 @@ class LineFeed(Plugin):
         self.xstr.edit_separator()
         self.xstr.insert('insert +1l linestart', '\n', '')
         self.xstr.mark_set('insert', 'insert +1l linestart')
-        self.xstr.clear_selection()
 
         self.xstr.see('insert')
+        self.xstr.tag_remove('sel', '1.0', 'end')
         self.chmode(Insert)
 
     def insert_up(self, event):
@@ -30,9 +30,10 @@ class LineFeed(Plugin):
         self.xstr.edit_separator()
         self.xstr.insert('insert linestart', '\n', '')
         self.xstr.mark_set('insert', 'insert -1l linestart')
-        self.xstr.clear_selection()
 
         self.xstr.see('insert')
+        self.xstr.tag_remove('sel', '1.0', 'end')
+
         self.chmode(Insert)
 
 install = LineFeed

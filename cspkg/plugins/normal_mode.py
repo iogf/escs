@@ -18,7 +18,7 @@ class NormalMode(Plugin):
     def switch_normal(self, event):
         """
         """
+        self.xstr.tag_remove('sel', '1.0', 'end')
         self.chmode(Normal)
-        self.xstr.clear_selection()
 
 install = NormalMode

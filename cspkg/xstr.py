@@ -148,17 +148,6 @@ class Xstr(Text):
         self.mark_set('insert', '%s.%s' % (line, col))
         self.see('insert')
 
-    def clear_selection(self):
-        """
-        Unselect all text.
-        """
-
-        try:
-            self.tag_remove('sel', 
-                'sel.first', 'sel.last')
-        except Exception:
-            pass
-
     def check_ranges(self, name, regex, index='1.0', 
         stopindex='end', exact=False, regexp=True, nocase=False, 
         elide=False, nolinestop=False):
