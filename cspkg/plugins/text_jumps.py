@@ -63,16 +63,22 @@ class TextJumps(Plugin):
         '<Key-l>', self.right)
     
     def down(self, event):
-        event.widget.down()
+        a, b = self.xstr.indexsplit('(LC)')
+        c, d = self.xstr.indexsplit()
+        self.xstr.setcur(c + 1, b)
 
     def up(self, event):
-        event.widget.up()
+        a, b = self.xstr.indexsplit('(LC)')
+        c, d = self.xstr.indexsplit()
+        self.xstr.setcur(c - 1, b)
 
     def left(self, event):
-        event.widget.left()
+        self.xstr.mark_set('insert', 'insert -1c')
+        self.xstr.mark_set('(LC)', 'insert -1c')
 
     def right(self, event):
-        event.widget.right()
+        self.xstr.mark_set('insert', 'insert +1c')
+        self.xstr.mark_set('(LC)', 'insert +1c')
 
     def text_start(self, event):
         self.xstr.mark_set('insert', '1.0')

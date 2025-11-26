@@ -140,37 +140,6 @@ class Xstr(Text):
         a, b = index.split('.')
         return int(a), int(b)
 
-    def down(self):
-        """  
-        """
-
-        a, b = self.indexsplit('(LC)')
-        c, d = self.indexsplit()
-        self.setcur(c + 1, b)        
-    
-    def up(self):   
-        """  
-        """
-
-        a, b = self.indexsplit('(LC)')
-        c, d = self.indexsplit()
-        self.setcur(c - 1, b)
-    
-    def left(self):
-        """  
-        """
-
-        self.mark_set('insert', 'insert -1c')
-        self.mark_set('(LC)', 'insert')
-    
-    def right(self):
-        """  
-        It moves the cursor one character right.
-        """
-
-        self.mark_set('insert', 'insert +1c')
-        self.mark_set('(LC)', 'insert')
-
     def setcur(self, line, col='0'):
         """
         """
