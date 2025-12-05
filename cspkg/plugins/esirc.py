@@ -35,10 +35,10 @@ class ChannelController(Plugin):
     """
     def __init__(self, xstr, server, chan):
         super().__init__(xstr)
-        self.server   = server
-        self.xstr  = xstr
-        self.chan  = chan
-        self.peers = []
+        self.server = server
+        self.xstr   = xstr
+        self.chan   = chan
+        self.peers  = []
 
         events = (('PRIVMSG->%s' % self.chan , self.e_privmsg), 
         ('332->%s' % self.chan, self.e_332), 

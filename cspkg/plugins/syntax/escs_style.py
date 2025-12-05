@@ -15,7 +15,7 @@ class EscsStyle(Style):
         # Whitespace:                "#957C8B",
         # Note: The Text tokens are set to default_style. So, when inserting chars.
         # it gets highlighed afterwards.
-        Text:                      '#957C8B',
+        Text:                      '#C4C4C4',
         Comment:                   "#FCF805",
         Comment.Hashbang:          "#FCF805",
         Comment.Multiline:         "#FCF805",

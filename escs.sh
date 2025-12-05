@@ -85,7 +85,6 @@ git checkout *
 ##############################################################################
 # install from pip requirements.
 cd ~/projects/escs-code
-sudo bash -i
 pip install .
 ##############################################################################
 # install escs. 

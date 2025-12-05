@@ -43,7 +43,8 @@ class Spawn(BaseSpawn):
         data = self.input.get('insert linestart', 'insert +1l linestart')
         data = data.encode(self.input.charset)
         self.stdin.dump(data)
-        self.input.down()
+        line, col = self.input.indexsplit()
+        self.input.setcur(line + 1, col)
 
     def handle_close(self, dev, err):
         root.status.set_msg('(spawn) Killed process!')
