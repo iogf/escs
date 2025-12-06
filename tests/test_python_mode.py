@@ -1,0 +1,50 @@
+from cspkg.plugins.python_mode import Python, PythonModeNS, PythonMode
+from cspkg.plugins.normal_mode import Normal, NormalModeNS, NormalMode
+from cspkg.core import Mode
+from cspkg.start import root
+from tkinter import TclError
+import unittest
+
+class TestPythonMode(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.xstr = root.note.create('Tests')
+        cls.mod0 = PythonMode(cls.xstr)
+        cls.mod1 = NormalMode(cls.xstr)
+        cls.xstr.insert('end', 'PythonMode plugin tests.\n' * 10)
+        cls.xstr.focus_set()
+        root.update() 
+
+    @classmethod
+    def tearDownClass(cls):
+        root.destroy()
+
+    def test0(self):
+        self.mod1.chmode(Normal)
+        self.xstr.event_generate('<Key-exclam>')
+        self.assertEqual(self.mod0.mode, Python)
+        self.mod1.chmode(Normal)
+        self.assertEqual(self.mod1.mode, Normal)
+
+        pass
+
+    def test1(self):
+        self.xstr.tag_add('sel', '1.0', 'end')
+
+        # The selection should remain on Python mode.
+        self.xstr.event_generate('<Key-exclam>')
+
+        self.assertEqual(self.xstr.tag_nextrange('sel', '1.0'), 
+        ('1.0', self.xstr.index('end')))
+
+        self.assertEqual(self.mod0.mode, Python)
+        self.xstr.event_generate('<Escape>')
+        self.assertEqual(self.mod1.mode, Normal)
+
+        # When switching to Normal mode it shouldn't exist anymore.
+        self.assertEqual(self.xstr.tag_nextrange('sel', '1.0'), ())
+        
+        pass
+
+if __name__ == '__main__':
+    unittest.main()
