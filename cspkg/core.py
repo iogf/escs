@@ -9,6 +9,7 @@ from shutil import copyfile
 from functools import wraps
 from os import mkdir
 from os.path import basename
+import traceback
 
 rcenv = dict()
 rcmod = list()
@@ -34,7 +35,10 @@ class Main(Mode):
 
 def mkwrapper(handle):
     def handle_caller(event):
-        handle(event)
+        try:
+            handle(event)
+        except Exception as excpt:
+            traceback.print_exc()
         return 'break'
     return handle_caller
 

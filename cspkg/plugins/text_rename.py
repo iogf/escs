@@ -20,8 +20,7 @@ class TextRename(Plugin):
         super().__init__(xstr)
         self.xstr = xstr
 
-        self.add_kmap(TextRenameNS, 
-        Main, '<Alt-N>', self.rename, True)
+        self.add_kmap(TextRenameNS, Main, '<Alt-N>', self.rename)
     
     def rename(self, event):
         """
@@ -40,8 +39,6 @@ class TextRename(Plugin):
         else:
             self.xstr.filename = dst
             root.status.set_msg('File renamed!')
-        return 'break'
-    
 
 install = TextRename
 
