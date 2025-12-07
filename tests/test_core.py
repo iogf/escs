@@ -12,9 +12,7 @@ class TestEscsApp(unittest.TestCase):
         self.root.destroy()
 
     def test0(self):
-        self.assertEqual()
-        # self.app.button.invoke() 
-        # self.root.update_idletasks()
+        pass
 
 if __name__ == '__main__':
     unittest.main()

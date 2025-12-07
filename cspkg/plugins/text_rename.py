@@ -20,8 +20,8 @@ class TextRename(Plugin):
         super().__init__(xstr)
         self.xstr = xstr
 
-        self.add_kmap(TextRenameNS, Main, 
-        '<Alt-N>', self.rename)
+        self.add_kmap(TextRenameNS, 
+        Main, '<Alt-N>', self.rename, True)
     
     def rename(self, event):
         """

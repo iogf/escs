@@ -11,10 +11,10 @@ class TestMode(Mode):
 class TestQSearch(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.xstr = root.note.create('Tests')
+        cls.xstr = root.note.create('Test')
         cls.mod = QSearch(cls.xstr)
         cls.mod.chmode(Normal)
-        cls.xstr.insert('end', 'QSearch plugin tests.\n' * 10)
+        cls.xstr.insert('end', 'QSearch plugin test.\n' * 10)
 
         cls.xstr.focus_set()
         root.update() 

@@ -16,7 +16,7 @@ class TestTextJumps(unittest.TestCase):
         cls.mod = TextJumps(cls.xstr)
         cls.mod.chmode(Normal)
         cls.xstr.focus_set()
-        cls.xstr.insert('end', 'TestJumps plugin tests.\n' * 10)
+        cls.xstr.insert('end', 'Text start test.\n' * 10)
         root.update() 
 
     def setUp(self):
