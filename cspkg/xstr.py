@@ -166,7 +166,7 @@ class Xstr(Text):
         count=None, elide=None, nolinestop=None):
 
         """
-        Just AreaVi.search shortcut, in the sense it return the matched chunk
+        Just Xstr.search shortcut, in the sense it return the matched chunk
         the initial position and the end position.
         """
         count = IntVar()
@@ -226,7 +226,7 @@ class Xstr(Text):
 
     def clear_data(self):
         """
-        It clears all text inside an AreaVi instance.
+        It clears all text inside an Xstr instance.
         """
         
         self.delete('1.0', 'end')

@@ -12,12 +12,12 @@ class PythonCompletionWindow(CompletionWindow):
     """
     """
 
-    def __init__(self, area, *args, **kwargs):
-        source      = area.get('1.0', 'end')
-        line, col   = area.indexsplit()
-        script      = Script(source, path=area.filename)
+    def __init__(self, xstr, *args, **kwargs):
+        source      = xstr.get('1.0', 'end')
+        line, col   = xstr.indexsplit()
+        script      = Script(source, path=xstr.filename)
         completions = script.complete(line, col)
-        CompletionWindow.__init__(self, area, completions, *args, **kwargs)
+        CompletionWindow.__init__(self, xstr, completions, *args, **kwargs)
 
 class Jedi(Plugin):
     def __init__(self, xstr):

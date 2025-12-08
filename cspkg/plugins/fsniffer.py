@@ -38,7 +38,7 @@ class FSniffer(Plugin):
 
     def make_cmd(self, pattern):
         # When FSniffer.wide is False it searches in the current 
-        # Areavi instance project.
+        # Xstr instance project.
         cmd   = ['locate', '--limit', '200']
         regex = build_regex(pattern, '.*')
 
