@@ -13,12 +13,13 @@ class TestNormalMode(unittest.TestCase):
         cls.xstr = root.note.create('Tests')
         cls.mod = NormalMode(cls.xstr)
         cls.xstr.insert('end', 'NormalMode plugin tests.\n' * 10)
+        root.note.select(cls.xstr.master.master.master)
         cls.xstr.focus_set()
         root.update() 
 
     @classmethod
     def tearDownClass(cls):
-        root.destroy()
+        pass
 
     def test0(self):
         self.mod.chmode(TestMode)
@@ -33,6 +34,7 @@ class TestNormalMode(unittest.TestCase):
         self.mod.chmode(TestMode)
         self.xstr.tag_add('sel', '1.0', 'end')
         self.xstr.event_generate('<Escape>')
+        root.update() 
 
         self.assertEqual(self.xstr.tag_nextrange('sel', '1.0'), ())
         self.assertEqual(self.mod.mode, Normal)

@@ -15,6 +15,7 @@ class TestTextJumps(unittest.TestCase):
 
         cls.mod = TextJumps(cls.xstr)
         cls.mod.chmode(Normal)
+        root.note.select(cls.xstr.master.master.master)
         cls.xstr.focus_set()
         cls.xstr.insert('end', 'Text start test.\n' * 10)
         root.update() 

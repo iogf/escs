@@ -7,18 +7,21 @@ from os.path import join, expanduser
 class TestWordSel(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.xstr = root.note.create('null')
+        cls.xstr = root.note.create('Tests')
         cls.mod0 = NormalMode(cls.xstr)
         cls.mod1 = WordSel(cls.xstr)
 
         cls.xstr.insert('end', 'WordSel    plugin test.\n' * 10)
+        root.note.select(cls.xstr.master.master.master)
+
         cls.xstr.focus_set()
 
         root.update() 
 
     @classmethod
     def tearDownClass(cls):
-        root.destroy()
+        # cls.xstr.master.master.master.destroy()
+        pass
 
     def test0(self):
         self.xstr.mark_set('insert', '1.0')

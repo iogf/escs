@@ -15,6 +15,7 @@ class TestTextRename(unittest.TestCase):
         cls.mod1 = TextRename(cls.xstr)
 
         cls.xstr.insert('end', 'TextRename plugin test.\n' * 10)
+        root.note.select(cls.xstr.master.master.master)
         cls.xstr.focus_set()
         cls.xstr.save_data_as(join(expanduser('~'), 'escs-tests'))
 
@@ -22,7 +23,7 @@ class TestTextRename(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        root.destroy()
+        pass
 
     def test0(self):
         self.xstr.event_generate('<Escape>')

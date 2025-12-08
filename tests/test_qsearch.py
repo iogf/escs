@@ -16,12 +16,13 @@ class TestQSearch(unittest.TestCase):
         cls.mod.chmode(Normal)
         cls.xstr.insert('end', 'QSearch plugin test.\n' * 10)
 
+        root.note.select(cls.xstr.master.master.master)
         cls.xstr.focus_set()
         root.update() 
 
     @classmethod
     def tearDownClass(cls):
-        root.destroy()
+        pass
 
     def test0(self):
         self.xstr.mark_set('insert', '5.0')

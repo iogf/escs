@@ -12,12 +12,13 @@ class TestPythonMode(unittest.TestCase):
         cls.mod0 = PythonMode(cls.xstr)
         cls.mod1 = NormalMode(cls.xstr)
         cls.xstr.insert('end', 'PythonMode plugin tests.\n' * 10)
+        root.note.select(cls.xstr.master.master.master)
         cls.xstr.focus_set()
         root.update() 
 
     @classmethod
     def tearDownClass(cls):
-        root.destroy()
+        pass
 
     def test0(self):
         self.mod1.chmode(Normal)

@@ -11,12 +11,13 @@ class TestInsertMode(unittest.TestCase):
         cls.xstr = root.note.create('Tests')
         cls.mod0 = InsertMode(cls.xstr)
         cls.mod1 = NormalMode(cls.xstr)
+        root.note.select(cls.xstr.master.master.master)
         cls.xstr.focus_set()
         root.update() 
 
     @classmethod
     def tearDownClass(cls):
-        root.destroy()
+        pass
 
     def test0(self):
         self.mod0.chmode(Normal)

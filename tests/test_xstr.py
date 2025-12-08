@@ -14,7 +14,7 @@ class TestXstr(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        root.destroy()
+        pass
 
     def test0(self):
         pass
