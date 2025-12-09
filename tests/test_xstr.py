@@ -7,16 +7,15 @@ import time
 class TestXstr(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.xstr = root.note.create('Tests')
-        cls.xstr.focus_set()
+        cls.xstr = root.note.create('null')
 
+        cls.xstr.insert('end', '')
+        root.note.select(cls.xstr.master.master.master)
+        cls.xstr.focus_set()
         root.update() 
 
     @classmethod
     def tearDownClass(cls):
-        pass
-
-    def test0(self):
         pass
 
 if __name__ == '__main__':

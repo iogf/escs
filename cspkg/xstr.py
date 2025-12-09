@@ -128,7 +128,6 @@ class Xstr(Text):
         self.insert('end', data)
         self.mark_set('insert', '1.0')
         self.see('insert')
-
         self.event_generate('<<LoadData>>')
         self.event_generate('<<Load/*%s>>' % self.extension)
 

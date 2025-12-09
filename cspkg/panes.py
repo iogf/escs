@@ -31,7 +31,6 @@ class PanedHorizontalWindow(PanedWindow):
         xstr.bind_class('MODE:%s:%s:%s' % (xstr, 
         Main.__module__, Main.__name__), '<FocusIn>', 
         lambda event: self.master.focus_save(xstr), add=True)
-
         self.master.focus_save(xstr)
         return xstr
 

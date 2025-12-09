@@ -10,7 +10,7 @@ from os.path import join, expanduser
 class TestTextRename(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.xstr = root.note.create('null')
+        cls.xstr = root.note.create('Tests')
         cls.mod0 = NormalMode(cls.xstr)
         cls.mod1 = TextRename(cls.xstr)
 

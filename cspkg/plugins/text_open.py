@@ -27,8 +27,8 @@ class TextOpen(Plugin):
         super().__init__(xstr)
         self.xstr = xstr
 
-        self.add_kmap(TextOpenNS, Main, 
-        '<Alt-D>', self.ask_and_load)
+        self.add_kmap(TextOpenNS, 
+        Main, '<Alt-D>', self.ask_and_load)
     
     def ask_and_load(self, event):
         """
@@ -37,7 +37,7 @@ class TextOpen(Plugin):
         filename = askopenfilename()
     
         if not filename: 
-            return 'break'
+            return None
     
         try:
             self.xstr.load_data(filename)
@@ -45,7 +45,6 @@ class TextOpen(Plugin):
             root.status.set_msg('It failed to load.')
         else:
             root.status.set_msg('File loaded.')
-        return 'break'
     
 install = TextOpen
 

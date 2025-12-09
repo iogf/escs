@@ -1,5 +1,5 @@
 from cspkg.panes import PanedVerticalWindow
-from os.path import abspath, exists
+from os.path import abspath, exists, basename
 from cspkg.xstr import Xstr
 from tkinter.ttk import Notebook
 from tkinter import BOTH
@@ -19,12 +19,12 @@ class EscsBook(Notebook):
 
         base = PanedVerticalWindow(master=self)
         xstr = base.create(filename)
-        self.add(base, text=filename)
+        self.add(base, text=basename(filename))
         return xstr
 
     def open(self, filename):
         base = PanedVerticalWindow(master=self)
-        self.add(base)
+        self.add(base, text=basename(filename))
         xstr = base.open(filename)
         return xstr
 
@@ -35,9 +35,11 @@ class EscsBook(Notebook):
         for indi in args:
             base = PanedVerticalWindow(master=self)
             base.pack(side='left', expand=True, fill=BOTH)
-            self.add(base)        
+            self.add(base)
             for indj in indi:
                 base.load(*indj)
+            else:
+                self.tab(base, text=indj)
 
     def next(self, func):
         """
