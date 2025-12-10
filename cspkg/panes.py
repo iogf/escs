@@ -1,6 +1,7 @@
 from tkinter import PanedWindow, RAISED, BOTH, HORIZONTAL
 from tkinter import Frame, Scrollbar, Y, VERTICAL
 from cspkg.xstr import Xstr
+from os.path import basename
 
 class PanedHorizontalWindow(PanedWindow):
     """
@@ -59,6 +60,7 @@ class PanedVerticalWindow(PanedWindow):
 
         base = PanedHorizontalWindow(master=self)
         self.add(base)
+
         xstr = base.create(filename)
         return xstr
 

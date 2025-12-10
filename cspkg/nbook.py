@@ -35,11 +35,9 @@ class EscsBook(Notebook):
         for indi in args:
             base = PanedVerticalWindow(master=self)
             base.pack(side='left', expand=True, fill=BOTH)
-            self.add(base)
+            self.add(base, text=basename(indi[-1][-1]))
             for indj in indi:
                 base.load(*indj)
-            else:
-                self.tab(base, text=indj)
 
     def next(self, func):
         """

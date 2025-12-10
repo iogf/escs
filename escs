@@ -34,7 +34,7 @@ if __name__ == '__main__':
     xstr = root.note.create('null')
     xstr.focus_set()
 
-    if lst is not []: 
+    if len(lst) > 0: 
         root.note.load(*lst)
 
     def tk_xhook(exctype, value, tb):

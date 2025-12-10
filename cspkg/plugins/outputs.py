@@ -11,7 +11,6 @@ class OutputController(Plugin):
 
     def del_output(self, event):
         logwrapper.del_chan(self.xstr)
-        print('logwrapper outputs:', logwrapper.outputs)
 
 class Outputs(Plugin):
     def __init__(self, xstr):
