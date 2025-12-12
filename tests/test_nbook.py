@@ -14,14 +14,7 @@ class TestEscsBook(unittest.TestCase):
         self.assertEqual(root.note.tab(tab_name, 'text'), 'test0')
 
     def test1(self):
-        self.xstr1 = root.note.create('test1')
-        root.note.select(self.xstr1.master.master.master)
-        tab_name = root.nametowidget(self.xstr1.master.master.master)
-        
-        self.assertEqual(root.note.tab(tab_name, 'text'), 'test1')
-
-    def test2(self):
-        self.xstr2 = root.note.create('test2')
+        self.xstr2 = root.note.create('test1')
         root.note.select(self.xstr2.master.master.master)
         self.xstr2.focus_set()
 

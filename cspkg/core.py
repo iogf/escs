@@ -153,11 +153,11 @@ class TopbarStatus(Plugin):
         self.add_kmap(CoreNS, Main, 
         '<FocusIn>', self.update_title, True)
 
-        self.add_kmap(CoreNS, Main, 
-        '<<LoadData>>', self.update_title, True)
-
-        self.add_kmap(CoreNS, Main, 
-        '<<SaveData>>', self.update_title, True)
+        # self.add_kmap(CoreNS, Main, 
+        # '<<LoadData>>', self.update_title, True)
+# 
+        # self.add_kmap(CoreNS, Main, 
+        # '<<SaveData>>', self.update_title, True)
 
     def update_title(self, event):
         root = self.xstr.winfo_toplevel()
@@ -212,11 +212,11 @@ class TabStatus(Plugin):
         self.add_kmap(CoreNS, Main, 
         '<FocusIn>', self.update_tabname, True)
 
-        self.add_kmap(CoreNS, Main, 
-        '<<SaveData>>', self.update_tabname, True)
-
-        self.add_kmap(CoreNS, Main, 
-        '<<LoadData>>', self.update_tabname, True)
+        # self.add_kmap(CoreNS, Main, 
+        # '<<SaveData>>', self.update_tabname, True)
+# 
+        # self.add_kmap(CoreNS, Main, 
+        # '<<LoadData>>', self.update_tabname, True)
 
     def update_tabname(self, event):
         root = self.xstr.winfo_toplevel()

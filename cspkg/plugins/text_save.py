@@ -53,7 +53,6 @@ class TextSave(Plugin):
             root.status.set_msg('It failed to save data.')
         else:
             root.status.set_msg('Data saved.')
-        return None
         
     def save(self, event):
         """
@@ -65,7 +64,6 @@ class TextSave(Plugin):
             root.status.set_msg('It failed to save data.')
         else:
             root.status.set_msg('Data saved.')
-        return None
     
 install = TextSave
 

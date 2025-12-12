@@ -123,9 +123,14 @@ class Xstr(Text):
             data = data.decode(self.charset)
         except UnicodeDecodeError:
             self.charset = ''
-
         self.delete('1.0', 'end')
+
+        # When data = '' and the actual instance is not visibile <<LoadData>> 
+        # is not spawned unless we call self.edit_modified(True) to force existence 
+        # of the widget.
+        self.edit_modified(True)
         self.insert('end', data)
+        self.edit_modified(False)
         self.mark_set('insert', '1.0')
         self.see('insert')
         self.event_generate('<<LoadData>>')

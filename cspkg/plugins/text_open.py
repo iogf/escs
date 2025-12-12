@@ -27,8 +27,7 @@ class TextOpen(Plugin):
         super().__init__(xstr)
         self.xstr = xstr
 
-        self.add_kmap(TextOpenNS, 
-        Main, '<Alt-D>', self.ask_and_load)
+        self.add_kmap(TextOpenNS, Main, '<Alt-D>', self.ask_and_load)
     
     def ask_and_load(self, event):
         """
