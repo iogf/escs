@@ -107,6 +107,19 @@ class TestEscsBook(unittest.TestCase):
 
         self.assertEqual(xinsts1[0].filename, file4.name)
         self.assertEqual(xinsts1[1].filename, file5.name)
+        file0.close()
+        file1.close()
+        file2.close()
+        file3.close()
+        file4.close()
+        file5.close()
+        
+        # os.remove(file0.name)
+        # os.remove(file1.name)
+        # os.remove(file2.name)
+        # os.remove(file3.name)
+        # os.remove(file4.name)
+        # os.remove(file5.name)
 
         # files1 = []
         # for indi in tabs:

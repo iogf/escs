@@ -1,6 +1,5 @@
 from cspkg.fwin import LinePicker
-from cspkg.core import Plugin, Namespace
-from cspkg.plugins.normal_mode import Normal
+from cspkg.core import Plugin, Namespace, Main
 from cspkg.scan import Scan
 from itertools import groupby
 from re import escape
@@ -14,8 +13,8 @@ class WordSearch(Plugin):
 
     def __init__(self, xstr):
         super().__init__(xstr)
-        self.add_kmap(WordSearchNS, Normal, '<Key-M>', self.match)
-        self.add_kmap(WordSearchNS, Normal, '<Key-V>', 
+        self.add_kmap(WordSearchNS, Main, '<Control-c>', self.match)
+        self.add_kmap(WordSearchNS, Main, '<Control-v>', 
         lambda event: self.options.display(self.xstr))
 
     def match(self, event):

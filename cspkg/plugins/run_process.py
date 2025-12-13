@@ -12,7 +12,7 @@ class RunProcessNS(Namespace):
 class RunProcess(Plugin):
     def __init__(self, xstr):
         super().__init__(xstr)
-        self.add_kmap(RunProcessNS, Normal, '<Key-Z>',  self.run)
+        self.add_kmap(RunProcessNS, Normal, '<Key-M>',  self.run)
 
     def run(self, event):
         scan = Scan()

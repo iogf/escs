@@ -27,6 +27,9 @@ class QSearch(Plugin):
         self.add_kmap(QSearchNS, Main, '<Alt-k>', self.backwards)
         self.add_kmap(QSearchNS, Main, '<Alt-j>', self.forwards)
 
+        self.add_kmap(QSearchNS, Main, '<Key-bracketleft>', self.backwards)
+        self.add_kmap(QSearchNS, Main, '<Key-bracketright>', self.forwards)
+
     @classmethod
     def c_appearance(cls, confs):
         """

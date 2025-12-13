@@ -9,8 +9,8 @@ class BlockSel(Plugin):
     def __init__(self, xstr):
         super().__init__(xstr)
 
-        self.add_kmap(BlockSelNS, Normal, '<Control-v>', self.sel_add)
-        self.add_kmap(BlockSelNS, Normal, '<Control-x>', self.sel_del)
+        self.add_kmap(BlockSelNS, Normal, '<Key-V>', self.sel_add)
+        self.add_kmap(BlockSelNS, Normal, '<Key-X>', self.sel_del)
 
     def sel_del(self, event):
         index0 = self.xstr.index('(SEL_MARK)')
