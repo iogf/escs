@@ -43,7 +43,6 @@ class TextSave(Plugin):
         """
     
         filename = asksaveasfilename()
-    
         if not filename: 
             return None
 
