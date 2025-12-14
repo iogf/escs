@@ -26,4 +26,27 @@ class DataEvent:
         if event.char:
             self.widget.event_generate('<<Data>>')
 
+class Echo:
+    """
+
+    """
+
+    def __init__(self, xstr):
+        self.xstr = xstr
+        self.bind('<BackSpace>', self.on_backspace)
+        self.bind('<Key>', self.dispatch)
+
+    def dispatch(self, event):
+        if event.char:  
+            self.on_char(event.char)
+
+    def on_char(self, char):
+        self.xstr.insert('insert', char)
+
+    def on_backspace(self, event):
+        self.xstr.delete('insert -1c', 'insert')
+        self.on_delete(event)
+
+    def on_delete(self, event):
+        pass
 

@@ -1,8 +1,7 @@
 from tkinter import Listbox, Toplevel,  BOTH, END, TOP, ACTIVE, Text, LEFT, SCROLL
-from vyapp.regutils import match_sub_pattern
-from vyapp.mixins import Echo
+from cspkg.tools import match_sub_pattern
+from cspkg.mixins import Echo
 from os.path import relpath
-from cspkg.xstr import Xstr
 from cspkg.start import root
 
 class MatchBox(Listbox):
@@ -375,7 +374,7 @@ class CompletionWindow(FloatingWindow):
         self.text.bind('<Alt-o>', lambda evenet: 
         self.text.yview(SCROLL, -1, 'page'), add=True)
 
-        self.box.bind('<F1>', lambda event: self.docs_window())
+        self.box.bind('<Alt-h>', lambda event: self.docs_window())
 
     def options_window(self, event):
         self.text.pack_forget()
