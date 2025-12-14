@@ -157,7 +157,28 @@ class TestEscsBook(unittest.TestCase):
         self.assertTrue(tab_names1, tab_names2)
 
     def test4(self):
-        xstr1 = root.note.create('test1')
+        xstr0 = root.note.create('alpha')
+        xstr1 = root.note.create('beta')
+        xstr2 = root.note.create('gamma')
+        xstr3 = root.note.create('zeta')
+
+        root.note.select(4)
+        lm0 = lambda data: 'a' in data
+
+        tab_names0 = (root.note.tab(ind, 'text') 
+        for ind in root.note.next(lm0))
+
+        tab_names1 = ('zeta', 'gamma', 'beta', 'alpha')
+        self.assertTrue(tab_names0, tab_names1)
+
+        root.note.select(1)
+        lm1 = lambda data: 'ta' in data
+
+        tab_names1 = (root.note.tab(ind, 'text') 
+        for ind in root.note.next(lm1))
+
+        tab_names2 = ('zeta', 'beta')
+        self.assertTrue(tab_names1, tab_names2)
 
 if __name__ == '__main__':
     unittest.main()
