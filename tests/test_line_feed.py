@@ -29,6 +29,7 @@ class TestPythonMode(unittest.TestCase):
         self.assertEqual(self.mod0.mode, Insert)
         self.assertEqual(self.xstr.get('3.0', 'insert lineend'), '')
         self.xstr.event_generate('<Escape>')
+        self.assertEqual(self.mod1.mode, Normal)
 
     def test1(self):
         self.xstr.mark_set('insert', '1.0')
@@ -36,6 +37,7 @@ class TestPythonMode(unittest.TestCase):
         self.assertEqual(self.mod0.mode, Insert)
         self.assertEqual(self.xstr.get('1.0', 'insert lineend'), '')
         self.xstr.event_generate('<Escape>')
+        self.assertEqual(self.mod1.mode, Normal)
 
 if __name__ == '__main__':
     unittest.main()
