@@ -11,10 +11,7 @@ class GolangMode(Plugin):
     def __init__(self, xstr):
         super().__init__(xstr)
         self.add_kmap(GolangModeNS, Normal, 
-        '<Key-numbersign>', self.golang_mode)
-
-    def golang_mode(self, event):
-        self.chmode(Golang)
+        '<Key-numbersign>', lambda event: self.chmode(Golang))
 
 install = GolangMode
 
