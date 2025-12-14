@@ -8,28 +8,22 @@ import unittest
 
 class TestEscsBook(unittest.TestCase):
     def test0(self):
-        self.xstr0 = root.note.create('test0')
-        root.note.select(self.xstr0.master.master.master)
+        xstr = root.note.create('test0')
+        root.note.select(xstr.master.master.master)
 
-        tab_name = root.nametowidget(self.xstr0.master.master.master)
+        tab_name = root.nametowidget(xstr.master.master.master)
         self.assertEqual(root.note.tab(tab_name, 'text'), 'test0')
         root.note.forget(0)
 
     def test1(self):
-        self.xstr2 = root.note.create('test1')
-        root.note.select(self.xstr2.master.master.master)
+        file = tempfile.NamedTemporaryFile()
 
-        home = os.path.expanduser('~')
-        filename = os.path.join(home, 'escs-tests')
-        self.xstr2.insert('end', 'Escs tests\n')
-        self.xstr2.save_data_as(filename)
+        xstr = root.note.open(file.name)
+        root.note.select(xstr.master.master.master)
 
-        self.xstr3 = root.note.open(filename)
-        root.note.select(self.xstr3.master.master.master)
-
-        tab_name = root.nametowidget(self.xstr3.master.master.master)
-        self.assertEqual(root.note.tab(tab_name, 'text'), 'escs-tests')
-        root.note.forget(0)
+        tab_name = root.nametowidget(xstr.master.master.master)
+        self.assertEqual(root.note.tab(tab_name, 'text'), basename(file.name))
+        file.close()
         root.note.forget(0)
 
     def test2(self):
@@ -55,10 +49,10 @@ class TestEscsBook(unittest.TestCase):
         root.note.load(*files0)
 
         self.assertEqual(root.note.tab(0, 'text'), 
-        os.path.basename(file2.name))
+        basename(file2.name))
 
         self.assertEqual(root.note.tab(1, 'text'), 
-        os.path.basename(file5.name))
+        basename(file5.name))
 
         tabs = root.note.tabs()
         tab0 = root.nametowidget(tabs[0])
@@ -139,6 +133,31 @@ class TestEscsBook(unittest.TestCase):
                     # files2.append(indz)
 # 
         # self.assertEqual(files1, files2)
+
+    def test3(self):
+        xstr0 = root.note.create('alpha')
+        xstr1 = root.note.create('beta')
+        xstr2 = root.note.create('gamma')
+        xstr3 = root.note.create('zeta')
+        lm0 = lambda data: 'a' in data
+
+        tab_names0 = (root.note.tab(ind, 'text') 
+        for ind in root.note.next(lm0))
+
+        tab_names1 = ('alpha', 'beta', 'gamma', 'zeta')
+        self.assertTrue(tab_names0, tab_names1)
+
+        root.note.select(1)
+        lm1 = lambda data: 'ta' in data
+
+        tab_names1 = (root.note.tab(ind, 'text') 
+        for ind in root.note.next(lm1))
+
+        tab_names2 = ('beta', 'zeta')
+        self.assertTrue(tab_names1, tab_names2)
+
+    def test4(self):
+        xstr1 = root.note.create('test1')
 
 if __name__ == '__main__':
     unittest.main()
