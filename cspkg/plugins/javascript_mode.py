@@ -11,10 +11,7 @@ class JavascriptMode(Plugin):
     def __init__(self, xstr):
         super().__init__(xstr)
         self.add_kmap(JavascriptModeNS, Normal, 
-        '<Key-percent>', self.Javascript_mode)
-
-    def Javascript_mode(self, event):
-        self.chmode(Javascript)
+        '<Key-percent>', lambda event: self.chmode(Javascript))
 
 install = JavascriptMode
 
