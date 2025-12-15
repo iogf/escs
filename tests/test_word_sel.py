@@ -20,6 +20,8 @@ class TestWordSel(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
+        root.note.forget(0)
+
         # cls.xstr.master.master.master.destroy()
         pass
 

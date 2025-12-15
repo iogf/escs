@@ -19,7 +19,7 @@ class TestNormalMode(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        pass
+        root.note.forget(0)
 
     def test0(self):
         self.mod.chmode(TestMode)

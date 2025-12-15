@@ -17,6 +17,8 @@ class TestInsertMode(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
+        root.note.forget(0)
+
         pass
 
     def test0(self):

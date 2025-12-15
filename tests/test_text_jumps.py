@@ -19,14 +19,12 @@ class TestTextJumps(unittest.TestCase):
         cls.xstr.focus_set()
         cls.xstr.insert('end', 'Text start test.\n' * 10)
         root.update() 
-
-    def setUp(self):
-        root.update() 
-
         pass
 
-    def tearDown(self):
-        self.xstr.update()
+    @classmethod
+    def tearDownClass(cls):
+        cls.xstr.update()
+        root.note.forget(0)
 
     def test0(self):
         self.xstr.mark_set('insert', 'end')
