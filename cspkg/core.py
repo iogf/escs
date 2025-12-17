@@ -94,10 +94,12 @@ class Plugin:
         self.mode = mode
         self.xstr.event_generate('<<Chmode>>')
 
-def chkmap(namespace, kmap0, kmap1, spread=False, add=False):
+def chkmap(namespace, kmap0, kmap1=None, spread=False, add=False):
     kdict = kscheme.setdefault(namespace, {})
     klist = kdict.setdefault(kmap0, [])
-    klist.append((kmap1, spread, add))
+
+    if kmap1 is not None:
+        klist.append((kmap1, spread, add))
 
 class EscsApp(Tk):
     def __init__(self, *args, **kwargs):
