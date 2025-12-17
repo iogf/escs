@@ -11,7 +11,7 @@ class TestPythonMode(unittest.TestCase):
         cls.xstr = root.note.create('Tests')
         cls.mod0 = PythonMode(cls.xstr)
         cls.mod1 = NormalMode(cls.xstr)
-        cls.xstr.insert('end', 'PythonMode plugin tests.\n' * 10)
+        cls.xstr.insert('end', 'PythonMode plugin test.\n' * 10)
         root.note.select(cls.xstr.master.master.master)
         cls.xstr.focus_set()
         root.update() 

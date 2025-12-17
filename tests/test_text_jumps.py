@@ -17,7 +17,7 @@ class TestTextJumps(unittest.TestCase):
         cls.mod.chmode(Normal)
         root.note.select(cls.xstr.master.master.master)
         cls.xstr.focus_set()
-        cls.xstr.insert('end', 'Text start test.\n' * 10)
+        cls.xstr.insert('end', 'TextJumps plugin test.\n' * 10)
         root.update() 
         pass
 
@@ -80,10 +80,10 @@ class TestTextJumps(unittest.TestCase):
     def test8(self):
         self.xstr.mark_set('insert', '1.0')
         self.xstr.event_generate('<Alt-l>')
-        self.assertEqual(self.xstr.index('insert'), '1.4')
+        self.assertEqual(self.xstr.index('insert'), '1.9')
 
         self.xstr.event_generate('<Alt-l>')
-        self.assertEqual(self.xstr.index('insert'), '1.10')
+        self.assertEqual(self.xstr.index('insert'), '1.16')
 
     def test9(self):
         self.xstr.mark_set('insert', '1.0 lineend')
@@ -91,10 +91,10 @@ class TestTextJumps(unittest.TestCase):
         self.xstr.event_generate('<Alt-h>')
         self.xstr.event_generate('<Alt-h>')
 
-        self.assertEqual(self.xstr.index('insert'), '1.10')
+        self.assertEqual(self.xstr.index('insert'), '1.16')
 
         self.xstr.event_generate('<Alt-h>')
-        self.assertEqual(self.xstr.index('insert'), '1.4')
+        self.assertEqual(self.xstr.index('insert'), '1.9')
 
     def test10(self):
         self.xstr.mark_set('insert', 'end linestart')

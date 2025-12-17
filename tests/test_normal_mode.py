@@ -12,7 +12,7 @@ class TestNormalMode(unittest.TestCase):
     def setUpClass(cls):
         cls.xstr = root.note.create('Tests')
         cls.mod = NormalMode(cls.xstr)
-        cls.xstr.insert('end', 'NormalMode plugin tests.\n' * 10)
+        cls.xstr.insert('end', 'NormalMode plugin test.\n' * 10)
         root.note.select(cls.xstr.master.master.master)
         cls.xstr.focus_set()
         root.update() 

@@ -11,7 +11,7 @@ class TestWordSel(unittest.TestCase):
         cls.mod0 = NormalMode(cls.xstr)
         cls.mod1 = WordSel(cls.xstr)
 
-        cls.xstr.insert('end', 'WordSel    plugin test.\n' * 10)
+        cls.xstr.insert('end', 'WordSel    plugin    test.\n' * 10)
         root.note.select(cls.xstr.master.master.master)
 
         cls.xstr.focus_set()

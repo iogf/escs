@@ -12,7 +12,7 @@ class TestLineIndex(unittest.TestCase):
         cls.mod0 = NormalMode(cls.xstr)
         cls.mod1 = LineIndex(cls.xstr)
 
-        cls.xstr.insert('end', 'TestLineIndex plugin test.\n' * 10)
+        cls.xstr.insert('end', 'LineIndex plugin test.\n' * 10)
         root.note.select(cls.xstr.master.master.master)
         cls.xstr.focus_set()
         root.update() 
