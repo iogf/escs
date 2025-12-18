@@ -60,9 +60,6 @@ class Plugin:
         """
         """
 
-        if spread is False:
-            handle = mkwrapper(handle)
-
         data = kscheme.setdefault(namespace, 
         {(mode, seq):[((mode, seq), spread, add)]})
         for kmap, spread, add  in data.setdefault(
@@ -71,6 +68,9 @@ class Plugin:
 
     def hook_class(self, mode, seq, handle, 
         spread=False, add=True):
+
+        if spread is False:
+            handle = mkwrapper(handle)
 
         code = 'MODE:%s:%s:%s' % (self.xstr, 
         mode.__module__, mode.__name__)
