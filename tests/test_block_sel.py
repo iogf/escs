@@ -40,8 +40,6 @@ class TestWordSel(unittest.TestCase):
 
         # It removes selection in block from '2.0' to '4.3'.
         self.xstr.mark_set('insert', '2.0')
-        self.xstr.event_generate('<Key-g>')
-
         self.xstr.mark_set('insert', '4.3')
         self.xstr.event_generate('<Key-X>')
 
