@@ -80,5 +80,29 @@ class TestWordSel(unittest.TestCase):
                 ranges[ind], ranges[ind+1])), 6)
         self.assertEqual(len(ranges)/2, 8)
 
+        self.xstr.event_generate('<Escape>')
+
+    def test1(self):
+        self.xstr.mark_set('insert', '9.8')
+        self.xstr.event_generate('<Key-g>')
+
+        self.xstr.mark_set('insert', '3.5')
+        self.xstr.event_generate('<Key-V>')
+
+        ranges = self.xstr.tag_ranges('sel')
+
+        # Make sure it has length 6.
+        for ind in range(0, len(ranges), 2):
+            self.assertEqual(len(self.xstr.get(
+                ranges[ind], ranges[ind+1])), 3)
+        self.assertEqual(len(ranges)/2, 7)
+
+        # Removes all block selection.
+        self.xstr.mark_set('insert', '3.5')
+        self.xstr.event_generate('<Key-X>')
+
+        ranges = self.xstr.tag_ranges('sel')
+        self.assertEqual(ranges, ())
+
 if __name__ == '__main__':
     unittest.main()
