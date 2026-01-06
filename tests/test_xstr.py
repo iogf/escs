@@ -96,6 +96,11 @@ class TestXstr(unittest.TestCase):
         self.assertEqual(len(lst3), 1)
         self.assertIn(self.xstr, lst3)
 
+    def test3(self):
+        """
+        Test Xstr.replace_ranges method. Such a method is used to replace
+        ranges of text that belong to a given tag name.
+        """
 if __name__ == '__main__':
     unittest.main()
 

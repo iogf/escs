@@ -19,10 +19,6 @@ class Xstr(Text):
         self.tabsize = 4
         self.project  = ''
 
-    def settab(self, tabsize, tabchar):
-        self.tabchar = tabchar
-        self.tabsize = tabsize
-
     def min(self, index0, index1):
         """
         """
@@ -486,9 +482,8 @@ class Xstr(Text):
         """
 
         for indi in Xstr.xstr_widgets(wid):
-            it = indi.find(regex, index, stopindex, *args, **kwargs)
-    
-            for indj in it:
+            for indj in indi.find(regex, index, 
+                    stopindex, *args, **kwargs):
                 yield indi, indj
 
     def check_brackets(self, lhs, rhs, index, max, backwards=False):

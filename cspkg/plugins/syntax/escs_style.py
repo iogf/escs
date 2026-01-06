@@ -37,7 +37,7 @@ class EscsStyle(Style):
 
         Name:                      "#C4C4C4",
         Name.Attribute:            "#C4C4C4",
-        Name.Builtin:              "#F7F7F0",
+        Name.Builtin:              "#C4C4C4",
         Name.Class:                "#FCF805",
         Name.Function:             "#FCF805",
         Name.Constant:             "#C4C4C4",
