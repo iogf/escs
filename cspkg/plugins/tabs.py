@@ -20,20 +20,12 @@ class Tabs(Plugin):
     def __init__(self, xstr):
         super().__init__(xstr)
 
-        self.add_kmap(TabsNS, Main, 
-        '<Alt-E>', self.load_tab)
+        self.add_kmap(TabsNS, Main, '<Alt-E>', self.load_tab)
+        self.add_kmap(TabsNS, Main, '<Alt-R>', self.create_tab)
 
-        self.add_kmap(TabsNS, Main, 
-        '<Alt-R>', self.create_tab)
-
-        self.add_kmap(TabsNS, Main, 
-        '<Alt-x>', self.remove_tab)
-
-        self.add_kmap(TabsNS, Main, 
-        '<Alt-o>', self.select_left)
-
-        self.add_kmap(TabsNS, Main, 
-        '<Alt-p>', self.select_right)
+        self.add_kmap(TabsNS, Main, '<Alt-x>', self.remove_tab)
+        self.add_kmap(TabsNS, Main, '<Alt-o>', self.select_left)
+        self.add_kmap(TabsNS, Main, '<Alt-p>', self.select_right)
 
     def load_tab(self, event):
         """

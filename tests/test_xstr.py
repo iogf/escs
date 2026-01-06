@@ -46,6 +46,56 @@ class TestXstr(unittest.TestCase):
 
         pass
 
+    def test2(self):
+        """ 
+        Create multiple Xstr instances along panes and tabs then
+        check whether Xstr.xstr_widgets and Xstr.get_opened_files work correctly.
+        """
+
+        xstr0 = self.xstr.master.master.create('Xstr0')
+        xstr1 = self.xstr.master.master.create('Xstr1')
+
+        xstr2 = self.xstr.master.master.master.create('Xstr2')
+
+        xstr3 = xstr2.master.master.create('Xstr3')
+        lst0 = list(self.xstr.xstr_widgets(root))
+
+        self.assertEqual(len(lst0), 5)
+
+        self.assertIn(xstr0, lst0)
+        self.assertIn(xstr1, lst0)
+        self.assertIn(xstr2, lst0)
+        self.assertIn(xstr3, lst0)
+
+        # Create tabs and check if if Xstr.xstr_widgets returns
+        # the correct Xstr instances.
+        xstr4 = root.note.create('Xstr4')
+        xstr5 = root.note.create('Xstr5')
+
+        lst1 = list(self.xstr.xstr_widgets(root))
+        self.assertIn(xstr4, lst1)
+        self.assertIn(xstr5, lst1)
+        self.assertEqual(len(lst1), 7)
+
+        lst2 = self.xstr.get_opened_files(root)
+        self.assertEqual(len(lst1), 7)
+
+        for indi, indj in lst2.items():
+            self.assertIn(indj, lst1)
+
+        xstr0.master.destroy()
+        xstr1.master.destroy()
+
+        xstr2.master.master.destroy()
+        xstr3.master.destroy()
+        
+        xstr4.master.master.master.destroy()
+        xstr5.master.master.master.destroy()
+
+        lst3 = list(self.xstr.xstr_widgets(root))
+        self.assertEqual(len(lst3), 1)
+        self.assertIn(self.xstr, lst3)
+
 if __name__ == '__main__':
     unittest.main()
 
