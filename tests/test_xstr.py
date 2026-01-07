@@ -1,6 +1,7 @@
 from cspkg.plugins.normal_mode import Normal
 from cspkg.core import Main, Mode
 from cspkg.start import root
+import random
 import unittest
 import time
 
@@ -101,6 +102,34 @@ class TestXstr(unittest.TestCase):
         Test Xstr.replace_ranges method. Such a method is used to replace
         ranges of text that belong to a given tag name.
         """
+
+        self.xstr.delete('1.0', 'end')
+        self.xstr.append('9985', 'sel')
+        self.xstr.insert('end', '1234')
+        self.xstr.append('9985', 'sel')
+        self.xstr.insert('end', '8472')
+        self.xstr.append('9985', 'sel')
+        self.xstr.replace_ranges('sel', '9985', '*')
+        data0 = self.xstr.get('1.0', 'end')
+        self.assertEqual(data0, '*1234*8472*\n')
+        self.xstr.tag_add('sel', '1.0', 'end')
+        self.xstr.replace_ranges('sel', '\*', '9985')
+
+        data1 = self.xstr.get('1.0', 'end')
+        self.assertEqual(data1, '99851234998584729985\n')
+
+        self.xstr.insert('end', '\n')
+        self.xstr.append('5', 'sel')
+        self.xstr.insert('end', '1232')
+        self.xstr.append('6', 'sel')
+        self.xstr.insert('end', '9421')
+        self.xstr.append('7', 'sel')
+
+        self.xstr.replace_ranges('sel', '5|6|7', '*')
+
+        data2 = self.xstr.get('2.0', 'end')
+        self.assertEqual(data2, '*1232*9421*\n')
+        self.assertEqual(self.xstr.tag_ranges('sel'), ())
 if __name__ == '__main__':
     unittest.main()
 
