@@ -51,7 +51,6 @@ class QSearch(Plugin):
         '<<Data>>': self.update, 
         '<BackSpace>': self.update,
         '<Escape>':  self.end_search})
-        return 'break'
 
     def toggle_nocase(self, wid):
         self.nocase = False if self.nocase else True
@@ -77,7 +76,6 @@ class QSearch(Plugin):
         '<<Data>>': self.update, 
         '<BackSpace>': self.update,
         '<Escape>':  self.end_search})
-        return 'break'
 
     def update(self, wid):
         """

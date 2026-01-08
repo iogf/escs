@@ -54,7 +54,6 @@ class TabSearch(Plugin):
         root.title('Escs %s' % wid.fwidget.filename)
 
     def stop(self, wid):
-        root.note.focus_restore()    
         return True
 
 install = TabSearch

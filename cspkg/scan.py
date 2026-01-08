@@ -54,7 +54,8 @@ class InputBox:
     def done(self):
         self.entry.destroy()
         self.frame.destroy()
-        self.xstr.focus_set()
+        # self.xstr.focus_set()
+        root.note.focus_restore()
 
 class Read(InputBox, DataEvent, IdleEvent):
     def __init__(self, events={}, default_data='', complete_words=[]):

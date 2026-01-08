@@ -110,8 +110,10 @@ class TestXstr(unittest.TestCase):
         self.xstr.insert('end', '8472')
         self.xstr.append('9985', 'sel')
         self.xstr.replace_ranges('sel', '9985', '*')
+
         data0 = self.xstr.get('1.0', 'end')
         self.assertEqual(data0, '*1234*8472*\n')
+
         self.xstr.tag_add('sel', '1.0', 'end')
         self.xstr.replace_ranges('sel', '\*', '9985')
 
@@ -126,10 +128,11 @@ class TestXstr(unittest.TestCase):
         self.xstr.append('7', 'sel')
 
         self.xstr.replace_ranges('sel', '5|6|7', '*')
-
         data2 = self.xstr.get('2.0', 'end')
+
         self.assertEqual(data2, '*1232*9421*\n')
         self.assertEqual(self.xstr.tag_ranges('sel'), ())
+
 if __name__ == '__main__':
     unittest.main()
 
