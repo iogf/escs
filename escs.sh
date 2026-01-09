@@ -140,5 +140,8 @@ mkdir build
 cd build
 cmake ../cpp -DUSE_PYTHON2=OFF -DUSE_LIBCLANG_COMPLETER=ON
 make VERBOSE=1
+##############################################################################
+# Run tests.
 
-
+cd projects/escs-code/tests
+python -m unittest test_clipboard.py
