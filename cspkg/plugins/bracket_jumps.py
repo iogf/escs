@@ -8,8 +8,8 @@ class BracketJumpsNS(Namespace):
 class BracketJumps(Plugin):
     def __init__(self, xstr):
         super().__init__(xstr)
-        self.add_kmap(BracketJumpsNS, Normal, '<Key-P>', self.next_sym)
-        self.add_kmap(BracketJumpsNS, Normal, '<Key-O>', self.prev_sym)
+        self.add_kmap(BracketJumpsNS, Normal, '<Key-bracketright>', self.next_sym)
+        self.add_kmap(BracketJumpsNS, Normal, '<Key-bracketleft>', self.prev_sym)
 
         self.chars = ('(', ')', '[', ']', '{', '}')
 
@@ -17,7 +17,7 @@ class BracketJumps(Plugin):
         """
         Place the cursor at the next occurrence of one of the chars.
         """
-
+        
         chars = [escape(ind) for ind in self.chars]
         REG   = '|'.join(chars)
 
