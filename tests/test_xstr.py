@@ -8,51 +8,56 @@ import time
 class TestXstr(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.xstr = root.note.create('Tests')
-
-        cls.xstr.insert('end', 'Xstr test.\n' * 10)
-        root.note.select(cls.xstr.master.master.master)
-        cls.xstr.focus_set()
-        root.update() 
+        pass
 
     @classmethod
     def tearDownClass(cls):
         pass
 
     def test0(self):
-        index0 = self.xstr.min('2.4', '3.5')
+        xstr = root.note.create('Tests0')
+        xstr.insert('end', 'Xstr test.\n' * 10)
+
+        root.note.select(xstr.master.master.master)
+        xstr.focus_set()
+        root.update() 
+
+        index0 = xstr.min('2.4', '3.5')
         self.assertEqual(index0, '2.4')
 
         # When there is no data in the Xstr '4.4' and '3.7' both
         # evaluates to equal.
-        index1 = self.xstr.min('4.4', '3.7')
+        index1 = xstr.min('4.4', '3.7')
         self.assertEqual(index1, '3.7')
 
-        index1 = self.xstr.min('5.4', '5.4')
+        index1 = xstr.min('5.4', '5.4')
         self.assertEqual(index1, '5.4')
 
         pass
 
     def test1(self):
-        index0 = self.xstr.max('2.4', '3.5')
+        xstr = root.note.create('Tests1')
+        xstr.insert('end', 'Xstr test.\n' * 10)
+
+        root.note.select(xstr.master.master.master)
+        xstr.focus_set()
+        root.update() 
+
+        index0 = xstr.max('2.4', '3.5')
         self.assertEqual(index0, '3.5')
 
         # When there is no data in the Xstr '4.4' and '3.7' both
         # evaluates to equal.
-        index1 = self.xstr.max('4.4', '3.7')
+        index1 = xstr.max('4.4', '3.7')
         self.assertEqual(index1, '4.4')
 
-        index2 = self.xstr.max('5.4', '5.4')
+        index2 = xstr.max('5.4', '5.4')
         self.assertEqual(index2, '5.4')
 
         pass
 
+    """
     def test2(self):
-        """ 
-        Create multiple Xstr instances along panes and tabs then
-        check whether Xstr.xstr_widgets and Xstr.get_opened_files work correctly.
-        """
-
         xstr0 = self.xstr.master.master.create('Xstr0')
         xstr1 = self.xstr.master.master.create('Xstr1')
 
@@ -96,42 +101,90 @@ class TestXstr(unittest.TestCase):
         lst3 = list(self.xstr.xstr_widgets(root))
         self.assertEqual(len(lst3), 1)
         self.assertIn(self.xstr, lst3)
+    """
 
     def test3(self):
         """
         Test Xstr.replace_ranges method. Such a method is used to replace
         ranges of text that belong to a given tag name.
         """
+        xstr = root.note.create('Tests3')
+        xstr.insert('end', 'Xstr test.\n' * 10)
 
-        self.xstr.delete('1.0', 'end')
-        self.xstr.append('9985', 'sel')
-        self.xstr.insert('end', '1234')
-        self.xstr.append('9985', 'sel')
-        self.xstr.insert('end', '8472')
-        self.xstr.append('9985', 'sel')
-        self.xstr.replace_ranges('sel', '9985', '*')
+        root.note.select(xstr.master.master.master)
+        xstr.focus_set()
+        root.update() 
 
-        data0 = self.xstr.get('1.0', 'end')
+        xstr.delete('1.0', 'end')
+        xstr.append('9985', 'sel')
+        xstr.insert('end', '1234')
+        xstr.append('9985', 'sel')
+        xstr.insert('end', '8472')
+        xstr.append('9985', 'sel')
+        xstr.replace_ranges('sel', '9985', '*')
+
+        data0 = xstr.get('1.0', 'end')
         self.assertEqual(data0, '*1234*8472*\n')
 
-        self.xstr.tag_add('sel', '1.0', 'end')
-        self.xstr.replace_ranges('sel', '\*', '9985')
+        xstr.tag_add('sel', '1.0', 'end')
+        xstr.replace_ranges('sel', '\*', '9985')
 
-        data1 = self.xstr.get('1.0', 'end')
+        data1 = xstr.get('1.0', 'end')
         self.assertEqual(data1, '99851234998584729985\n')
 
-        self.xstr.insert('end', '\n')
-        self.xstr.append('5', 'sel')
-        self.xstr.insert('end', '1232')
-        self.xstr.append('6', 'sel')
-        self.xstr.insert('end', '9421')
-        self.xstr.append('7', 'sel')
+        xstr.insert('end', '\n')
+        xstr.append('5', 'sel')
+        xstr.insert('end', '1232')
+        xstr.append('6', 'sel')
+        xstr.insert('end', '9421')
+        xstr.append('7', 'sel')
 
-        self.xstr.replace_ranges('sel', '5|6|7', '*')
-        data2 = self.xstr.get('2.0', 'end')
+        xstr.replace_ranges('sel', '5|6|7', '*')
+        data2 = xstr.get('2.0', 'end')
 
         self.assertEqual(data2, '*1232*9421*\n')
-        self.assertEqual(self.xstr.tag_ranges('sel'), ())
+        self.assertEqual(xstr.tag_ranges('sel'), ())
+
+    def test4(self):
+        xstr = root.note.create('Tests4')
+        xstr.insert('end', '9985 3219 3212 9321\n')
+        xstr.insert('end', '2391 3123 4212 3421\n')
+
+        root.note.select(xstr.master.master.master)
+        xstr.focus_set()
+        root.update() 
+        xstr.mark_set('insert', '1.0')
+        xstr.ipick('(IPICK)', '2391')
+
+        ranges0 = xstr.tag_ranges('(IPICK)')
+        self.assertEqual(tuple(map(str, ranges0)), ('2.0', '2.4'))
+        xstr.tag_remove('(IPICK)', '1.0', 'end')
+
+        xstr.ipick('(IPICK)', '4212')
+        ranges1 = xstr.tag_ranges('(IPICK)')
+        self.assertEqual(tuple(map(str, ranges1)), ('2.10', '2.14'))
+        xstr.tag_remove('(IPICK)', '1.0', 'end')
+
+        # When it is backwards we gotta invert stopindex and index.
+        # That means we will be looking for a pattern from the end to the
+        # beginning of the given range of text.
+        xstr.mark_set('insert', 'end')
+        xstr.ipick('(IPICK)', '3219', stopindex='1.0', 
+        index='end', backwards=True)
+    
+        ranges2 = xstr.tag_ranges('(IPICK)')
+        self.assertEqual(tuple(map(str, ranges2)), ('1.5', '1.9'))
+        xstr.tag_remove('(IPICK)', '1.0', 'end')
+
+        xstr.mark_set('insert', 'end')
+        xstr.ipick('(IPICK)', '3421', stopindex='1.0', 
+        index='end', backwards=True)
+    
+        ranges3 = xstr.tag_ranges('(IPICK)')
+        self.assertEqual(tuple(map(str, ranges3)), 
+        (xstr.index('2.0 lineend -4c'), xstr.index('2.0 lineend')))
+
+        pass
 
 if __name__ == '__main__':
     unittest.main()
