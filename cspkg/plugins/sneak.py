@@ -24,17 +24,25 @@ class Sneak(Plugin):
     def __init__(self, xstr):
         super().__init__(xstr)
 
+        self.tmp_mode = JumpNext
+        self.tmp_char = ' '
         self.add_kmap(SneakNS, Normal, '<Key-period>', self.next_mode)
         self.add_kmap(SneakNS, Normal, '<Key-comma>', self.back_mode)
+        self.add_kmap(SneakNS, Normal, '<Key-semicolon>', self.jump_pchar)
+
         self.add_kmap(SneakNS, JumpBack, '<Key>', self.jump_back)
         self.add_kmap(SneakNS, JumpNext, '<Key>', self.jump_next)
 
     def next_mode(self, event):
         self.chmode(JumpNext)
+        self.tmp_mode = JumpNext
+
         root.status.set_msg('Switched to JUMP_NEXT mode.')
 
     def back_mode(self, event):
         self.chmode(JumpBack)
+        self.tmp_mode = JumpBack
+
         root.status.set_msg('Switched to JUMP_BACK mode.')
 
     def jump_next(self, event):
@@ -42,6 +50,7 @@ class Sneak(Plugin):
         _, index0, index1 = self.xstr.isearch(char, index='insert', 
         stopindex='end', regexp=False)
 
+        self.tmp_char = char
         self.xstr.mark_set('insert', index1)
         self.xstr.see('insert')
         self.chmode(Normal)
@@ -51,11 +60,19 @@ class Sneak(Plugin):
         _, index0, index1 = self.xstr.isearch(char, index='insert', 
         stopindex='1.0', regexp=False, backwards=True)
 
+        self.tmp_char = char
         self.xstr.mark_set('insert', index0)
         self.xstr.see('insert')
         self.chmode(Normal)
 
+    def jump_pchar(self, event):
+        if self.tmp_mode == JumpNext:
+            self.xstr.mark_set('insert', self.xstr.isearch(self.tmp_char, 
+                index='insert', stopindex='end', regexp=False)[2])
+        else:
+            self.xstr.mark_set('insert', self.xstr.isearch(self.tmp_char, 
+                index='insert', stopindex='1.0', regexp=False, backwards=True)[1])
+        self.xstr.see('insert')
+
 install = Sneak
-
-
 
