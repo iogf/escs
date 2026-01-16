@@ -53,7 +53,35 @@ class TestSneak(unittest.TestCase):
         self.assertEqual(xstr.index('insert'), '1.1')
         self.assertEqual(mod0.mode, Normal)
 
-        xstr.mark_set('insert', '2.11')
+        xstr.insert('end', '881 823 821 982\n')
+        xstr.mark_set('insert', '3.0')
+
+        xstr.event_generate('<Key-period>')
+        xstr.event_generate('<Key-8>')
+        self.assertEqual(xstr.index('insert'), '3.1')
+
+        xstr.event_generate('<Key-semicolon>')
+        self.assertEqual(xstr.index('insert'), '3.2')
+
+        xstr.event_generate('<Key-semicolon>')
+        self.assertEqual(xstr.index('insert'), '3.5')
+
+        xstr.mark_set('insert', 'end')
+
+        xstr.event_generate('<Key-comma>')
+        xstr.event_generate('<Key-8>')
+        self.assertEqual(xstr.index('insert'), 
+        xstr.index('3.0 lineend -2c'))
+
+        xstr.event_generate('<Key-comma>')
+        xstr.event_generate('<Key-8>')
+        self.assertEqual(xstr.index('insert'), 
+        xstr.index('3.0 lineend -7c'))
+
+        xstr.event_generate('<Key-comma>')
+        xstr.event_generate('<Key-8>')
+        self.assertEqual(xstr.index('insert'), 
+        xstr.index('3.0 lineend -11c'))
 
         pass
 
