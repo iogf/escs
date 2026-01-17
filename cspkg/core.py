@@ -179,9 +179,11 @@ class ModeStatus(Plugin):
 
     def update_mode(self, event):
         root = self.xstr.winfo_toplevel()
+
         mode = self.xstr.bindtags()
         mode = mode[1].rsplit(':')
-        mode = mode[-1].rsplit('.')
+
+        # mode = mode[-1].rsplit('.')
         root.status.set_mode(mode[-1])
 
 class CursorStatus(Plugin):
