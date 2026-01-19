@@ -9,7 +9,7 @@ import os
 import unittest
 import time
 
-class TestEscsBook(unittest.TestCase):
+class TestTabs(unittest.TestCase):
     def test0(self):
         rcmod.extend(((Tabs, (), {}), (NormalMode, (), {})))
         xstr = root.note.create('Test')

@@ -6,7 +6,7 @@ from cspkg.plugins.pane_resize import PaneResize
 import unittest
 import time
 
-class TestQSearch(unittest.TestCase):
+class TestPaneResize(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.xstr = root.note.create('Test')

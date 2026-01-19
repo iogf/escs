@@ -7,7 +7,7 @@ from cspkg.plugins.clipboard import Clipboard
 import unittest
 import time
 
-class TestQSearch(unittest.TestCase):
+class TestClipboard(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.xstr = root.note.create('Test')

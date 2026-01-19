@@ -2,7 +2,7 @@ from cspkg.core import EscsApp
 
 import unittest
 
-class TestEscsApp(unittest.TestCase):
+class TestCore(unittest.TestCase):
     def setUp(self):
         self.root = EscsApp()
         # self.root = tk.Tk()

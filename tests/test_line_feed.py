@@ -6,7 +6,7 @@ from cspkg.start import root
 from tkinter import TclError
 import unittest
 
-class TestPythonMode(unittest.TestCase):
+class TestLineFeed(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.xstr = root.note.create('Tests')

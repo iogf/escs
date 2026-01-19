@@ -6,7 +6,7 @@ from cspkg.plugins.tab_search import TabSearch
 import unittest
 import time
 
-class TestQSearch(unittest.TestCase):
+class TestTabSearch(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.xstr0 = root.note.create('TestA 0')

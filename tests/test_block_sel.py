@@ -6,7 +6,7 @@ from cspkg.start import root
 import unittest
 from os.path import join, expanduser
 
-class TestWordSel(unittest.TestCase):
+class TestBlockSel(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.xstr = root.note.create('Tests')
