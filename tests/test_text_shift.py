@@ -1,5 +1,5 @@
 from cspkg.plugins.normal_mode import Normal, NormalModeNS, NormalMode
-from cspkg.plugins.text_shift import Shift
+from cspkg.plugins.text_shift import TextShift
 from cspkg.core import Mode, EscsApp, rcmod
 from cspkg.start import root
 from tkinter import TclError
@@ -9,7 +9,7 @@ import time
 class TestTextShift(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        rcmod.extend(((Shift, (), {}), (NormalMode, (), {})))
+        rcmod.extend(((TextShift, (), {}), (NormalMode, (), {})))
 
     @classmethod
     def tearDownClass(cls):
