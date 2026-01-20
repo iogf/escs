@@ -150,6 +150,34 @@ class TestXstr0(unittest.TestCase):
 
         pass
 
+    def test5(self):
+        """
+        Test Xstr.find method a few tests are implemented to test the
+        basic mechanism/logic is working/would work with the remaining arguments
+        that are passed to the Xstr.search method.
+        """
+
+        xstr = self.root.note.create('Tests3')
+        self.root.note.select(xstr.master.master.master)
+        xstr.focus_set()
+        self.root.update() 
+
+        xstr.insert('end', '1234 1343 5321 2934\n')
+        patterns0 = tuple(xstr.find('1', '1.0', 'end'))
+
+        for indi, indj, indz in patterns0:
+            self.assertEqual(indi == xstr.get(indj, indz) == '1', True)
+        self.assertEqual(len(patterns0), 3)
+
+        xstr.insert('end', '1234 1233 5331 3934\n')
+        patterns1 = tuple(xstr.find('3.', 'end', '2.0', backwards=True))
+
+        for indi, indj, indz in patterns1:
+            self.assertEqual((indi == xstr.get(indj, indz)), True)
+        self.assertEqual(len(patterns1), 7)
+        print(patterns1)
+        self.assertEqual(''.join(map(lambda ind: ind[0], 
+        patterns1)), '343931333 3334')
 
 class TestXstr1(unittest.TestCase):
     """
@@ -216,6 +244,7 @@ class TestXstr1(unittest.TestCase):
         lst3 = list(xstr.xstr_widgets(self.root))
         self.assertEqual(len(lst3), 1)
         self.assertIn(xstr, lst3)
+
 
 if __name__ == '__main__':
     unittest.main()
