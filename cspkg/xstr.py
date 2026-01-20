@@ -466,10 +466,10 @@ class Xstr(Text):
         return index1, index2
 
     def seq_bounds(self, index='insert'):
-        index1 = self.search(' ', index, regexp=True,
+        index1 = self.search('[\s\t]', index, regexp=True,
         stopindex='%s linestart' %index, backwards=True)
 
-        index2 = self.search(' ', index, regexp=True, 
+        index2 = self.search('[\s\t]', index, regexp=True, 
         stopindex='%s lineend' % index)
 
         index1 = '%s linestart' % index if not index1 else '%s +1c' % index1

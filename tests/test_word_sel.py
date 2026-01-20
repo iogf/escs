@@ -1,22 +1,16 @@
 from cspkg.plugins.normal_mode import Normal, NormalMode
 from cspkg.plugins.word_sel import WordSel
 from cspkg.start import root
+from cspkg.core import rcmod
+
 import unittest
 from os.path import join, expanduser
 
 class TestWordSel(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.xstr = root.note.create('Tests')
-        cls.mod0 = NormalMode(cls.xstr)
-        cls.mod1 = WordSel(cls.xstr)
-
-        cls.xstr.insert('end', 'WordSel    plugin    test.\n' * 10)
-        root.note.select(cls.xstr.master.master.master)
-
-        cls.xstr.focus_set()
-
-        root.update() 
+        rcmod.extend(((NormalMode, (), {}), (WordSel, (), {})))
+        pass
 
     @classmethod
     def tearDownClass(cls):
@@ -26,38 +20,76 @@ class TestWordSel(unittest.TestCase):
         pass
 
     def test0(self):
-        self.xstr.mark_set('insert', '1.0')
-        self.xstr.event_generate('<Key-w>')
+        xstr = root.note.create('Tests')
+        xstr.insert('end', 'ABeD1EF    E3EsJE    RDE2d.\n' * 10)
+        root.note.select(xstr.master.master.master)
+        xstr.focus_set()
+        root.update() 
 
-        ranges = self.xstr.tag_nextrange('sel', '1.0')
+        xstr.mark_set('insert', '1.0')
+        xstr.event_generate('<Key-w>')
+
+        ranges = xstr.tag_nextrange('sel', '1.0')
         self.assertEqual(ranges, ('1.0', '1.7'))
 
-        self.xstr.tag_remove('sel', '1.0', 'end')
+        xstr.tag_remove('sel', '1.0', 'end')
 
-        self.xstr.mark_set('insert', '1.7')
-        self.xstr.event_generate('<Key-w>')
+        xstr.mark_set('insert', '1.7')
+        xstr.event_generate('<Key-w>')
 
-        ranges = self.xstr.tag_nextrange('sel', '1.0')
+        ranges = xstr.tag_nextrange('sel', '1.0')
         self.assertEqual(ranges, ('1.0', '1.7'))
 
-    def test1(self):
         # Place the cursor on the blank char then
         # generates <Key-w> i.e it selects the word on the cursor.
-        self.xstr.tag_remove('sel', '1.0', 'end')
-        self.xstr.mark_set('insert', '1.8')
-        self.xstr.event_generate('<Key-w>')
+        xstr.tag_remove('sel', '1.0', 'end')
+        xstr.mark_set('insert', '1.8')
+        xstr.event_generate('<Key-w>')
 
         # The selected ranges should be the same.
-        ranges = self.xstr.tag_nextrange('sel', '1.0')
+        ranges = xstr.tag_nextrange('sel', '1.0')
         self.assertEqual(ranges, ())
 
-    def test2(self):
-        self.xstr.mark_set('insert', '1.11')
-        self.xstr.event_generate('<Key-w>')
+        xstr.mark_set('insert', '1.11')
+        xstr.event_generate('<Key-w>')
 
         # The selected ranges should be the same.
-        ranges = self.xstr.tag_nextrange('sel', '1.7')
+        ranges = xstr.tag_nextrange('sel', '1.7')
         self.assertEqual(ranges, ('1.11', '1.17'))
+
+    def test1(self):
+        xstr = root.note.create('Tests')
+        xstr.insert('end', '[ABCeD] (F23aE) (EBcE}  3123\n')
+        root.note.select(xstr.master.master.master)
+        xstr.focus_set()
+        root.update() 
+
+        xstr.mark_set('insert', '1.0')
+        xstr.event_generate('<Key-W>')
+
+        ranges = xstr.tag_nextrange('sel', '1.0')
+        self.assertEqual(ranges, ('1.0', '1.7'))
+        xstr.tag_remove('sel', '1.0', 'end')
+
+        xstr.mark_set('insert', '1.7')
+        xstr.event_generate('<Key-W>')
+
+        ranges = xstr.tag_nextrange('sel', '1.0')
+        self.assertEqual(ranges, ('1.0', '1.7'))
+        xstr.tag_remove('sel', '1.0', 'end')
+
+        xstr.mark_set('insert', '1.8')
+        xstr.event_generate('<Key-W>')
+
+        ranges = xstr.tag_nextrange('sel', '1.0')
+        self.assertEqual(ranges, ('1.8', '1.15'))
+        xstr.tag_remove('sel', '1.0', 'end')
+
+        xstr.mark_set('insert', '1.23')
+        xstr.event_generate('<Key-W>')
+
+        ranges = xstr.tag_nextrange('sel', '1.0')
+        self.assertEqual(ranges, ())
 
 if __name__ == '__main__':
     unittest.main()
