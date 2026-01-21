@@ -14,20 +14,23 @@ class TabSpacing(Plugin):
     def __init__(self, xstr):
         super().__init__(xstr)
 
-        self.add_kmap(TabSpacingNS, Main, '<<LoadData>>', self.conf_tabsize, True)
-        self.add_kmap(TabSpacingNS, Main, '<<SaveData>>', self.conf_tabsize, True)
-        self.add_kmap(TabSpacingNS, Insert, '<Tab>',  self.add_spacing)
+        self.add_kmap(TabSpacingNS, 
+        Main, '<<LoadData>>', self.update_tabtsize, True)
+
+        self.add_kmap(TabSpacingNS, 
+        Main, '<<SaveData>>', self.update_tabtsize, True)
+
+        self.add_kmap(TabSpacingNS, Insert, '<Tab>',  
+        lambda event: self.xstr.indent())
     
-    def conf_tabsize(self, event):
-        path, extension    = splitext(self.xstr.filename.lower())
+    def update_tabtsize(self, event):
+        path, extension = splitext(self.xstr.filename.lower())
+
         # When no '' default is specified it uses size = 4 and char = ' '.
-        size, char = self.scheme.get(extension, self.scheme.get('', (4, ' ')))
+        size, char = self.scheme.get(extension, 
+        self.scheme.get('', (4, ' ')))
 
         self.xstr.settab(size, char)
-
-    def add_spacing(self, event):
-        self.xstr.indent()
-        return 'break'
 
     @classmethod
     def c_tabsize(cls, scheme={}):
