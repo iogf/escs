@@ -1,6 +1,5 @@
 from cspkg.plugins.normal_mode import Normal, NormalMode
 from cspkg.plugins.insert_mode import Insert, InsertMode
-from cspkg.plugins.cmd_exec import CmdExec
 
 from cspkg.plugins.spacing import TabSpacing, tabset
 from cspkg.start import root
@@ -10,7 +9,7 @@ import unittest
 class TestSpacing(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        rcmod.extend(((InsertMode, (), {}), (CmdExec, (), {}),
+        rcmod.extend(((InsertMode, (), {}),
         (NormalMode, (), {}), (TabSpacing, (), {})))
 
     @classmethod
