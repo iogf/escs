@@ -16,7 +16,7 @@ class PanedHorizontalWindow(PanedWindow):
         frame     = Frame(master=self)
         scrollbar = Scrollbar(master=frame)
         xstr      = Xstr(filename, frame , border=3, relief=RAISED, 
-                           yscrollcommand=scrollbar.set)
+                           yscrollcommand=scrollbar.set, undo=True)
         scrollbar.config(command=xstr.yview)
         scrollbar.pack(side='right', fill=Y)
 
