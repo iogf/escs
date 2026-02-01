@@ -23,14 +23,19 @@ class TestPaneResize(unittest.TestCase):
         Create several panes v/h through splits plugin then resizes these panes through
         pane_rize plugin keystrokes.
         """
+
+        # Create a pane horizontal widget.
         xstr0 = root.note.create('Tests')
         # xstr0.insert('end', '[ABEeD] (C23aE) (EBcF} 4113\n')
         root.note.select(xstr0.master.master.master)
         xstr0.focus_set()
         root.update() 
 
+        # Create another horizontal pane.
         xstr0.event_generate('<Alt-V>')
         root.update() 
+
+        # Grab the Xstr instance.
         xstr1 = root.focus_get()
 
         xstr0_width0 = xstr0.winfo_width()
@@ -45,9 +50,11 @@ class TestPaneResize(unittest.TestCase):
         xstr0_width3 = xstr0.winfo_width()
         self.assertEqual(xstr0_width2 - 15, xstr0_width3)
 
-
+        # Create a vertical pane.
         xstr1.event_generate('<Alt-C>')
         root.update() 
+    
+        # Grab the Xstr instance.
         xstr2 = root.focus_get()
 
         xstr2_height0 = xstr2.winfo_height()
@@ -57,6 +64,9 @@ class TestPaneResize(unittest.TestCase):
         self.assertEqual(xstr2_height0 - 15, xstr2_height1)
 
 
+        # Create another vertical pane then grab the Xstr instance.
+        # It checks v/h size for the created Xstr instances through
+        # pane_resize keystrokes.
         xstr2.event_generate('<Alt-C>')
         root.update() 
         xstr3 = root.focus_get()
@@ -73,12 +83,18 @@ class TestPaneResize(unittest.TestCase):
         xstr3_height3 = xstr3.winfo_height()
         self.assertEqual(xstr3_height2, xstr3_height3 - 15)
 
-
+        # Set the focus to the first Xstr instance.
         xstr0.focus_set()
+    
+        # Create a third pane in the PanedWindow that is horizontal.
         xstr0.event_generate('<Alt-V>')
         root.update() 
+
+        # Grab the Xstr instance.
         xstr4 = root.focus_get()
 
+        # Finally check the width for the third pane in the first row
+        # of Xstr instances.
         xstr1_width3 = xstr1.winfo_width()
         xstr4.event_generate('<Control-h>')
         root.update() 
