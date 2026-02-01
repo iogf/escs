@@ -21,10 +21,10 @@ class TestPaneResize(unittest.TestCase):
     def test0(self):
         """
         Create several panes v/h through splits plugin then resizes these panes through
-        pane_rize plugin keystrokes.
+        pane_rize keystrokes.
         """
 
-        # Create a pane horizontal widget.
+        # Create a horizontal pane.
         xstr0 = root.note.create('Tests')
         # xstr0.insert('end', '[ABEeD] (C23aE) (EBcF} 4113\n')
         root.note.select(xstr0.master.master.master)
