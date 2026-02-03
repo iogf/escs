@@ -270,8 +270,8 @@ load_module(delve)
 ##############################################################################
 # Keystroke to select strings that are wrapped by (), [] or {}.
 
-from cspkg.plugins import bck_sel
-load_module(bck_sel)
+from cspkg.plugins import brackets_sel
+load_module(brackets_sel)
 ##############################################################################
 # The mc filenamanager.
 # Configure your color scheme with 

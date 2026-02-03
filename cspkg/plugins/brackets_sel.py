@@ -1,14 +1,14 @@
 from cspkg.core import Plugin, Namespace
 from cspkg.plugins.normal_mode import Normal
 
-class BckSelNS(Namespace):
+class BracketsSelNS(Namespace):
     pass
 
-class BckSel(Plugin):
+class BracketsSel(Plugin):
     def __init__(self, xstr):
         super().__init__(xstr)
-        self.add_kmap(BckSelNS, Normal, '<Key-a>', self.sel_inner)
-        self.add_kmap(BckSelNS, Normal, '<Key-A>', self.sel_all)
+        self.add_kmap(BracketsSelNS, Normal, '<Key-a>', self.sel_inner)
+        self.add_kmap(BracketsSelNS, Normal, '<Key-A>', self.sel_all)
     
     def sel_inner(self, event):
         """
@@ -53,4 +53,4 @@ class BckSel(Plugin):
 
     MAX = 2500
 
-install = BckSel
+install = BracketsSel

@@ -14,8 +14,7 @@ class TestSpacing(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        root.note.forget(0)
-        pass
+        root.destroy()
 
     def test0(self):
         """
