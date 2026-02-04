@@ -13,6 +13,7 @@ from cspkg.plugins.extra_mode import Extra
 from cspkg.plugins.insert_mode import Insert
 from cspkg.start import root
 from cspkg.stderr import printd
+import socket
 import atexit
 import requests
 import random
@@ -392,7 +393,13 @@ class YcmdCompletion(Plugin):
             copyfile(join(dirname(__file__), 
                 'default_settings.json'), settings_file)
 
-        port = random.randint(1000, 9999)
+        # port = random.randint(1000, 9999)
+        # Make the OS to find a free port.
+        psock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        psock.bind(('localhost', 0))
+        host, port = psock.getsockname()
+        psock.close() 
+        
         cls.server  = YcmdServer(path, port,  settings_file)
         rcenv['lycm'] = cls.lycm
         rcenv['dycm'] = cls.dycm
@@ -419,7 +426,7 @@ class YcmdCompletion(Plugin):
         root.status.set_msg('Loaded %s' % path)
 
 @Command('init_ycm')
-def init_ycm(path):
+def init_ycm(xstr, path):
     """ 
     Generate a ycm_extra_conf.py file in the given path dir to specify
     compilation flags for a project. This is necessary to get
