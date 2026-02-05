@@ -10,6 +10,7 @@ from untwisted.event import CLOSE, CONNECT_ERR, CONNECT
 from untwisted.splits import Terminator
 from cspkg.core import Namespace, Plugin, Main
 from cspkg.plugins.extra_mode import Extra
+from cspkg.stderr import printd
 from os.path import basename
 from cspkg.scan import Scan, Read
 from cspkg.start import root
@@ -24,8 +25,7 @@ H6 = 'Peers:%s\n'
 H7 = '>>> Connection is down ! <<<\n'
 H8 = '>>> %s has kicked %s from %s (%s) <<<\n'
 H9 = '>>> %s sets mode %s %s on %s <<<\n'
-H10 = '>>> Connection is down ! <<<\n'
-H11 = '>>> %s [%s@%s] has quit :%s <<<\n' 
+H10 = '>>> %s [%s@%s] has quit :%s <<<\n' 
 
 class EsircNS(Namespace):
     pass
@@ -121,7 +121,7 @@ class ChannelController(Plugin):
 
     def update_quit(self, nick, user, host, msg):
         self.peers.remove(nick)
-        self.xstr.append(H11 % (nick, user, 
+        self.xstr.append(H10 % (nick, user, 
         host, msg), '(ESIRC-QUIT)')
 
     def update_nick(self, nicka, nickb):
@@ -157,7 +157,7 @@ class PMsgController(Plugin):
         nick = nick.lower()
         self.server.pcontrollers[nick] = self
         self.add_kmap(EsircNS, Main, '<Destroy>',  lambda event: 
-        self.server.pcontrollers.pop(nick), add=False)
+        self.server.pcontrollers.pop(nick), True)
 
         self.add_kmap(EsircNS, Extra, '<Key-e>', 
         self.server.send_cmd, add=False)
@@ -189,15 +189,15 @@ class ServerController(Plugin):
         irc.con.add_map('NICK', self.e_nick)
         irc.con.add_map('QUIT', self.e_quit)
 
-        irc.con.add_map('PING', lambda con, prefix, servaddr: 
-        send_cmd(irc.con, 'PONG :%s' % servaddr))
+        irc.con.add_map('PING', lambda con, prefix, 
+        servaddr: send_cmd(irc.con, 'PONG :%s' % servaddr))
 
         send_cmd(irc.con, 'NICK %s' % self.irc.nick)
         send_cmd(irc.con, 'USER %s' % self.irc.user) 
         self.chmode(Extra)
 
         self.add_kmap(EsircNS, Main, '<Destroy>', 
-        lambda event: send_cmd(irc.con, 'QUIT :escs rules!'), True)
+        self.shutdown, True)
 
         self.add_kmap(EsircNS, Extra, '<Key-e>', 
         self.send_cmd, add=False)
@@ -207,6 +207,10 @@ class ServerController(Plugin):
 
         self.ccontrollers = []
         self.pcontrollers = {}
+
+    def shutdown(self, event):
+        printd('Esirc - Connection closed.')
+        send_cmd(self.irc.con, 'QUIT :escs rules!')
 
     def auto_join(self, con, *args):
         for ind in self.irc.channels:

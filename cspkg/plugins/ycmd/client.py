@@ -6,7 +6,7 @@ from os.path import expanduser, join, exists, dirname
 from base64 import b64encode, b64decode
 from cspkg.fwin import LinePicker
 from tempfile import NamedTemporaryFile
-from subprocess import Popen
+from subprocess import Popen, PIPE
 from shutil import copyfile
 from cspkg.core import Plugin, Namespace, Command, rcenv, Main
 from cspkg.plugins.extra_mode import Extra
@@ -31,7 +31,7 @@ FILETYPES = {
 '.go': 'go',
 '.c++':'cpp',
 '.js':'javascript',
-'.java': 'java'
+'.java': 'java',
 }
 
 
@@ -66,7 +66,8 @@ class YcmdServer:
         '--port', str(self.port), '--options_file', tmpfile.name, 
         '--idle_suicide_seconds', str(self.idle_suicide)]
 
-        self.daemon = Popen(self.cmd,  cwd=self.path)
+        self.daemon = Popen(self.cmd,  cwd=self.path, 
+        stdout=PIPE, stderr=PIPE)
         atexit.register(self.kill)
 
     def kill(self):
@@ -299,7 +300,8 @@ class YcmdWindow(CompletionWindow):
         line, col = xstr.indexsplit()
     
         data = {xstr.filename: 
-        {'filetypes': [FILETYPES[xstr.extension]], 'contents': source}}
+        {'filetypes': [FILETYPES.get(xstr.extension, '')], 
+        'contents': source}}
 
         completions = server.completions(line, col + 1, 
         xstr.filename, data, dirname(xstr.filename))
@@ -313,7 +315,7 @@ class YcmdCompletion(Plugin):
 
         # Used to keep the server alive.
         self.xstr.after(250000, self.keep_alive)
-        self.add_kmap(YcmdNS, Main, '<Destroy>', self.on_unload)
+        self.add_kmap(YcmdNS, Main, '<Destroy>', self.on_unload, True)
         self.add_kmap(YcmdNS, Extra, '<Key-period>', self.complete)
         self.add_kmap(YcmdNS, Main, '<<LoadData>>', wrapper, True)
         self.add_kmap(YcmdNS, Main, '<<SaveData>>', wrapper, True)
@@ -330,7 +332,7 @@ class YcmdCompletion(Plugin):
         """
         """
         data = {self.xstr.filename:  
-        {'filetypes': [FILETYPES[self.xstr.extension]], 
+        {'filetypes': [FILETYPES.get(self.xstr.extension, '')], 
         'contents': ''}}
 
         req = self.server.buffer_unload(1, 1, self.xstr.filename, data)
@@ -348,7 +350,7 @@ class YcmdCompletion(Plugin):
         displayed to the user to load it using lycm.
         """
         data = {self.xstr.filename:  
-        {'filetypes': [FILETYPES[self.xstr.extension]], 
+        {'filetypes': [FILETYPES.get(self.xstr.extension, '')], 
         'contents': self.xstr.get('1.0', 'end')}}
 
         req = self.server.ready(1, 1, self.xstr.filename, data)
@@ -371,7 +373,7 @@ class YcmdCompletion(Plugin):
 
         # We send FileReadyToParse again.
         data = {self.xstr.filename:  
-        {'filetypes': [FILETYPES[self.xstr.extension]], 
+        {'filetypes': [FILETYPES.get(self.xstr.extension, '')], 
         'contents': self.xstr.get('1.0', 'end')}}
 
         req = self.server.ready(1, 1, self.xstr.filename, data)
@@ -409,7 +411,7 @@ class YcmdCompletion(Plugin):
         """
         """
         data = {Command.xstr.filename:  
-        {'filetypes': [FILETYPES[Command.xstr.extension]], 
+        {'filetypes': [FILETYPES.get(Command.xstr.extension, '')], 
         'contents': Command.xstr.get('1.0', 'end')}}
 
         cls.server.debug_info(1, 1, Command.xstr.filename, data)
