@@ -298,9 +298,10 @@ class YcmdWindow(CompletionWindow):
     def __init__(self, xstr, server, *args, **kwargs):
         source    = xstr.get('1.0', 'end')
         line, col = xstr.indexsplit()
-    
+
+        code = FILETYPES.get(xstr.extension, '')     
         data = {xstr.filename: 
-        {'filetypes': [FILETYPES.get(xstr.extension, '')], 
+        {'filetypes': [code], 
         'contents': source}}
 
         completions = server.completions(line, col + 1, 
@@ -331,9 +332,10 @@ class YcmdCompletion(Plugin):
     def on_unload(self, event):
         """
         """
+
+        code = FILETYPES.get(self.xstr.extension, '')     
         data = {self.xstr.filename:  
-        {'filetypes': [FILETYPES.get(self.xstr.extension, '')], 
-        'contents': ''}}
+        {'filetypes': [code], 'contents': ''}}
 
         req = self.server.buffer_unload(1, 1, self.xstr.filename, data)
         printd('Ycmd - BufferUnload status', req.status_code)
@@ -349,10 +351,10 @@ class YcmdCompletion(Plugin):
         then it is loaded automatically otherwise a message is
         displayed to the user to load it using lycm.
         """
-        data = {self.xstr.filename:  
-        {'filetypes': [FILETYPES.get(self.xstr.extension, '')], 
-        'contents': self.xstr.get('1.0', 'end')}}
+        code = FILETYPES.get(self.xstr.extension, '')     
 
+        data = {self.xstr.filename:  
+        {'filetypes': [code], 'contents': self.xstr.get('1.0', 'end')}}
         req = self.server.ready(1, 1, self.xstr.filename, data)
         rsp = req.json()
 
@@ -370,10 +372,11 @@ class YcmdCompletion(Plugin):
         the file.
         """
         self.server.load_conf(xconf)
+        code = FILETYPES.get(self.xstr.extension, '')     
 
         # We send FileReadyToParse again.
         data = {self.xstr.filename:  
-        {'filetypes': [FILETYPES.get(self.xstr.extension, '')], 
+        {'filetypes': [code], 
         'contents': self.xstr.get('1.0', 'end')}}
 
         req = self.server.ready(1, 1, self.xstr.filename, data)
@@ -410,8 +413,9 @@ class YcmdCompletion(Plugin):
     def dycm(cls):
         """
         """
+        code = FILETYPES.get(Command.xstr.extension, '')     
         data = {Command.xstr.filename:  
-        {'filetypes': [FILETYPES.get(Command.xstr.extension, '')], 
+        {'filetypes': [code], 
         'contents': Command.xstr.get('1.0', 'end')}}
 
         cls.server.debug_info(1, 1, Command.xstr.filename, data)
