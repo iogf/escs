@@ -4,7 +4,6 @@
 from cspkg.fwin import CompletionWindow, Option
 from os.path import expanduser, join, exists, dirname
 from base64 import b64encode, b64decode
-from cspkg.fwin import LinePicker
 from tempfile import NamedTemporaryFile
 from subprocess import Popen, PIPE
 from shutil import copyfile
@@ -16,7 +15,7 @@ from cspkg.stderr import printd
 import socket
 import atexit
 import requests
-import random
+# import random
 import hashlib
 import hmac
 import json
@@ -299,7 +298,7 @@ class YcmdWindow(CompletionWindow):
         source    = xstr.get('1.0', 'end')
         line, col = xstr.indexsplit()
 
-        code = FILETYPES.get(xstr.extension, '')     
+        code = FILETYPES[xstr.extension]
         data = {xstr.filename: 
         {'filetypes': [code], 
         'contents': source}}
@@ -333,7 +332,7 @@ class YcmdCompletion(Plugin):
         """
         """
 
-        code = FILETYPES.get(self.xstr.extension, '')     
+        code = FILETYPES[self.xstr.extension]
         data = {self.xstr.filename:  
         {'filetypes': [code], 'contents': ''}}
 
@@ -351,7 +350,7 @@ class YcmdCompletion(Plugin):
         then it is loaded automatically otherwise a message is
         displayed to the user to load it using lycm.
         """
-        code = FILETYPES.get(self.xstr.extension, '')     
+        code = FILETYPES[self.xstr.extension]
 
         data = {self.xstr.filename:  
         {'filetypes': [code], 'contents': self.xstr.get('1.0', 'end')}}
@@ -372,7 +371,7 @@ class YcmdCompletion(Plugin):
         the file.
         """
         self.server.load_conf(xconf)
-        code = FILETYPES.get(self.xstr.extension, '')     
+        code = FILETYPES[self.xstr.extension]
 
         # We send FileReadyToParse again.
         data = {self.xstr.filename:  
@@ -413,7 +412,7 @@ class YcmdCompletion(Plugin):
     def dycm(cls):
         """
         """
-        code = FILETYPES.get(Command.xstr.extension, '')     
+        code = FILETYPES[Command.xstr.extension]
         data = {Command.xstr.filename:  
         {'filetypes': [code], 
         'contents': Command.xstr.get('1.0', 'end')}}
