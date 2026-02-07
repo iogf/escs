@@ -1,7 +1,8 @@
 
 from os.path import exists, dirname, join
 from cspkg.stderr import printd
-from cspkg.core import Namespace, Main, Plugin
+from cspkg.core import Namespace, Main, Plugin, Command
+from cspkg.start import root
 
 class ProjectNS(Namespace):
     pass
@@ -24,8 +25,11 @@ class Project(Plugin):
 
     def  __init__(self, xstr):
         super().__init__(xstr)
-        self.add_kmap(ProjectNS, Main, '<<LoadData>>', self.set_path, True)
-        self.add_kmap(ProjectNS, Main, '<<SaveData>>', self.set_path, True)
+        self.add_kmap(ProjectNS, 
+        Main, '<<LoadData>>', self.set_path, True)
+
+        self.add_kmap(ProjectNS, 
+        Main, '<<SaveData>>', self.set_path, True)
 
     @classmethod
     def c_sentinels(cls, *sentinels):
@@ -40,6 +44,11 @@ class Project(Plugin):
         self.xstr.project = get_sentinel_file(
         self.xstr.filename, *Project.sentinels)
         printd('Project - Setting project path = ', self.xstr.project)
+
+@Command('spp')
+def set_project_path(xstr, path):
+    root.status.set_msg('Setting project path :%s' % path)
+    xstr.project = path
 
 install = Project
 

@@ -8,18 +8,11 @@ a mouse. It was built with some goals, it should be easily extensible; users sho
 in a mainstream programming language i.e Python; it should make one feel like having twenty three 
 fingers on its two hands.
 
-It implements the concept of mode states to execute specific operations based on keystrokes 
-(e.g. typing text, text selection, text copy/paste). It has a first and single mode state (i.e Main)
-and a second mode state (e.g Normal, Insert, Python, Golang ...). The keystrokes/functions that are common to be
-performed in the latter modes are implemented in the heading state Main.
+The syntax highlighting plugin makes it easy to create new themes it supports several languages.
+It uses Pygments library to perform highlighting of code.
 
-Escs allows the user to extend it with as many modes as it needs easily. Its built-in keystroke scheme should be
-optmized enough for common scenaries. In case of edge cases, Escs API makes it easy to implement new workflows. 
-It has a robust and simple method to remap keystrokes.
-
-It is built on top of Python Tkinter that is a simple but powerful toolkit. Tkinter has a wide range of documentation
-and several examples online. It should be a nap for one to learn enough to build nifty plugins to fullfill its daily
-demands.
+There are several built-in modes for programming languages like Python, Golang, Javascript ...
+Users can create their own tools over these modes to execute their tasks/operations.
 
 Features/Plugins
 ================
