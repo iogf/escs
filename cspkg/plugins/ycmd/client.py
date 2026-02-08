@@ -72,7 +72,25 @@ class YcmdServer:
     def kill(self):
         self.daemon.kill()
 
-    def load_conf(self, path):
+    def reject_xconf(self, path):
+        data = {
+       'filepath': path,
+        }
+
+        url = '%s/ignore_extra_conf_file' % self.url
+        hmac_secret = self.hmac_req('POST', 
+        '/ignore_extra_conf_file', data, self.hmac_secret)
+
+        headers = {
+            'X-YCM-HMAC': hmac_secret,
+        }
+
+        req = self.post(url, json=data, headers=headers)
+
+        printd('Ycmd - xconf rejected...', path)
+        printd('Ycmd - /ignore_extra_conf_file response:', req.json())
+
+    def load_xconf(self, path):
         """
         """
 
@@ -91,7 +109,7 @@ class YcmdServer:
         req = self.post(url, json=data, headers=headers)
 
         printd('Ycmd - Loading extra conf...', path)
-        printd('Ycmd - Load conf response:', req.json())
+        printd('Ycmd - /load_extra_conf_file response:', req.json())
 
     def is_alive(self):
         """
@@ -309,6 +327,8 @@ class YcmdWindow(CompletionWindow):
 
 class YcmdCompletion(Plugin):
     server = None
+    autoload_xconf = False
+
     def __init__(self, xstr):
         super().__init__(xstr)
         wrapper = lambda event: xstr.after(1000, self.on_ready)
@@ -363,14 +383,21 @@ class YcmdCompletion(Plugin):
     def on_exception(self, rsp):
         exc = rsp.get('exception')
         if exc and exc.get('TYPE') == 'UnknownExtraConf':
-            self.on_load_xconf(exc['extra_conf_file'])
+            self.on_unknown_xconf(exc['extra_conf_file'])
  
-    def on_load_xconf(self, xconf):
+    def on_unknown_xconf(self, xconf):
         """
-        When ycmd finds a .ycm_extra_conf.py it automatically loads
-        the file.
         """
-        self.server.load_conf(xconf)
+
+        # When ycmd finds a .ycm_extra_conf.py it automatically ignores
+        # the file.
+        if not self.autoload_xconf:
+            self.server.reject_xconf(xconf)
+        else:
+            self.server.load_xconf(xconf)
+
+        # When extension is not detected it should still send
+        # FileReadyToParse?
         code = FILETYPES[self.xstr.extension]
 
         # We send FileReadyToParse again.
@@ -381,14 +408,15 @@ class YcmdCompletion(Plugin):
         req = self.server.ready(1, 1, self.xstr.filename, data)
 
     @classmethod
+    def c_autoload_xconf(cls, value):
+        cls.autoload_xconf = value
+        printd('Ycmd - Option autoload_xconf set: ', cls.autoload_xconf)
+
+    @classmethod
     def setup(cls, path, xconf=expanduser('~')):
         """ 
         Create the default_settings.json file in case it doesn't exist.
         The file is located in the home dir. It also starts ycmd server.
-
-        It also creates a global ycm_extra_conf.py file in your home dir.
-        This file is used for giving completion for c-family languages and
-        specifying some specific settings.
 
         Check ycmd docs for details.
         """
@@ -427,7 +455,7 @@ class YcmdCompletion(Plugin):
         home = expanduser('~')
         path = path if path else join(home, '.ycm_extra_conf.py')
 
-        cls.server.load_conf(path)
+        cls.server.load_xconf(path)
         root.status.set_msg('Loaded %s' % path)
 
 @Command('init_ycm')

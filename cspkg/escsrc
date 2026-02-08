@@ -322,9 +322,12 @@ load_module(vulture)
 # Auto completion using ycmd. 
 # Warning: Don't use it with jedi auto completion.
 
-# from cspkg.plugins.ycmd import client
-# load_module(client)
-# client.YcmdCompletion.setup('~/projects/ycmd-code/')
+# from cspkg.plugins.ycmd.client import YcmdCompletion
+# YCMD_PATH = '/home/user/projects/ycmd-code/'
+# 
+# YcmdCompletion.c_autoload_xconf(False)
+# YcmdCompletion.setup(YCMD_PATH)
+# load_cls(YcmdCompletion)
 ##############################################################################
 # Keystrokes to perform static analysis it uses pyflakes framework.
 
