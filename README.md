@@ -8,7 +8,7 @@ a mouse. It was built with some goals, it should be easily extensible; users sho
 in a mainstream programming language i.e Python; it should make one feel like having twenty three 
 fingers on its two hands.
 
-The syntax highlighting plugin makes it easy to create new themes it supports several languages.
+The Syntax Highlighter plugin makes it easy to create new themes it supports several languages.
 It uses Pygments library to perform highlighting of code.
 
 There are several built-in modes for programming languages like Python, Golang, Javascript ...
@@ -43,7 +43,7 @@ Features/Plugins
 - **HTML Tidy Integration**
     * http://tidy.sourceforge.net/
 
-- **Syntax highlighting for 300+ languages**
+- **Syntax Highlighter for 300+ languages**
 
 - **Handy Shortcuts**
 
@@ -52,7 +52,7 @@ Features/Plugins
 
 - **Quick Snippet Search**
 
-- **Smart Search with The Silver Searcher**
+- **The Silver Searcher**
     * https://github.com/ggreer/the_silver_searcher
 
 - **File Manager**
