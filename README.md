@@ -14,6 +14,9 @@ It uses Pygments library to perform highlighting of code.
 There are several built-in modes for programming languages like Python, Golang, Javascript ...
 Users can create their own tools over these modes to execute their tasks/operations.
 
+Escs integrates with Ycmd to do code completion it is simple to use other type of engines to perform
+several tasks.
+
 Features/Plugins
 ================
 
