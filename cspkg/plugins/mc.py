@@ -50,7 +50,7 @@ class Mc(Plugin):
         """
 
         cls.confs.update(confs)
-        printd('(Mc) Setting dir/file appearance confs = ', cls.confs)
+        printd('Mc - Setting dir/file appearance confs = ', cls.confs)
 
     def list_clipboard(self):
         self.xstr.delete('1.0', 'end')
