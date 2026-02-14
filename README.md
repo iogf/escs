@@ -17,6 +17,9 @@ Users can create their own tools over these modes to execute their tasks/operati
 Escs integrates with Ycmd to do code completion it is simple to use other type of engines to perform
 several tasks.
 
+It also has the concept of global keystrokes that implement common functionalities to all 
+other modes (i.e minor modes). Such an approach spares a lot of keystrokes.
+
 Features/Plugins
 ================
 
