@@ -17,7 +17,7 @@ class TextSaveNS(Namespace):
 @Command('s')
 def save(xstr):
     """
-    Save the contents of the targeted areavi to disk.
+    Save the contents of the targeted Xstr instance to disk.
     """
     xstr.save_data()
     root.status.set_msg('File saved!')
