@@ -7,7 +7,7 @@ from cspkg.core import Plugin, Namespace
 from cspkg.plugins.normal_mode import Normal
 from tkinter import ACTIVE
 from cspkg.scan import Scan
-from re import split
+from re import split, sub
 from cspkg.start import root
 import sqlite3
 
@@ -61,7 +61,7 @@ class CodeSnippet(Plugin):
     nocas   = True
     db_name = join(expanduser('~'), '.ysnippet.db')
     conn    = sqlite3.connect(db_name)
-    cursor     = conn.cursor()
+    cursor  = conn.cursor()
     picker  = SnippetPicker(conn, cursor)
 
     def __init__(self, xstr):
@@ -71,21 +71,21 @@ class CodeSnippet(Plugin):
 
         super().__init__(xstr)
 
-        self.add_kmap(CodeSnippetNS, Normal, '<Control-r>', self.ask_title)
-        self.add_kmap(CodeSnippetNS, Normal, '<Control-e>', self.display_matches)
-        self.add_kmap(CodeSnippetNS, Normal, '<Control-f>', self.ask_pattern)
+        self.add_kmap(CodeSnippetNS, Normal, '<Control-r>', self.on_create_snippet)
+        self.add_kmap(CodeSnippetNS, Normal, '<Control-e>', self.on_show_matches)
+        self.add_kmap(CodeSnippetNS, Normal, '<Control-f>', self.on_search_snippet)
 
         # Create table
         self.cursor.execute('''CREATE TABLE if not exists 
         snippet (id integer PRIMARY KEY, title text, data text);''')
 
-    def ask_title(self, event):
+    def on_create_snippet(self, event):
         root.status.set_msg('Snippet title:')
         scan = Scan()
 
         self.store(scan.data)
 
-    def ask_pattern(self, event):
+    def on_search_snippet(self, event):
         root.status.set_msg('Snippet pattern:')
         scan = Scan()
 
@@ -119,9 +119,9 @@ class CodeSnippet(Plugin):
 
     def build_sql(self, pattern):
         tmp = '(title LIKE ? or data LIKE ?)'
-        chks = split(' *\+ *', pattern)
+        chks = split(r' *(?<!\\)[+] *', pattern)
 
-        attrs = ['%' + '%s' % indi + '%' for indi in chks
+        attrs = ['%' + '%s' % sub(r'\\(.)', r'\1', indi) + '%' for indi in chks
             for indj in range(0, 2)]
 
         sql = "SELECT title, id FROM snippet WHERE %s" % ' and '.join([tmp] * len(chks))
@@ -130,7 +130,7 @@ class CodeSnippet(Plugin):
         matches = self.cursor.fetchall()
         return matches
 
-    def display_matches(self, event):
+    def on_show_matches(self, event):
         self.picker.display(self.xstr)
         root.status.set_msg('Displaying %s snippets' % len(self.picker.options))
 
