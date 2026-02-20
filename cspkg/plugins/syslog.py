@@ -7,14 +7,14 @@ import sys
 class SyslogNS(Namespace):
     pass
 
-xwin = TextWindow('', title='Cmd Output')
+xwin = TextWindow('')
 xwin.withdraw()
 
 class Syslog(Plugin):
     def __init__(self, xstr):
         super().__init__(xstr)
         self.add_kmap(SyslogNS, Main, 
-        '<Alt-q>', lambda event: xwin.display())
+        '<Alt-q>', lambda event: xwin.display(self.xstr))
 
 logwrapper.add_chan(xwin.text)
 install = Syslog

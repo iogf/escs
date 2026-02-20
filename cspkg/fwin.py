@@ -103,8 +103,57 @@ class FloatingWindow(Toplevel):
         self.xstr.focus_set()
         Toplevel.destroy(self)
 
+class ModalWindow(Toplevel):
+    def  __init__(self, xstr=None):
+        """
+        It implements a modal window that is associated with a
+        Xstr instance primarily. It can work as a permanent modal
+        window to retain results for some operation.
+        """
+        Toplevel.__init__(self, master=root)
+        self.xstr = xstr
+        root.bind('<Configure>', lambda event: self.update(), add=True)
+        self.bind('<FocusOut>', lambda event: self.update(), add=True)
 
-class OptionWindow(Toplevel):
+        self.transient(root)
+        self.wm_overrideredirect(1)
+        self.withdraw()
+
+    def update(self):
+        root.update_idletasks()
+        self.update_idletasks()
+
+        parent_width = root.winfo_width()
+        parent_height = root.winfo_height()
+        parent_x = root.winfo_x()
+        parent_y = root.winfo_y()
+    
+        child_width = self.winfo_reqwidth()
+        child_height = self.winfo_reqheight()
+    
+        x = parent_x + (parent_width - child_width) // 2
+        y = parent_y + (parent_height - child_height) // 2
+        self.geometry(f"{child_width}x{child_height}+{x}+{y}")    
+
+    def display(self, xstr=None):
+        self.xstr = xstr if xstr else self.xstr
+
+        self.update()
+        self.deiconify()
+        self.grab_set()
+        # root.wait_window(self)
+
+    def close(self):
+        # When calling destroy or withdraw without 
+        # self.deoiconify it doesnt give back 
+        # the focus to the xstr window.
+        # self.deiconify()
+
+        self.grab_release()
+        self.withdraw()
+        self.xstr.focus_set()
+
+class OptionWindow(ModalWindow):
     def extend(self, options=[]):
         self.options = options
 
@@ -113,10 +162,9 @@ class OptionWindow(Toplevel):
             self.listbox.insert(END, key)
 
     def  __init__(self, xstr=None):
-        Toplevel.__init__(self, master=root)
-        self.xstr = xstr
+        ModalWindow.__init__(self, xstr)
+
         self.options = None
-        self.title('Matches')
 
         self.listbox = Listbox(master=self, 
         exportselection=False, takefocus=True)
@@ -140,36 +188,23 @@ class OptionWindow(Toplevel):
         self.listbox.event_generate('<Down>'))
 
         self.listbox.bind('<Escape>', lambda event: self.close())
-        self.protocol("WM_DELETE_WINDOW", self.close)
-
-        self.transient(root)
-        self.withdraw()
 
     def display(self, xstr):
-        self.xstr = xstr
+        super().display(xstr)
 
-        self.grab_set()
-        self.deiconify()
-
+        # Why does it need this? It seem to fail
+        # just using self.listbox.focus_set() in some tk
+        # versions.
         root.after(100, lambda : 
             self.listbox.focus_set())
-        # self.wait_window(self)
 
-    def close(self):
-        # When calling destroy or withdraw without 
-        # self.deoiconify it doesnt give back 
-        # the focus to the xstr window.
+class TextWindow(ModalWindow):
+    def __init__(self,  data, xstr=None):
+        ModalWindow.__init__(self)
+        self.xstr = xstr
+        self.text = Text(master=self, 
+        blockcursor=True, insertbackground='black', )
 
-        self.deiconify()
-        self.grab_release()
-        self.withdraw()
-
-class TextWindow(Toplevel):
-    def __init__(self,  data, title='TextWindow', *args, **kwargs):
-        Toplevel.__init__(self, master=root, *args, **kwargs)
-        self.title(title)
-
-        self.text = Text(master=self, blockcursor=True, insertbackground='black', )
         self.text.bind('<Alt-p>', lambda event: 
         self.text.yview(SCROLL, 1, 'page'), add=True)
 
@@ -179,25 +214,20 @@ class TextWindow(Toplevel):
         self.text.insert('1.0', data)
         self.text.pack(side=LEFT, fill=BOTH, expand=True)
         self.text.focus_set()
-        self.text.bind('<Escape>', lambda event: self.close())
-        self.text.bind('<Alt-k>', lambda event: self.text.event_generate('<Up>'))
-        self.text.bind('<Alt-j>', lambda event: self.text.event_generate('<Down>'))
 
-        self.protocol("WM_DELETE_WINDOW", self.close)
+        self.text.bind('<Escape>', 
+        lambda event: self.close())
 
-        self.transient(root)
-        self.withdraw()
+        self.text.bind('<Alt-k>', lambda event: 
+        self.text.event_generate('<Up>'))
 
-    def display(self):
-        self.grab_set()
-        self.deiconify()
+        self.text.bind('<Alt-j>', lambda event: 
+        self.text.event_generate('<Down>'))
+
+    def display(self, xstr):
+        super().display(xstr)
         self.text.focus_set()
         # self.text.see('end')
-
-    def close(self):
-        self.deiconify()
-        self.grab_release()
-        self.withdraw()
 
 class LinePicker(OptionWindow):
     def __init__(self):
@@ -228,10 +258,13 @@ class LinePicker(OptionWindow):
 
     def on_new_tab(self):
         index = self.listbox.index(ACTIVE)
-        print('Values for lseek:', self.options[index][1])
-
         root.note.lseek(*self.options[index][1][:2], auto_open=True)
-        self.close()
+
+        # Close the modal window without giving focus to the Xstr instance
+        # that is primarily associated with since it is opening the file
+        # in a new tab.
+        self.grab_release()
+        self.withdraw()
 
     def on_current_xstr(self):
         index    = self.listbox.index(ACTIVE)
@@ -241,7 +274,6 @@ class LinePicker(OptionWindow):
         if not self.xstr.filename in filename:
             self.xstr.load_data(filename)
         self.xstr.setcur(line, 0)
-
         self.close()
 
 class Option:
@@ -263,7 +295,7 @@ class CompleteBox(MatchBox, Echo):
         Echo.__init__(self, xstr)
 
         self.completions = completions
-        self.xstr        = xstr
+        self.xstr = xstr
         self.focus_set()
         self.feed()
 
@@ -282,15 +314,16 @@ class CompleteBox(MatchBox, Echo):
     def calc_index(self):
         """
         Calculate the correct starting index to be swaped.
-        Consider the example below:
-            ls = []
-            ls.app<Complete>
+        Consider the example below.
+
+        ls = []
+        ls.app<Complete>
 
         The correct starting index would be 2 not 5.
         """
 
         start = '%s linestart' % self.master.start_index
-        end   = '%s lineend' % self.master.start_index
+        end = '%s lineend' % self.master.start_index
 
         pattern = str(self.xstr.get(start, end))
         pattern = pattern.lower()
@@ -305,6 +338,7 @@ class CompleteBox(MatchBox, Echo):
         return '%s.%s' % (line, index)
 
     def on_delete(self, event):
+        # Should be renamed, something like on_backspace.
         m, n = self.master.start_index.split('.')
         m, n = int(m), int(n)
 
@@ -314,12 +348,11 @@ class CompleteBox(MatchBox, Echo):
 
     def complete(self, event):
         """
-        Grab the selected item and swap it with the xstrvi cursor
-        string. It completes the cursor word.
+        Grab the selected item and swap it with 
+        the string on the cursor. It completes the cursor word.
         """
-
-        self.xstr.swap(self.get(
-        self.curselection()), self.index, 'insert')
+        opt = self.get(self.curselection())
+        self.xstr.swap(opt, self.index, 'insert')
         self.master.destroy()
 
     def selection_docs(self):
@@ -371,7 +404,7 @@ class CompletionWindow(FloatingWindow):
         self.text.bind('<Alt-p>', lambda event: 
         self.text.yview(SCROLL, 1, 'page'), add=True)
 
-        self.text.bind('<Alt-o>', lambda evenet: 
+        self.text.bind('<Alt-o>', lambda event: 
         self.text.yview(SCROLL, -1, 'page'), add=True)
 
         self.box.bind('<Alt-h>', lambda event: self.docs_window())
