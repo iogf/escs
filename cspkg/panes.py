@@ -1,5 +1,5 @@
 from tkinter import PanedWindow, RAISED, BOTH, HORIZONTAL
-from tkinter import Frame, Scrollbar, Y, VERTICAL
+from tkinter import Frame, Scrollbar, Y, VERTICAL, RAISED
 from cspkg.xstr import Xstr
 from os.path import basename
 
@@ -8,7 +8,8 @@ class PanedHorizontalWindow(PanedWindow):
     """
 
     def __init__(self, *args, **kwargs):
-        PanedWindow.__init__(self, orient=HORIZONTAL, *args, **kwargs)
+        PanedWindow.__init__(self, orient=HORIZONTAL, 
+        sashrelief=RAISED, showhandle=True, *args, **kwargs)
 
     def create(self, filename='null'):
         """
@@ -33,6 +34,21 @@ class PanedHorizontalWindow(PanedWindow):
         Main.__module__, Main.__name__), '<FocusIn>', 
         lambda event: self.master.focus_save(xstr), add=True)
         self.master.focus_save(xstr)
+
+        root = self.winfo_toplevel()
+        hpanes  = self.panes()
+        width = root.winfo_width()//(len(hpanes) + 1)
+        root.update()
+    
+        for ind in range(0, len(hpanes) - 1):
+            self.sash_place(ind,  (ind + 1) * width,  0)
+
+        vpanes  = self.master.panes()
+        height = root.winfo_height()//(len(vpanes) + 1)
+        root.update()
+    
+        for ind in range(0, len(vpanes) - 1):
+            self.master.sash_place(ind,  0,  (ind + 1) * height)
         return xstr
 
     def load(self, filename):
@@ -48,7 +64,8 @@ class PanedVerticalWindow(PanedWindow):
     """
 
     def __init__(self, *args, **kwargs):
-        PanedWindow.__init__(self, orient=VERTICAL, *args, **kwargs)
+        PanedWindow.__init__(self, orient=VERTICAL, 
+        sashrelief=RAISED, showhandle=True, *args, **kwargs)
         self.fwidget = None
 
     def focus_save(self, widget):

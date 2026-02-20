@@ -41,13 +41,6 @@ class Splits(Plugin):
         xstr = vpane.create()
         xstr.focus_set()
 
-        wids  = vpane.panes()
-        height = root.winfo_height()//(len(wids) + 1)
-        root.update()
-    
-        for ind in range(0, len(wids) - 1):
-            vpane.sash_place(ind,  0,  (ind + 1) * height)
-
     def add_horizontal_xstr(self, event):
         """
         It creates a new horizontal xstr.
@@ -57,13 +50,6 @@ class Splits(Plugin):
         xstr = hpane.create()
         xstr.focus_set()
 
-        wids  = hpane.panes()
-        width = root.winfo_width()//(len(wids) + 1)
-        root.update()
-    
-        for ind in range(0, len(wids) - 1):
-            hpane.sash_place(ind,  (ind + 1) * width,  0)
-    
     def remove_xstr(self, event):
         """
         It removes the focused xstr.
@@ -77,7 +63,9 @@ class Splits(Plugin):
     
         if not self.xstr.master.master.panes(): 
             self.xstr.master.master.destroy()
-    
+
+        # It would be good if there were a simpler manner to grab
+        # one visible Xstr instance to avoid calling Xstr.xstr_widgets.
         wid  = root.note.nametowidget(root.note.select())
         seq  = Xstr.xstr_widgets(wid)
         xstr = next(seq)
