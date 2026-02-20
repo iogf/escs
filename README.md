@@ -5,8 +5,8 @@ A modal Editor/IDE written in Python/Tk.
 
 Escs is an IDE in the style of Emacs/Vim in the sense it doesn't demand you to use
 a mouse. It was built with some goals, it should be easily extensible; users should extend Escs
-in a mainstream programming language i.e Python; it should make one feel like having twenty three 
-fingers on its two hands.
+in a mainstream programming language (Escs uses Python to be configured);  it should make one feel like 
+having twenty three fingers on its two hands.
 
 The Syntax Highlighter plugin makes it easy to create new themes it supports several languages.
 It uses Pygments library to perform highlighting of code.
@@ -17,7 +17,7 @@ Users can create their own tools over these modes to execute their tasks/operati
 Escs integrates with Ycmd to do code completion it is simple to use other type of engines to perform
 several tasks.
 
-It also has the concept of global keystrokes that implement common functionalities to all 
+It also has the concept of primary keystrokes that implement common functionalities to all 
 other modes (i.e minor modes). Such an approach spares a lot of keystrokes.
 
 Features/Plugins
@@ -34,8 +34,6 @@ Features/Plugins
 
 - **Rope Refactoring Tools**
     * https://github.com/python-rope/rope
-
-- **Fuzzy Search**
 
 - **Incremental Search**
 

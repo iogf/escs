@@ -71,48 +71,34 @@ class CodeSnippet(Plugin):
 
         super().__init__(xstr)
 
-        self.add_kmap(CodeSnippetNS, Normal, '<Control-r>', self.on_create_snippet)
-        self.add_kmap(CodeSnippetNS, Normal, '<Control-e>', self.on_show_matches)
-        self.add_kmap(CodeSnippetNS, Normal, '<Control-f>', self.on_search_snippet)
+        self.add_kmap(CodeSnippetNS, Normal, '<Control-r>', self.store)
+        self.add_kmap(CodeSnippetNS, Normal, '<Control-e>', self.show_matches)
+        self.add_kmap(CodeSnippetNS, Normal, '<Control-f>', self.find)
 
-        # Create table
+        # Create table.
         self.cursor.execute('''CREATE TABLE if not exists 
         snippet (id integer PRIMARY KEY, title text, data text);''')
 
-    def on_create_snippet(self, event):
-        root.status.set_msg('Snippet title:')
+    def store(self, event):
+        root.status.set_msg('Type a title:')
         scan = Scan()
-
-        self.store(scan.data)
-
-    def on_search_snippet(self, event):
-        root.status.set_msg('Snippet pattern:')
-        scan = Scan()
-
-        self.find(scan.data)
-
-    def store(self, data):
-        """
-        In order to update a snippet it has to contain
-        a field @(id)
-        """
-
-        values = (data, self.xstr.join_ranges('sel', '\n'))
-
+    
+        values = (scan.data, self.xstr.join_ranges('sel', '\n'))
         self.xstr.tag_remove('sel', 'sel.first', 'sel.last')
         
         self.cursor.execute('''INSERT INTO snippet 
         (title, data) VALUES (?, ?)''', values)
-
         self.conn.commit()
 
         root.status.set_msg('Snippet saved!')
 
-    def find(self, data):
+    def find(self, event):
         """
         """
+        root.status.set_msg('Snippet pattern:')
+        scan = Scan()
         
-        matches = self.build_sql(data)
+        matches = self.build_sql(scan.data)
         self.picker.extend(matches)
         self.picker.display(self.xstr)
         root.status.set_msg('Found %s snippets!' % len(matches))
@@ -130,7 +116,7 @@ class CodeSnippet(Plugin):
         matches = self.cursor.fetchall()
         return matches
 
-    def on_show_matches(self, event):
+    def show_matches(self, event):
         self.picker.display(self.xstr)
         root.status.set_msg('Displaying %s snippets' % len(self.picker.options))
 
