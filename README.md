@@ -20,6 +20,8 @@ several tasks.
 It also has the concept of primary keystrokes that implement common functionalities to all 
 other modes (i.e minor modes). Such an approach spares a lot of keystrokes.
 
+![screenshot-1](screenshot-1.jpg)
+
 Features/Plugins
 ================
 
