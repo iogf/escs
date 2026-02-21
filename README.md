@@ -17,8 +17,9 @@ Users can create their own tools over these modes to execute their tasks/operati
 Escs integrates with Ycmd to do code completion it is simple to use other type of engines to perform
 several tasks.
 
-It also has the concept of primary keystrokes that implement common functionalities to all 
-other modes (i.e minor modes). Such an approach spares a lot of keystrokes.
+It has the concept of primary keystrokes and minor modes. Operations that are  often used are 
+implemented in a special mode and use modifiers (e.g Alt, Control), non critical ones are implemented 
+in minor modes.
 
 ![screenshot-1](screenshot-1.jpg)
 
