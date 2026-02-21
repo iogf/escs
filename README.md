@@ -47,9 +47,6 @@ Features/Plugins
 
 - **Self documenting**
 
-- **HTML Tidy Integration**
-    * http://tidy.sourceforge.net/
-
 - **Syntax Highlighter for 300+ languages**
 
 - **Handy Shortcuts**
