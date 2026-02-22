@@ -454,7 +454,7 @@ class YcmdCompletion(Plugin):
     def dycm(cls):
         """
         """
-        code = FILETYPES.get(self.xstr.extension, DEFAULT_FILETYPE)
+        code = FILETYPES.get(Command.xstr.extension, DEFAULT_FILETYPE)
         data = {Command.xstr.filename:  
         {'filetypes': [code], 
         'contents': Command.xstr.get('1.0', 'end')}}
