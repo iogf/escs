@@ -145,6 +145,11 @@ class Spider(Plugin):
         """
         Colorize visible region.
         """
+
+        # When no lexer is set just stop function execution
+        # otherwise an exception keeps raising whenever text has
+        # to be highlighted.
+        if self.lexer is None: return None
         index0 = self.xstr.index('@0,0')
         index1 = self.xstr.index('%s -%sl' % (index0, self.max))
         index2 = self.prev_gindex(TK_ORDER, index0, index1, '1.0')
@@ -154,7 +159,6 @@ class Spider(Plugin):
         index5 = self.xstr.index('%s +%sl' % (index4, self.max))
         index6 = self.next_gindex(TK_ORDER, index4, index5, 'end')
 
-        # Macumba attempt.
         index7 = self.xstr.tag_prevrange('Token.Text', index2, '1.0')
         index8 = self.xstr.tag_nextrange('Token.Text', index6, 'end')
         index2 = index7[1] if index7 else index2

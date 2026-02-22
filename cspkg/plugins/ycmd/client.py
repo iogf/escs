@@ -33,6 +33,7 @@ FILETYPES = {
 '.java': 'java',
 }
 
+DEFAULT_FILETYPE = None
 
 class YcmdNS(Namespace):
     pass
@@ -316,7 +317,7 @@ class YcmdWindow(CompletionWindow):
         source    = xstr.get('1.0', 'end')
         line, col = xstr.indexsplit()
 
-        code = FILETYPES[xstr.extension]
+        code = FILETYPES.get(xstr.extension, DEFAULT_FILETYPE)
         data = {xstr.filename: 
         {'filetypes': [code], 
         'contents': source}}
@@ -352,7 +353,7 @@ class YcmdCompletion(Plugin):
         """
         """
 
-        code = FILETYPES[self.xstr.extension]
+        code = FILETYPES.get(self.xstr.extension, DEFAULT_FILETYPE)
         data = {self.xstr.filename:  
         {'filetypes': [code], 'contents': ''}}
 
@@ -370,8 +371,7 @@ class YcmdCompletion(Plugin):
         then it is loaded automatically otherwise a message is
         displayed to the user to load it using lycm.
         """
-        code = FILETYPES[self.xstr.extension]
-
+        code = FILETYPES.get(self.xstr.extension, DEFAULT_FILETYPE)
         data = {self.xstr.filename:  
         {'filetypes': [code], 'contents': self.xstr.get('1.0', 'end')}}
         req = self.server.ready(1, 1, self.xstr.filename, data)
@@ -398,7 +398,7 @@ class YcmdCompletion(Plugin):
 
         # When extension is not detected it should still send
         # FileReadyToParse?
-        code = FILETYPES[self.xstr.extension]
+        code = FILETYPES.get(self.xstr.extension, DEFAULT_FILETYPE)
 
         # We send FileReadyToParse again.
         data = {self.xstr.filename:  
@@ -440,7 +440,7 @@ class YcmdCompletion(Plugin):
     def dycm(cls):
         """
         """
-        code = FILETYPES[Command.xstr.extension]
+        code = FILETYPES.get(self.xstr.extension, DEFAULT_FILETYPE)
         data = {Command.xstr.filename:  
         {'filetypes': [code], 
         'contents': Command.xstr.get('1.0', 'end')}}
