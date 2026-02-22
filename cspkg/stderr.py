@@ -12,7 +12,7 @@ def printd(*args):
     logger.debug(' '.join(map(str, args)))
 
 sys.excepthook = xhook
-c_handler      = logging.StreamHandler()
+c_handler = logging.StreamHandler()
 logger.setLevel(logging.DEBUG)
 logger.addHandler(c_handler)
 

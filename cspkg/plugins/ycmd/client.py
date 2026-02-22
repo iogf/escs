@@ -127,16 +127,6 @@ class YcmdServer:
         printd('Ycmd - /healthy response status..\n', req.status_code)
         printd('Ycmd - /healthy response JSON', req.json())
 
-    def ready(self, line, col, path, data):
-        """
-        Send file ready.
-        """
-
-        req = self.e_send('FileReadyToParse', line, col, path, data)
-        printd('Ycmd - /FileReadyToParse status', req.status_code)
-        printd('Ycmd - FileReadyToParse Event Response JSON:\n', req.json())
-        return req
-
     def debug_info(self, line, col, path, data):
         data = {
        'line_num': line,
@@ -154,7 +144,27 @@ class YcmdServer:
         }
 
         req = self.post(url, json=data, headers=headers, timeout=7)
-        printd('Ycmd - debug_info Event Response JSON:\n', req.json())
+        printd('Ycmd - debug_info Response JSON:\n', req.json())
+        return req
+
+    def detailed_diagnostic(self, line, col, path, data):
+        data = {
+       'line_num': line,
+       'column_num': col,
+       'filepath': path,
+       'file_data': data
+        }
+
+        url = '%s/detailed_diagnostic' % self.url
+        hmac_secret = self.hmac_req('POST', '/detailed_diagnostic', 
+        data, self.hmac_secret)
+
+        headers = {
+            'X-YCM-HMAC': hmac_secret,
+        }
+
+        req = self.post(url, json=data, headers=headers, timeout=7)
+        printd('Ycmd - detailed_diagnostic Response JSON:\n', req.json())
         return req
 
     def e_send(self, name,  line, col, path, data):
@@ -179,19 +189,11 @@ class YcmdServer:
         }
 
         req = self.post(url, json=data, headers=headers, timeout=7)
+        printd('Ycmd - /event_notification', name)
+        printd('Ycmd - /event_notification status', req.status_code)
+        printd('Ycmd - /event_notification Response JSON:\n', req.json())
+
         return req
-
-    def buffer_unload(self, line, col, path, data):
-        """
-        When an Xstr instance is destroyed it is sent.
-        It is useful to lower resource consume.
-        """
-
-        req = self.e_send('BufferUnload', line, col, path, data)
-        printd('Ycmd - BufferUnload status', req.status_code)
-        printd('Ycmd - BufferUnload Event Response JSON:\n', req.json())
-        return req
-
 
     def post(self, *args, **kwargs):
         """
@@ -339,7 +341,10 @@ class YcmdCompletion(Plugin):
         self.add_kmap(YcmdNS, Main, '<Destroy>', self.on_unload, True)
         self.add_kmap(YcmdNS, Extra, '<Key-period>', self.complete)
         self.add_kmap(YcmdNS, Main, '<<LoadData>>', wrapper, True)
-        self.add_kmap(YcmdNS, Main, '<<SaveData>>', wrapper, True)
+        
+        # It seems when FileReadyToParse is sent many times ycmd hangs
+        # then the request is not sent due to requests timeout.
+        self.add_kmap(YcmdNS, Main, '<<SaveData>>', self.on_filesave, True)
 
     def keep_alive(self):
         self.server.is_alive()
@@ -357,9 +362,17 @@ class YcmdCompletion(Plugin):
         data = {self.xstr.filename:  
         {'filetypes': [code], 'contents': ''}}
 
-        req = self.server.buffer_unload(1, 1, self.xstr.filename, data)
-        printd('Ycmd - BufferUnload status', req.status_code)
-        printd('Ycmd - BufferUnload JSON response', req.json())
+        req = self.server.e_send('BufferUnload', 1, 1, self.xstr.filename, data)
+
+    def on_filesave(self, event):
+        """
+        """
+        code = FILETYPES.get(self.xstr.extension, DEFAULT_FILETYPE)
+        data = {self.xstr.filename:  
+        {'filetypes': [code], 'contents': self.xstr.get('1.0', 'end')}}
+
+        req = self.server.e_send('FileSave', 1, 1, self.xstr.filename, data)
+        rsp = req.json()
 
     def on_ready(self):
         """
@@ -374,7 +387,8 @@ class YcmdCompletion(Plugin):
         code = FILETYPES.get(self.xstr.extension, DEFAULT_FILETYPE)
         data = {self.xstr.filename:  
         {'filetypes': [code], 'contents': self.xstr.get('1.0', 'end')}}
-        req = self.server.ready(1, 1, self.xstr.filename, data)
+
+        req = self.server.e_send('FileReadyToParse', 1, 1, self.xstr.filename, data)
         rsp = req.json()
 
         if req.status_code == 500:
@@ -405,7 +419,7 @@ class YcmdCompletion(Plugin):
         {'filetypes': [code], 
         'contents': self.xstr.get('1.0', 'end')}}
 
-        req = self.server.ready(1, 1, self.xstr.filename, data)
+        req = self.server.e_send('FileReadyToParse', 1, 1, self.xstr.filename, data)
 
     @classmethod
     def c_autoload_xconf(cls, value):
