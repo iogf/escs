@@ -336,8 +336,6 @@ class YcmdCompletion(Plugin):
         super().__init__(xstr)
         wrapper = lambda event: xstr.after(1000, self.on_ready)
 
-        # Used to keep the server alive.
-        self.xstr.after(250000, self.keep_alive)
         self.add_kmap(YcmdNS, Main, '<Destroy>', self.on_unload, True)
         self.add_kmap(YcmdNS, Extra, '<Key-period>', self.complete)
         self.add_kmap(YcmdNS, Main, '<<LoadData>>', wrapper, True)
@@ -346,9 +344,10 @@ class YcmdCompletion(Plugin):
         # then the request is not sent due to requests timeout.
         self.add_kmap(YcmdNS, Main, '<<SaveData>>', self.on_filesave, True)
 
-    def keep_alive(self):
-        self.server.is_alive()
-        self.xstr.after(250000, self.keep_alive)
+    @classmethod
+    def keep_alive(cls):
+        cls.server.is_alive()
+        root.after(250000, cls.keep_alive)
 
     def complete(self, event):
         YcmdWindow(event.widget, self.server)
@@ -447,6 +446,9 @@ class YcmdCompletion(Plugin):
         psock.close() 
         
         cls.server  = YcmdServer(path, port,  settings_file)
+        # Used to keep the server alive.
+        root.after(250000, cls.keep_alive)
+
         rcenv['lycm'] = cls.lycm
         rcenv['dycm'] = cls.dycm
 
