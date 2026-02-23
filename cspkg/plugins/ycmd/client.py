@@ -12,11 +12,12 @@ from cspkg.plugins.extra_mode import Extra
 from cspkg.plugins.insert_mode import Insert
 from cspkg.start import root
 from cspkg.stderr import printd
-import socket
 import atexit
 import requests
+from requests.exceptions import RequestException
 # import random
 import hashlib
+import time
 import hmac
 import json
 import os
@@ -67,7 +68,7 @@ class YcmdServer:
         '--idle_suicide_seconds', str(self.idle_suicide)]
 
         self.daemon = Popen(self.cmd,  cwd=self.path, 
-        stdout=PIPE, stderr=PIPE)
+        stdout=PIPE, stdin=PIPE, stderr=PIPE)
         atexit.register(self.kill)
 
     def kill(self):
@@ -124,8 +125,10 @@ class YcmdServer:
         }
 
         req = self.get(url, headers=headers)
+ 
         printd('Ycmd - /healthy response status..\n', req.status_code)
         printd('Ycmd - /healthy response JSON', req.json())
+        return req
 
     def debug_info(self, line, col, path, data):
         data = {
@@ -331,23 +334,35 @@ class YcmdWindow(CompletionWindow):
 class YcmdCompletion(Plugin):
     server = None
     autoload_xconf = False
+    path = None
+    port = None
+    dconf = None
 
     def __init__(self, xstr):
         super().__init__(xstr)
-        wrapper = lambda event: xstr.after(1000, self.on_ready)
+        self.enabled = False
+        self.add_kmap(YcmdNS, Extra, '<Key-n>', 
+        self.on_ready, spread=True, add=True)
 
+        self.add_kmap(YcmdNS, Extra, '<Key-n>', 
+        self.enable_completion, spread=True, add=True)
+
+    def enable_completion(self, event):
+        if self.enabled == False:
+            self.install_handles()
+        return self.enabled
+
+    def install_handles(self):
         self.add_kmap(YcmdNS, Main, '<Destroy>', self.on_unload, True)
         self.add_kmap(YcmdNS, Extra, '<Key-period>', self.complete)
-        self.add_kmap(YcmdNS, Main, '<<LoadData>>', wrapper, True)
+        self.add_kmap(YcmdNS, Main, '<<LoadData>>', self.on_ready, True)
         
+        # self.add_kmap(YcmdNS, Main, '<FocusIn>', self.on_buffervisit, True)
         # It seems when FileReadyToParse is sent many times ycmd hangs
         # then the request is not sent due to requests timeout.
         self.add_kmap(YcmdNS, Main, '<<SaveData>>', self.on_filesave, True)
-
-    @classmethod
-    def keep_alive(cls):
-        cls.server.is_alive()
-        root.after(250000, cls.keep_alive)
+        root.status.set_msg('Ycmd - Enabled on  %s' % self.xstr.filename)
+        self.enabled = True
 
     def complete(self, event):
         YcmdWindow(event.widget, self.server)
@@ -360,8 +375,17 @@ class YcmdCompletion(Plugin):
         code = FILETYPES.get(self.xstr.extension, DEFAULT_FILETYPE)
         data = {self.xstr.filename:  
         {'filetypes': [code], 'contents': ''}}
-
         req = self.server.e_send('BufferUnload', 1, 1, self.xstr.filename, data)
+
+    def on_buffervisit(self, event):
+        code = FILETYPES.get(self.xstr.extension, DEFAULT_FILETYPE)
+        data = {self.xstr.filename:  
+        {'filetypes': [code], 'contents': self.xstr.get('1.0', 'end')}}
+
+        line, col = self.xstr.indexsplit()
+        req = self.server.e_send('BufferVisit', line, 
+        col + 1, self.xstr.filename, data)
+        rsp = req.json()
 
     def on_filesave(self, event):
         """
@@ -370,10 +394,13 @@ class YcmdCompletion(Plugin):
         data = {self.xstr.filename:  
         {'filetypes': [code], 'contents': self.xstr.get('1.0', 'end')}}
 
-        req = self.server.e_send('FileSave', 1, 1, self.xstr.filename, data)
+        line, col = self.xstr.indexsplit()
+        req = self.server.e_send('FileSave', line, 
+        col + 1, self.xstr.filename, data)
+
         rsp = req.json()
 
-    def on_ready(self):
+    def on_ready(self, event):
         """
         This method sends the ReadyToParseEvent to ycmd whenever a file is
         opened or saved. It is necessary to start some 
@@ -387,9 +414,11 @@ class YcmdCompletion(Plugin):
         data = {self.xstr.filename:  
         {'filetypes': [code], 'contents': self.xstr.get('1.0', 'end')}}
 
-        req = self.server.e_send('FileReadyToParse', 1, 1, self.xstr.filename, data)
-        rsp = req.json()
+        line, col = self.xstr.indexsplit()
+        req = self.server.e_send('FileReadyToParse', line, 
+        col + 1, self.xstr.filename, data)
 
+        rsp = req.json()
         if req.status_code == 500:
             self.on_exception(rsp)
 
@@ -402,8 +431,7 @@ class YcmdCompletion(Plugin):
         """
         """
 
-        # When ycmd finds a .ycm_extra_conf.py it automatically ignores
-        # the file.
+        # When ycmd finds a .ycm_extra_conf.py it is ignored automatically.
         if not self.autoload_xconf:
             self.server.reject_xconf(xconf)
         else:
@@ -418,7 +446,9 @@ class YcmdCompletion(Plugin):
         {'filetypes': [code], 
         'contents': self.xstr.get('1.0', 'end')}}
 
-        req = self.server.e_send('FileReadyToParse', 1, 1, self.xstr.filename, data)
+        line, col = self.xstr.indexsplit()
+        req = self.server.e_send('FileReadyToParse', line, 
+        col + 1, self.xstr.filename, data)
 
     @classmethod
     def c_autoload_xconf(cls, value):
@@ -426,32 +456,49 @@ class YcmdCompletion(Plugin):
         printd('Ycmd - Option autoload_xconf set: ', cls.autoload_xconf)
 
     @classmethod
-    def setup(cls, path, xconf=expanduser('~')):
+    def c_path(cls, path):
+        cls.path = path
+
+    @classmethod
+    def c_port(cls, port):
+        cls.port = port
+
+    @classmethod
+    def setup(cls):
         """ 
         Create the default_settings.json file in case it doesn't exist.
         The file is located in the home dir. It also starts ycmd server.
 
         Check ycmd docs for details.
         """
-        settings_file = join(expanduser('~'), '.default_settings.json')
-        if not exists(settings_file): 
-            copyfile(join(dirname(__file__), 
-                'default_settings.json'), settings_file)
 
-        # port = random.randint(1000, 9999)
-        # Make the OS to find a free port.
-        psock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        psock.bind(('localhost', 0))
-        host, port = psock.getsockname()
-        psock.close() 
-        
-        cls.server  = YcmdServer(path, port,  settings_file)
-        # Used to keep the server alive.
+        cls.server = YcmdServer(cls.path, cls.port,  cls.dconf)
+        printd('Ycmd - Starting server ...')
+
         root.after(250000, cls.keep_alive)
-
         rcenv['lycm'] = cls.lycm
         rcenv['dycm'] = cls.dycm
+        rcenv['rycm'] = cls.rycm
 
+    @classmethod
+    def init_dconf(cls):
+        cls.dconf = join(expanduser('~'), '.default_settings.json')
+        if not exists(cls.dconf): 
+            copyfile(join(dirname(__file__), 
+                'default_settings.json'), cls.dconf)
+
+    @classmethod
+    def keep_alive(cls):
+        if cls.server is not None:
+            root.after(freq, cls.keep_alive)
+        cls.server.is_alive()
+
+    @classmethod
+    def rycm(cls):
+        cls.server.daemon.kill()
+        cls.server  = YcmdServer(cls.path, cls.port,  cls.dconf)
+        root.status.set_msg('Ycmd - Restarted.')
+        
     @classmethod
     def dycm(cls):
         """
@@ -488,7 +535,6 @@ def init_ycm(xstr, path):
     if exists(conf):
         root.status.set_msg('File overwritten: %s' % conf)
     copyfile(join(dirname(__file__), 'ycm_extra_conf.py'), conf)
-
     return conf
 
 install = YcmdCompletion

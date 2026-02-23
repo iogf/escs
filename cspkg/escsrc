@@ -319,15 +319,26 @@ load_module(bracket_jumps)
 from cspkg.plugins import vulture
 load_module(vulture)
 ##############################################################################
+##############################################################################
 # Auto completion using ycmd. 
 # Warning: Don't use it with jedi auto completion.
+from cspkg.plugins.ycmd.client import YcmdCompletion
 
-# from cspkg.plugins.ycmd.client import YcmdCompletion
-# YCMD_PATH = '/home/user/projects/ycmd-code/'
-# 
-# YcmdCompletion.c_autoload_xconf(False)
-# YcmdCompletion.setup(YCMD_PATH)
-# load_cls(YcmdCompletion)
+# Make the OS to find a free port.
+import socket
+psock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+psock.bind(('localhost', 0))
+host, port = psock.getsockname()
+psock.close() 
+
+path = '/home/tau/projects/ycmd-code/'
+YcmdCompletion.c_autoload_xconf(False)
+YcmdCompletion.c_path(path)
+YcmdCompletion.c_port(port)
+YcmdCompletion.init_dconf()
+YcmdCompletion.setup()
+
+load_cls(YcmdCompletion)
 ##############################################################################
 # Keystrokes to perform static analysis it uses pyflakes framework.
 
