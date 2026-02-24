@@ -46,12 +46,12 @@ class YcmdServer:
         """
 
         self.settings_file = settings_file
-        self.settings      = None
-        self.path          = path
-        self.port          = port
-        self.url           = 'http://127.0.0.1:%s' % port 
-        self.idle_suicide  = idle_suicide
-        self.hmac_secret   = os.urandom(HMAC_LENGTH)
+        self.settings = None
+        self.path = path
+        self.port = port
+        self.url = 'http://127.0.0.1:%s' % port 
+        self.idle_suicide = idle_suicide
+        self.hmac_secret = os.urandom(HMAC_LENGTH)
 
         with open(self.settings_file) as fd:
           self.settings = json.loads(fd.read())
@@ -77,7 +77,7 @@ class YcmdServer:
 
     def reject_xconf(self, path):
         data = {
-       'filepath': path,
+           'filepath': path,
         }
 
         url = '%s/ignore_extra_conf_file' % self.url
@@ -98,7 +98,7 @@ class YcmdServer:
         """
 
         data = {
-       'filepath': path,
+           'filepath': path,
         }
 
         url = '%s/load_extra_conf_file' % self.url
@@ -134,12 +134,8 @@ class YcmdServer:
         return req
 
     def debug_info(self, line, col, path, data):
-        data = {
-       'line_num': line,
-       'column_num': col,
-       'filepath': path,
-       'file_data': data
-        }
+        data = {'line_num': line,
+       'column_num': col, 'filepath': path, 'file_data': data}
 
         url = '%s/debug_info' % self.url
         hmac_secret = self.hmac_req('POST', '/debug_info', 
@@ -155,12 +151,8 @@ class YcmdServer:
         return req
 
     def detailed_diagnostic(self, line, col, path, data):
-        data = {
-       'line_num': line,
-       'column_num': col,
-       'filepath': path,
-       'file_data': data
-        }
+        data = {'line_num': line,
+       'column_num': col, 'filepath': path, 'file_data': data}
 
         url = '%s/detailed_diagnostic' % self.url
         hmac_secret = self.hmac_req('POST', '/detailed_diagnostic', 
@@ -181,13 +173,9 @@ class YcmdServer:
         Send event notification.
         """
 
-        data = {
-       'line_num': line,
-       'column_num': col,
-       'filepath': path,
-       'file_data': data,
-       'event_name': name,
-        }
+        data = {'line_num': line,
+       'column_num': col,'filepath': path,
+       'file_data': data, 'event_name': name}
 
         url = '%s/event_notification' % self.url
         hmac_secret = self.hmac_req('POST', '/event_notification', 
@@ -224,7 +212,7 @@ class YcmdServer:
         Abstract the workings of HTTP GET method to validate
         HMAC in responses.
         """
-
+        
         req = requests.get(*args, **kwargs)
         is_valid = self.is_vhmac(req.text, 
         req.headers['X-YCM-HMAC'], self.hmac_secret)
@@ -236,12 +224,8 @@ class YcmdServer:
     def completions(self, line, col, path, data, 
         dir, target=None, cmdargs=None):
 
-        data = {
-       'line_num': line,
-       'column_num': col,
-       'filepath': path,
-       'file_data': data
-        }
+        data = {'line_num': line, 'column_num': col,
+        'filepath': path, 'file_data': data}
 
         url = '%s/completions' % self.url
 
@@ -263,16 +247,15 @@ class YcmdServer:
             self.fmt_option(ind)) for ind in data['completions']]
 
     def fmt_option(self, option):
-        kind     = option.get('kind', '')
-        details  = option.get('detailed_info', '')
-        data     = option.get('extra_data', {})
+        kind = option.get('kind', '')
+        details = option.get('detailed_info', '')
+        data = option.get('extra_data', {})
         location = data.get('location', {})
-        path     = location.get('filepath', '')
-        line     = location.get('line_num', '')
+        path = location.get('filepath', '')
+        line = location.get('line_num', '')
 
         return '\n\n'.join(('Kind: %s' % kind, 
         'Details: %s' % details, 'Path: %s\nLine:%s' % (path, line)))
-
             
     def hmac_req(self, method, path, body, hmac_secret):
         """
