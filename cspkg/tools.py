@@ -3,6 +3,7 @@ from cspkg.start import root
 from re import split, escape
 from untwisted.splits import Terminator
 from re import search
+import socket
 
 class RegexEvent:
     def __init__(self, ssock, regstr, event, encoding='utf8'):
@@ -61,3 +62,11 @@ def get_project_root(path):
         if not exists(join(tmp, '__init__.py')):
             return path
         path = tmp
+
+def psock():
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.bind(('localhost', 0))
+    host, port = sock.getsockname()
+    sock.close() 
+    return port    
+

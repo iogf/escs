@@ -8,13 +8,14 @@ from tempfile import NamedTemporaryFile
 from subprocess import Popen, PIPE
 from shutil import copyfile
 from cspkg.core import Plugin, Namespace, Command, rcenv, Main
+from requests.exceptions import RequestException
 from cspkg.plugins.extra_mode import Extra
 from cspkg.plugins.insert_mode import Insert
 from cspkg.start import root
 from cspkg.stderr import printd
+from cspkg.tools import psock
 import atexit
 import requests
-from requests.exceptions import RequestException
 # import random
 import hashlib
 import time
@@ -461,7 +462,8 @@ class YcmdCompletion(Plugin):
 
     @classmethod
     def c_port(cls, port):
-        cls.port = port
+        cls.port = port if port else psock()
+        printd('Ycmd - Port set %s.' % port) 
 
     @classmethod
     def setup(cls):
@@ -489,6 +491,7 @@ class YcmdCompletion(Plugin):
 
     @classmethod
     def keep_alive(cls):
+        freq = 250000
         if cls.server is not None:
             root.after(freq, cls.keep_alive)
         cls.server.is_alive()

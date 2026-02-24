@@ -16,30 +16,18 @@ from cspkg.stderr import printd
 # Example:
 
 # from cspkg.plugins.extra_mode import ExtraModeNS
-# from cspkg.plugins.normal_mode import Normal
+# from cspkg.plugins.normal_mode import Normal, NormalModeNS
+# from cspkg.plugins.syntax.spider import SyntaxNS
 # from cspkg.core import Main
-
-# First it maps <Alt-v> to <apostrophe>.
+# 
+# chkmap(ExtraModeNS, (Main, '<Alt-v>'), (Main, '<Alt-v>'))
 # chkmap(ExtraModeNS, (Main, '<Alt-v>'), (Normal, '<apostrophe>'))
 
-# It keeps <Alt-v> initial keymap so there will exist a shortcut
-# for <Alt-v> that is <apostrophe> in Normal mode.
-
-# chkmap(ExtraModeNS, (Main, '<Alt-v>'), (Main, '<Alt-v>'))
-
-# Note: Whatever is mapped to <apostrophe> will be lost unless it is passed
-# add = True to chkmap.
-
 ##############################################################################
-# It remaps <F1> to <Key-cedilla> in keyboards with such a key.
-
 # from cspkg.plugins.spawn.base_spawn import SpawnNS
-# from cspkg.plugins.normal_mode import Normal
-
-# In this case, the handle/action mapped to <F1> will be lost.
-# There will exist only one keystroke mapped to the action that is
-# <Key-cedilla>.
-
+# from cspkg.plugins.normal_mode import Normal, NormalModeNS
+# 
+# chkmap(SpawnNS, (Normal, '<F1>'), (Normal, '<F1>'))
 # chkmap(SpawnNS, (Normal, '<F1>'), (Normal, '<Key-ccedilla>'))
 ##############################################################################
 # Set homedir manually.
@@ -139,6 +127,7 @@ Find.c_appearance({'(FIND)': {
 'background':'green', 'foreground':'white'}})
 
 load_cls(Find)
+
 ##############################################################################
 # Keystrokes to copy/cut text selection.
 
@@ -177,11 +166,11 @@ load_module(sneak)
 ##############################################################################
 # It is used to open files quickly. It makes usage of unix locate program.
 
-from cspkg.plugins import fsniffer
-load_module(fsniffer)
+# from cspkg.plugins import fsniffer
+# load_module(fsniffer)
 ##############################################################################
-from cspkg.plugins import fsearch
-load_module(fsearch)
+# from cspkg.plugins import fsearch
+# load_module(fsearch)
 ##############################################################################
 # Used to set project variable. It searches a root directory of control
 # version systems.
@@ -196,15 +185,16 @@ from cspkg.plugins.qsearch import QSearch
 QSearch.c_appearance({'(QSEARCH)': {
 'background':'yellow', 'foreground':'black'}})
 load_cls(QSearch)
+
 ##############################################################################
 # Mechanism to search strings along project files. It uses Silver Searcher to
 # perform the search through directories.
 
-from cspkg.plugins.sniper import Sniper
-load_cls(Sniper)
-
+# from cspkg.plugins.sniper import Sniper
+# path = '/path/to/silversearcher'
 # Sniper.c_dirs('/home/user/projects')
-# Sniper.c_path('ag')
+# Sniper.c_path(path)
+# load_cls(Sniper)
 ##############################################################################
 # It allows to view sys.stdout log over a floating window text. It is useful
 # to check plugins output or when running commands on runtime.
@@ -239,7 +229,7 @@ load_module(line_index)
 from cspkg.plugins import line_sel
 load_module(line_sel)
 ##############################################################################
-# Keystroke to select a word over the cursor or a sequence of nonblank chars.
+# Keystroke to select a word over the cursor.
 
 from cspkg.plugins import word_sel
 load_module(word_sel)
@@ -260,13 +250,8 @@ load_module(complete_word)
 # from cspkg.plugins import jedi
 # load_module(jedi)
 ##############################################################################
-from cspkg.plugins import delve
-load_module(delve)
-##############################################################################
-# Auto completion for golang.
-
-# from cspkg.plugins import golang_hints
-# load_module(golang_hints)
+# from cspkg.plugins import delve
+# load_module(delve)
 ##############################################################################
 # Keystroke to select strings that are wrapped by (), [] or {}.
 
@@ -277,10 +262,10 @@ load_module(brackets_sel)
 # Configure your color scheme with 
 # Mc.c_appearance method..
 
-from cspkg.plugins.mc import Mc
-Mc.c_appearance({'(MC-DIR)':{'foreground': 'red'}, 
-'(MC-FILE)':{'foreground': 'yellow'}})
-load_cls(Mc)
+# from cspkg.plugins.mc import Mc
+# Mc.c_appearance({'(MC-DIR)':{'foreground': 'red'}, 
+# '(MC-FILE)':{'foreground': 'yellow'}})
+# load_cls(Mc)
 ##############################################################################
 # Keystrokes to resize panes/splits. It can be resized horizontally
 # or vertically.
@@ -295,8 +280,8 @@ load_module(page_scroll)
 ##############################################################################
 # Python code refactoring tool that uses rope framework.
 
-from cspkg.plugins import rope
-load_module(rope)
+# from cspkg.plugins import rope
+# load_module(rope)
 ##############################################################################
 # This plugin is used to store snippets of code into a sqlite db.
 
@@ -316,41 +301,41 @@ load_module(bracket_jumps)
 ##############################################################################
 # Perform python code analysis to find unused code. It uses vulture lib.
 
-from cspkg.plugins import vulture
-load_module(vulture)
-##############################################################################
+# from cspkg.plugins import vulture
+# path = '/path/to/vulture'
+# Pyflakes.c_path(path)
+# load_module(vulture)
 ##############################################################################
 # Auto completion using ycmd. 
 # Warning: Don't use it with jedi auto completion.
-from cspkg.plugins.ycmd.client import YcmdCompletion
+# from cspkg.plugins.ycmd.client import YcmdCompletion
 
-# Make the OS to find a free port.
-import socket
-psock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-psock.bind(('localhost', 0))
-host, port = psock.getsockname()
-psock.close() 
-
-path = '/home/tau/projects/ycmd-code/'
-YcmdCompletion.c_autoload_xconf(False)
-YcmdCompletion.c_path(path)
-YcmdCompletion.c_port(port)
-YcmdCompletion.init_dconf()
-YcmdCompletion.setup()
-
-load_cls(YcmdCompletion)
+# When port is None it lets the OS to find 
+# an unused port.
+# path = '/home/user/projects/ycmd-code/'
+# port = None
+# 
+# YcmdCompletion.c_autoload_xconf(False)
+# YcmdCompletion.c_path(path)
+# YcmdCompletion.c_port(port)
+# YcmdCompletion.init_dconf()
+# YcmdCompletion.setup()
+# 
+# load_cls(YcmdCompletion)
 ##############################################################################
 # Keystrokes to perform static analysis it uses pyflakes framework.
 
-from cspkg.plugins.pyflakes import Pyflakes
-Pyflakes.c_path('pyflakes')
-load_cls(Pyflakes)
+# from cspkg.plugins.pyflakes import Pyflakes
+# path = '/path/to/pyflakes'
+# Pyflakes.c_path(path)
+# load_cls(Pyflakes)
 ##############################################################################
 # Keystrokes to perform type checking in python code it uses mypy.
 
-from cspkg.plugins.mypy import Mypy
-Mypy.c_path('mypy')
-load_cls(Mypy)
+# from cspkg.plugins.mypy import Mypy
+# path = '/path/to/mypy'
+# Mypy.c_path(path)
+# load_cls(Mypy)
 ##############################################################################
 # It implements C mode.
 
@@ -362,8 +347,6 @@ load_module(golang_mode)
 ##############################################################################
 # Syntax plugin is used to highlight code.
 # It uses python pygments styles to highlight code :)
-# Note: When uncommenting a theme dont forget to comment the previously used one.
-
 from cspkg.plugins.syntax.spider import Spider
 
 # Check out more pygments styles.
@@ -391,16 +374,16 @@ load_cls(Spider)
 from cspkg.plugins import codec
 ##############################################################################
 # Spawning processes.
-from cspkg.plugins.spawn import unix_platform
+# from cspkg.plugins.spawn import unix_platform
 
 # Spawning processes cross_platform.
 # from cspkg.plugins.spawn import cross_platform
 ##############################################################################
-from cspkg.plugins import pdb
-load_module(pdb)
+# from cspkg.plugins import pdb
+# load_module(pdb)
 ##############################################################################
-from cspkg.plugins import gdb
-load_module(gdb)
+# from cspkg.plugins import gdb
+# load_module(gdb)
 ##############################################################################
 from cspkg.plugins import word_search
 load_module(word_search)
@@ -427,7 +410,7 @@ def escs_setup(xstr):
 load_cls(escs_setup) 
 ##############################################################################
 # The escs irc mode.
-from cspkg.plugins.esirc import IrcMode
+# from cspkg.plugins.esirc import IrcConnect
 
 # Uncomment these lines to set up your custom color scheme.
 # It accepts all available config options for Tkinter Text widget.
@@ -439,9 +422,10 @@ from cspkg.plugins.esirc import IrcMode
 # '(ESIRC-KICK)': {'foreground': '#FC8D9A'},
 # '(ESIRC-353)': {'foreground': '#BF9163'},
 # '(ESIRC-332)': {'foreground': '#81BFFC'},
-# '(ESIRC-CLOSE)': {'foreground': '#A7F2E9'}}
+# '(ESIRC-CLOSE)': {'foreground': '#A7F2E9'}})
 
 # Here, the network connections can be defined. 
-def irc_someserver(addr='irc.someserver.chat', port=6667, user='escs escs escs :escsirc', nick='esirc', 
-             irccmd='PRIVMSG nickserv :identify nick_password', channels=['#not-math', '#escs']):
-    IrcConnect(addr, port, user, nick, irccmd, channels)
+# def irc_libera(addr='irc.libera.chat', port=6667, user='escs escs escs :not ice.', nick='escs', 
+             # irccmd='PRIVMSG nickserv :identify password', channels=['#not-math', '#escs', '#vy', 
+                # '#psychology', '#math', '#chess', '#python', '#golang', '#c', '#wrongplanet']):
+    # IrcConnect(addr, port, user, nick, irccmd, channels)
