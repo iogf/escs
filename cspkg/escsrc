@@ -169,6 +169,9 @@ load_module(sneak)
 # from cspkg.plugins import fsniffer
 # load_module(fsniffer)
 ##############################################################################
+# Search for filenames using unix locate command.
+# It dumps the results in the current Xstr instance.
+
 # from cspkg.plugins import fsearch
 # load_module(fsearch)
 ##############################################################################
@@ -324,14 +327,16 @@ load_module(bracket_jumps)
 # 
 # load_cls(YcmdCompletion)
 ##############################################################################
-# Keystrokes to perform static analysis it uses pyflakes framework.
+# Keystrokes to perform static analysis. 
+# It uses pyflakes framework.
 
 # from cspkg.plugins.pyflakes import Pyflakes
 # path = '/path/to/pyflakes'
 # Pyflakes.c_path(path)
 # load_cls(Pyflakes)
 ##############################################################################
-# Keystrokes to perform type checking in python code it uses mypy.
+# Keystrokes to perform type checking 
+# in python code it uses mypy.
 
 # from cspkg.plugins.mypy import Mypy
 # path = '/path/to/mypy'
