@@ -16,9 +16,9 @@ from cspkg.stderr import printd
 from cspkg.tools import psock
 import atexit
 import requests
+import pprint
 # import random
 import hashlib
-import time
 import hmac
 import json
 import os
@@ -89,9 +89,9 @@ class YcmdServer:
         }
 
         req = self.post(url, json=data, headers=headers)
-
         printd('Ycmd - xconf rejected...', path)
-        printd('Ycmd - /ignore_extra_conf_file response:', req.json())
+        printd('Ycmd - /ignore_extra_conf_file response:')
+        pprint.pp(req.json())
 
     def load_xconf(self, path):
         """
@@ -112,7 +112,8 @@ class YcmdServer:
         req = self.post(url, json=data, headers=headers)
 
         printd('Ycmd - Loading extra conf...', path)
-        printd('Ycmd - /load_extra_conf_file response:', req.json())
+        printd('Ycmd - /load_extra_conf_file response:')
+        pprint.pp(req.json())
 
     def is_alive(self):
         """
@@ -128,7 +129,8 @@ class YcmdServer:
         req = self.get(url, headers=headers)
  
         printd('Ycmd - /healthy response status..\n', req.status_code)
-        printd('Ycmd - /healthy response JSON', req.json())
+        printd('Ycmd - /healthy response.\n') 
+        pprint.pp(req.json())
         return req
 
     def debug_info(self, line, col, path, data):
@@ -148,7 +150,8 @@ class YcmdServer:
         }
 
         req = self.post(url, json=data, headers=headers, timeout=7)
-        printd('Ycmd - debug_info Response JSON:\n', req.json())
+        printd('Ycmd - debug_info response.\n')
+        pprint.pp(req.json())
         return req
 
     def detailed_diagnostic(self, line, col, path, data):
@@ -168,7 +171,9 @@ class YcmdServer:
         }
 
         req = self.post(url, json=data, headers=headers, timeout=7)
-        printd('Ycmd - detailed_diagnostic Response JSON:\n', req.json())
+        printd('Ycmd - detailed_diagnostic response.\n')
+        pprint.pp(req.json())
+
         return req
 
     def e_send(self, name,  line, col, path, data):
@@ -195,7 +200,8 @@ class YcmdServer:
         req = self.post(url, json=data, headers=headers, timeout=7)
         printd('Ycmd - /event_notification', name)
         printd('Ycmd - /event_notification status', req.status_code)
-        printd('Ycmd - /event_notification Response JSON:\n', req.json())
+        printd('Ycmd - /event_notification response.\n')
+        pprint.pp(req.json())
 
         return req
 
@@ -247,7 +253,9 @@ class YcmdServer:
         }
 
         req = self.post(url, json=data, headers=headers, timeout=7)
-        printd('Request data:', req.json())
+        printd('Ycmd - /completions response..')
+        pprint.pp(req.json())
+
         return self.build_docs(req.json())
 
     def build_docs(self, data):
@@ -386,7 +394,6 @@ class YcmdCompletion(Plugin):
         line, col = self.xstr.indexsplit()
         req = self.server.e_send('BufferVisit', line, 
         col + 1, self.xstr.filename, data)
-        rsp = req.json()
 
     def on_filesave(self, event):
         """
@@ -398,8 +405,6 @@ class YcmdCompletion(Plugin):
         line, col = self.xstr.indexsplit()
         req = self.server.e_send('FileSave', line, 
         col + 1, self.xstr.filename, data)
-
-        rsp = req.json()
 
     def on_ready(self, event):
         """
@@ -427,7 +432,7 @@ class YcmdCompletion(Plugin):
         exc = rsp.get('exception')
         if exc and exc.get('TYPE') == 'UnknownExtraConf':
             self.on_unknown_xconf(exc['extra_conf_file'])
- 
+    
     def on_unknown_xconf(self, xconf):
         """
         """
