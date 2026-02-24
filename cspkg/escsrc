@@ -293,18 +293,19 @@ load_module(code_snippet)
 from cspkg.plugins import xleaps
 load_module(xleaps)
 ##############################################################################
-# Jump quickly backwards/forwards to (), [] or {}. It is useful when dealing
-# with programming source codes.
+# Jump quickly backwards/forwards to (), [] or {}. 
+# It is useful when dealing with programming source codes.
 
 from cspkg.plugins import bracket_jumps
 load_module(bracket_jumps)
 ##############################################################################
-# Perform python code analysis to find unused code. It uses vulture lib.
+# Perform python code analysis to find unused code. 
+# It uses vulture lib.
 
-# from cspkg.plugins import vulture
+# from cspkg.plugins.vulture import Vulture
 # path = '/path/to/vulture'
-# Pyflakes.c_path(path)
-# load_module(vulture)
+# Vulture.c_path(path)
+# load_module(Vulture)
 ##############################################################################
 # Auto completion using ycmd. 
 # Warning: Don't use it with jedi auto completion.
