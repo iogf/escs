@@ -14,7 +14,7 @@ class PyflakesNS(Namespace):
     pass
 
 class Pyflakes(Plugin):
-    options = LinePicker()
+    options = LinePicker('Pyflakes')
     path    = 'pyflakes'
 
     def  __init__(self, xstr):

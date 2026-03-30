@@ -15,7 +15,7 @@ class VultureNS(Namespace):
     pass
 
 class Vulture(Plugin):
-    options = LinePicker()
+    options = LinePicker(title='Vulture')
     path    = 'vulture'
 
     def  __init__(self, xstr):

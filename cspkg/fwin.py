@@ -104,25 +104,23 @@ class FloatingWindow(Toplevel):
         Toplevel.destroy(self)
 
 class ModalWindow(Toplevel):
-    def  __init__(self, xstr=None):
+    def  __init__(self, xstr=None, title=''):
         """
         It implements a modal window that is associated with a
         Xstr instance primarily. It can work as a permanent modal
         window to retain results for some operation.
         """
         Toplevel.__init__(self, master=root)
-        self.xstr = xstr
-        root.bind('<Configure>', lambda event: self.update(), add=True)
-        self.bind('<FocusOut>', lambda event: self.update(), add=True)
+        # root.bind('<Configure>', lambda event: self.update(), add=True)
+        # self.bind('<FocusOut>', lambda event: self.update(), add=True)
+        # self.wm_overrideredirect(1)
 
+        self.xstr = xstr
+        self.title(title)
         self.transient(root)
-        self.wm_overrideredirect(1)
         self.withdraw()
 
-    def update(self):
-        root.update_idletasks()
-        self.update_idletasks()
-
+    def update_size(self):
         parent_width = root.winfo_width()
         parent_height = root.winfo_height()
         parent_x = root.winfo_x()
@@ -134,11 +132,12 @@ class ModalWindow(Toplevel):
         x = parent_x + (parent_width - child_width) // 2
         y = parent_y + (parent_height - child_height) // 2
         self.geometry(f"{child_width}x{child_height}+{x}+{y}")    
+        root.update_idletasks()
+        self.update_idletasks()
 
-    def display(self, xstr=None):
-        self.xstr = xstr if xstr else self.xstr
-
-        self.update()
+    def display(self, xstr):
+        self.xstr = xstr
+        self.update_size()
         self.deiconify()
         self.grab_set()
         # root.wait_window(self)
@@ -161,8 +160,8 @@ class OptionWindow(ModalWindow):
         for key, value in options:
             self.listbox.insert(END, key)
 
-    def  __init__(self, xstr=None):
-        ModalWindow.__init__(self, xstr)
+    def  __init__(self, xstr=None, title=''):
+        ModalWindow.__init__(self, xstr, title)
 
         self.options = None
 
@@ -199,8 +198,8 @@ class OptionWindow(ModalWindow):
             self.listbox.focus_set())
 
 class TextWindow(ModalWindow):
-    def __init__(self,  data, xstr=None):
-        ModalWindow.__init__(self)
+    def __init__(self,  data, xstr=None, title=''):
+        ModalWindow.__init__(self, title=title)
         self.xstr = xstr
         self.text = Text(master=self, 
         blockcursor=True, insertbackground='black', )
@@ -230,8 +229,8 @@ class TextWindow(ModalWindow):
         # self.text.see('end')
 
 class LinePicker(OptionWindow):
-    def __init__(self):
-        OptionWindow.__init__(self)
+    def __init__(self, title=''):
+        OptionWindow.__init__(self, title=title)
 
         self.listbox.bind('<Alt-D>', 
         lambda event: self.on_current_xstr(), add=True)

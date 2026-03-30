@@ -17,7 +17,7 @@ class MypyNS(Namespace):
     pass
 
 class Mypy(Plugin):
-    options = LinePicker()
+    options = LinePicker(title='Mypy')
     path    = 'mypy'
 
     def  __init__(self, xstr):

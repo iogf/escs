@@ -15,7 +15,7 @@ class SniperNS(Namespace):
     pass
 
 class Sniper(Plugin):
-    options = LinePicker()
+    options = LinePicker(title='Sniper')
     # Path to ag program.
     path = 'ag'
 

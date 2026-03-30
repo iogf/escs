@@ -9,7 +9,7 @@ class WordSearchNS(Namespace):
     pass
 
 class WordSearch(Plugin):
-    options = LinePicker()
+    options = LinePicker(title='Word Search')
 
     def __init__(self, xstr):
         super().__init__(xstr)

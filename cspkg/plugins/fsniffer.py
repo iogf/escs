@@ -10,7 +10,7 @@ class FSnifferNS(Namespace):
     pass
 
 class FSniffer(Plugin):
-    options = LinePicker()
+    options = LinePicker(title='Fsniffer')
     wide    = True
 
     def __init__(self, xstr):

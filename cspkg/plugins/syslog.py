@@ -7,7 +7,7 @@ import sys
 class SyslogNS(Namespace):
     pass
 
-xwin = TextWindow('')
+xwin = TextWindow('Interpreter output ...', title='Syslog')
 xwin.withdraw()
 
 class Syslog(Plugin):
