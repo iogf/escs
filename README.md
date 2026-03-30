@@ -21,7 +21,7 @@ It has the concept of primary keystrokes and minor modes. Operations that are  o
 implemented in a special mode and use modifiers (e.g Alt, Control), non critical ones are implemented 
 in minor modes.
 
-![screenshot-1](screenshot-1.jpg)
+![screenshot-1](screenshot-1.png)
 
 Features/Plugins
 ================
