@@ -32,7 +32,7 @@ class Vulture(Plugin):
 
     @classmethod
     def c_path(cls, path):
-        printd('Deadcode - Setting Vulture path = ', cls.path)
+        printd('Vulture - Setting Vulture path = ', cls.path)
         cls.path = path
     
     def check_all(self, event=None):

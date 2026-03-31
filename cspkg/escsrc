@@ -310,7 +310,14 @@ load_module(bracket_jumps)
 # from cspkg.plugins.vulture import Vulture
 # path = '/path/to/vulture'
 # Vulture.c_path(path)
-# load_module(Vulture)
+# load_cls(Vulture)
+##############################################################################
+# Used to check errors in HTML document.
+
+# from cspkg.plugins.tidy import Tidy
+# path = '/path/to/tidy'
+# Tidy.c_path(path)
+# load_cls(Tidy)
 ##############################################################################
 # Auto completion using ycmd. 
 # Warning: Don't use it with jedi auto completion.
