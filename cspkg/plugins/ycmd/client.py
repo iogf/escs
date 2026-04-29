@@ -91,7 +91,7 @@ class YcmdServer:
         req = self.post(url, json=data, headers=headers)
         printd('Ycmd - xconf rejected...', path)
         printd('Ycmd - /ignore_extra_conf_file response:')
-        pprint.pp(req.json())
+        printd(pprint.pformat(req.json()))
 
     def load_xconf(self, path):
         """
@@ -113,7 +113,7 @@ class YcmdServer:
 
         printd('Ycmd - Loading extra conf...', path)
         printd('Ycmd - /load_extra_conf_file response:')
-        pprint.pp(req.json())
+        printd(pprint.pformat(req.json()))
 
     def is_alive(self):
         """
@@ -130,7 +130,8 @@ class YcmdServer:
  
         printd('Ycmd - /healthy response status..\n', req.status_code)
         printd('Ycmd - /healthy response.\n') 
-        pprint.pp(req.json())
+        printd(pprint.pformat(req.json()))
+
         return req
 
     def debug_info(self, line, col, path, data):
@@ -147,7 +148,8 @@ class YcmdServer:
 
         req = self.post(url, json=data, headers=headers, timeout=7)
         printd('Ycmd - debug_info response.\n')
-        pprint.pp(req.json())
+        printd(pprint.pformat(req.json()))
+
         return req
 
     def detailed_diagnostic(self, line, col, path, data):
@@ -164,7 +166,7 @@ class YcmdServer:
 
         req = self.post(url, json=data, headers=headers, timeout=7)
         printd('Ycmd - detailed_diagnostic response.\n')
-        pprint.pp(req.json())
+        printd(pprint.pformat(req.json()))
 
         return req
 
@@ -189,7 +191,7 @@ class YcmdServer:
         printd('Ycmd - /event_notification', name)
         printd('Ycmd - /event_notification status', req.status_code)
         printd('Ycmd - /event_notification response.\n')
-        pprint.pp(req.json())
+        printd(pprint.pformat(req.json()))
 
         return req
 
@@ -238,7 +240,7 @@ class YcmdServer:
 
         req = self.post(url, json=data, headers=headers, timeout=7)
         printd('Ycmd - /completions response..')
-        pprint.pp(req.json())
+        printd(pprint.pformat(req.json()))
 
         return self.build_docs(req.json())
 
