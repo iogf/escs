@@ -268,7 +268,7 @@ load_module(brackets_sel)
 # Mc.c_appearance method..
 
 # from cspkg.plugins.mc import Mc
-# Mc.c_appearance({'(MC-DIR)':{'foreground': 'red'}, 
+# Mc.c_appearance({'(MC-DIRECTORY)':{'foreground': 'lightgray'}, 
 # '(MC-FILE)':{'foreground': 'yellow'}})
 # load_cls(Mc)
 ##############################################################################
@@ -429,7 +429,7 @@ load_cls(escs_setup)
 
 # Uncomment these lines to set up your custom color scheme.
 # It accepts all available config options for Tkinter Text widget.
-# IrcConnect.c_appearence({'(ESIRC-PRIVMSG)': {'foreground': '#FA360C'},
+# IrcConnect.c_appearence({'(ESIRC-PRIVMSG)': {'foreground': '#C4C4C4'},
 # '(ESIRC-JOIN)': {'foreground': '#F06EF0'},
 # '(ESIRC-PART)': {'foreground': '#F0BDAD'},
 # '(ESIRC-QUIT)': {'foreground': '#4EDB1F'},

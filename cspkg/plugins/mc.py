@@ -16,7 +16,7 @@ class McNS(Namespace):
     pass
 
 class Mc(Plugin):
-    confs = {'(MC-DIRECTORY)': {'foreground': 'red'},
+    confs = {'(MC-DIRECTORY)': {'foreground': 'lightgray'},
     '(MC-FILE)': {'foreground': 'yellow'}}
 
     clipboard = []
@@ -102,7 +102,7 @@ class Mc(Plugin):
 
     def cp(self):
         destin = self.xstr.get('insert linestart', 'insert lineend')
-        code   = check_call('cp -R %s "%s"' % (
+        code = check_call('cp -R %s "%s"' % (
             ' '.join(Mc.clipboard), destin), shell=1)
 
         root.status.set_msg('Files copied!')
@@ -111,7 +111,7 @@ class Mc(Plugin):
 
     def mv(self):
         destin = self.xstr.get('insert linestart', 'insert lineend')
-        code   = check_call('mv %s "%s"' % (
+        code = check_call('mv %s "%s"' % (
             ' '.join(Mc.clipboard), destin), shell=1)
 
         root.status.set_msg('Files moved!')
@@ -123,9 +123,9 @@ class Mc(Plugin):
         'insert linestart', 'insert lineend')
 
         root.status.set_msg('Rename file:')
-        scan    = Scan()
+        scan = Scan()
         destin = join(dirname(path), scan.data)
-        code   = check_call('mv "%s" %s' % (path, 
+        code = check_call('mv "%s" %s' % (path, 
         destin), shell=1)
 
         root.status.set_msg('File renamed!')

@@ -265,7 +265,7 @@ class IrcConnect:
     """
 
     confs = {
-    '(ESIRC-PRIVMSG)': {'foreground': '#688B96'},
+    '(ESIRC-PRIVMSG)': {'foreground': '#C4C4C4'},
     '(ESIRC-JOIN)': {'foreground': '#F06EF0'},
     '(ESIRC-PART)': {'foreground': '#F0BDAD'},
     '(ESIRC-QUIT)': {'foreground': '#4EDB1F'},
