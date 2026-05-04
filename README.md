@@ -3,16 +3,18 @@ Escs
 
 A modal Text Editor/IDE written in Python/Tk.
 
-Escs is an IDE in the style of Emacs/Vim in the sense it doesn't demand you to use a mouse. 
+Escs is in the style of Vim/Emacs in regard it being modal or not demanding to use a mouse. 
+It has some similarities with Vim like Normal, Insert modes and keystrokes to move cursor around.
+
 It was built with some goals, it should be easily extensible; users should extend and configure 
 Escs in a mainstream programming language (e.g Python). . 
 
-Escs doesn't demand you to have twenty three fingers it makes you feel like having twienty 
-four fingers in your hands.
+Escs doesn't demand you to have twenty three fingers it makes you feel like having twienty four 
+fingers in your hands.
 
-Escs has an optmized scheme of keystrokes/operations it has a single major mode (i.e Main) 
-also minor modes (e.g Normal, Insert, Extra). Operations that are often used and common 
-when working with a text editor are implemented in Main mode.
+Escs has an optmized scheme of keystrokes/operations it has a single major mode (i.e Main) also 
+minor modes (e.g Normal, Insert, Extra). Operations that are often used and common  when working 
+with a text editor are implemented in Main mode.
 
 The Syntax Highlighter plugin makes it easy to create themes. It integrates with Python/Pygments 
 to perform syntax hgihlighting for documents.
@@ -29,7 +31,7 @@ performing common file operations (e.g move, rename, delete). It is simple to or
 Escs has built-in integration with an asynchronous framework to implement tools that demand working 
 with pipes or sockets. Users can spawn processes then send and receive data in an asynchronous manner.
 
-The plugin architecture is nifty it is straight to extend Escs with custom functionalities/tools. 
+The plugin architecture is nifty it is straight to extend Escs with custom functionalities or tools. 
 It even has a built-in IRC client plugin.
 
 There is a built-in terminal-like plugin that allows to execute commands through a Bash process. 
