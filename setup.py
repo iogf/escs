@@ -3,7 +3,7 @@
 from distutils.core import setup
 
 setup(name="escs",
-      version="0.0.0",
+      version="0.0.1",
       description="",
       packages=["cspkg", 
       "cspkg.plugins",
