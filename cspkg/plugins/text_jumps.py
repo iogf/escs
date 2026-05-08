@@ -33,12 +33,6 @@ class TextJumps(Plugin):
         '<Key-p>', self.line_end)
 
         self.add_kmap(TextJumpsNS, Main, 
-        '<Alt-l>', self.next_word)
-
-        self.add_kmap(TextJumpsNS, Main, 
-        '<Alt-h>', self.prev_word)
-
-        self.add_kmap(TextJumpsNS, Main, 
         '<Alt-d>', self.down)
 
         self.add_kmap(TextJumpsNS, Normal, 
@@ -74,11 +68,11 @@ class TextJumps(Plugin):
 
     def left(self, event):
         self.xstr.mark_set('insert', 'insert -1c')
-        self.xstr.mark_set('(LC)', 'insert -1c')
+        self.xstr.mark_set('(LC)', 'insert')
 
     def right(self, event):
         self.xstr.mark_set('insert', 'insert +1c')
-        self.xstr.mark_set('(LC)', 'insert +1c')
+        self.xstr.mark_set('(LC)', 'insert')
 
     def text_start(self, event):
         self.xstr.mark_set('insert', '1.0')
@@ -101,28 +95,6 @@ class TextJumps(Plugin):
         """
 
         self.xstr.mark_set('insert', 'insert lineend')
-
-    def next_word(self, event):
-        """
-        Place the cursor at the next word.
-        """
-
-        _, index0, index1 = self.xstr.isearch('\M', index='insert', 
-        regexp=True, stopindex='end')
-
-        self.xstr.mark_set('insert', index0)
-        self.xstr.see('insert')
-
-    def prev_word(self, event):
-        """
-        Place the cursor at the previous word.
-        """
-
-        _, index0, index1 = self.xstr.isearch('\M', backwards=True, 
-        regexp=True, index='insert', stopindex='1.0')
-
-        self.xstr.mark_set('insert', index1)
-        self.xstr.see('insert')
 
 install = TextJumps
 

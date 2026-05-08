@@ -17,7 +17,6 @@ from cspkg.stderr import printd
 
 # from cspkg.plugins.extra_mode import ExtraModeNS
 # from cspkg.plugins.normal_mode import Normal, NormalModeNS
-# from cspkg.plugins.syntax.spider import SyntaxNS
 # from cspkg.core import Main
 # 
 # chkmap(ExtraModeNS, (Main, '<Alt-v>'), (Main, '<Alt-v>'))
@@ -84,6 +83,11 @@ load_module(splits)
 
 from cspkg.plugins import text_jumps
 load_module(text_jumps)
+##############################################################################
+# Keystrokes jump next/back one word.
+
+from cspkg.plugins import word_jumps
+load_module(word_jumps)
 ##############################################################################
 # Keystrokes to save data.
 
