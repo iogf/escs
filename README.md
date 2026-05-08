@@ -36,9 +36,6 @@ It even has a built-in IRC client plugin.
 
 There is a built-in terminal-like plugin that allows to execute commands through a Bash process. 
 
-Escs is built on top of Python/Tkinter, Tkinter is a highly productive and well documented framework
-to develop Graphical User Interaces. 
-
 ![screenshot-1](screenshot-1.png)
 
 Features/Plugins
