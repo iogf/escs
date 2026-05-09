@@ -39,7 +39,7 @@ git commit -m 'Fixing setup.py version.'
 ##############################################################################
 # check patch patch.
 cd /home/tau/projects/escs-code/
-git checkout -b user-patch-name master
+git checkout -b user-patch-name staging
 git pull https://github.com/user/escs.git user-patch-name
 
 # merge the patch.
@@ -57,17 +57,17 @@ git branch -a
 git checkout -b staging
 git push --set-upstream origin staging
 ##############################################################################
-# merge staging into master.
+# merge staging into main.
 cd /home/tau/projects/escs-code/
-git checkout master
+git checkout main
 git merge staging
 git push
 git checkout staging
 ##############################################################################
-# merge master into staging.
+# merge staging into staging.
 cd /home/tau/projects/escs-code/
 git checkout staging
-git merge master
+git merge staging
 git checkout staging
 git push
 
