@@ -18,8 +18,7 @@ class FSearch(Plugin):
 
         self.add_kmap(FSearchNS, Normal, '<Key-S>', self.reload_results)
         self.add_kmap(FSearchNS, Normal, '<Key-C>',  lambda event: 
-        Read(events={'<Return>' : self.find, 
-        '<<Idle>>': self.update_pattern, 
+        Read(events={'<Return>' : self.find, '<<Idle>>': self.update_pattern, 
         '<Escape>': lambda read: read.done()}))
 
     def reload_results(self, event):

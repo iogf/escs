@@ -81,10 +81,12 @@ class ChannelController(Plugin):
         complete_words = self.peers), add=False)
     
         self.add_kmap(EsircNS, Extra, '<Key-e>', 
-        self.server.send_cmd, add=False)
+        lambda event: Read(events={'<Escape>': lambda read: read.done(),
+        '<Return>': self.server.send_cmd}, msg='Irc Command:'), add=False)
 
-        self.add_kmap(EsircNS, Extra, '<Key-M>',  
-        self.server.open_pchannel, add=False)
+        self.add_kmap(EsircNS, Extra, '<Key-M>', 
+        lambda event: Read(events={'<Escape>': lambda read: read.done(), 
+        '<Return>': self.server.open_pchannel}, msg='User Nick:'), add=False)
 
         self.xstr.tag_update(**self.server.irc.confs)
 
@@ -160,10 +162,12 @@ class PMsgController(Plugin):
         self.server.pcontrollers.pop(nick), True)
 
         self.add_kmap(EsircNS, Extra, '<Key-e>', 
-        self.server.send_cmd, add=False)
+        lambda event: Read(events={'<Escape>': lambda read: read.done(),
+        '<Return>': self.server.send_cmd}, msg='Irc Command:'), add=False)
 
-        self.add_kmap(EsircNS, Extra, '<Key-M>',  
-        self.server.open_pchannel, add=False)
+        self.add_kmap(EsircNS, Extra, '<Key-M>', 
+        lambda event: Read(events={'<Escape>': lambda read: read.done(),
+        '<Return>': self.server.open_pchannel}, msg='User Nick:'), add=False)
 
     def send_umsg(self, data, target):
         """
@@ -198,10 +202,12 @@ class ServerController(Plugin):
         self.shutdown, True)
 
         self.add_kmap(EsircNS, Extra, '<Key-e>', 
-        self.send_cmd, add=False)
+        lambda event: Read(events={'<Escape>': lambda read: read.done(), 
+        '<Return>': self.send_cmd}, msg='Irc Command:'), add=False)
 
-        self.add_kmap(EsircNS, Extra, '<Key-M>',  
-        self.open_pchannel, add=False)
+        self.add_kmap(EsircNS, Extra, '<Key-M>', 
+        lambda event: Read(events={'<Escape>': lambda read: read.done(),
+        '<Return>': self.open_pchannel}, msg='User Nick:'), add=False)
 
         self.ccontrollers = []
         self.pcontrollers = {}
@@ -244,18 +250,20 @@ class ServerController(Plugin):
             if nicka in ind.peers:
                 ind.update_nick(nicka, nickb)
 
-    def send_cmd(self, event):
+    def send_cmd(self, read):
         """
         Used to drop irc commands.
         """
+        data = read.text()
+        read.done()
+        send_cmd(self.irc.con, data)
 
-        scan = Scan()
-        send_cmd(self.irc.con, scan.data)
+    def open_pchannel(self, read):
+        data = read.text()
+        read.done()
 
-    def open_pchannel(self, event):
-        scan = Scan()
-        xstr = root.note.create(scan.data)
-        PMsgController(xstr, self, scan.data)
+        xstr = root.note.create(data)
+        PMsgController(xstr, self, data)
 
 class IrcConnect:
     """

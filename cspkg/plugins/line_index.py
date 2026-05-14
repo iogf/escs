@@ -13,7 +13,7 @@ class LineIndex(Plugin):
         self.xstr = xstr
         self.add_kmap(LineIndexNS, Main,'<Alt-w>', 
         lambda event: Read(events={'<Escape>': lambda read: read.done(),
-        '<Return>': lambda read: self.set_index(read)}, msg='Line/Col:'))
+        '<Return>': self.set_index}, msg='Line/Col:'))
 
     def set_index(self, read):
         data = read.text()
