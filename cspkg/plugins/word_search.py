@@ -1,6 +1,6 @@
 from cspkg.fwin import LinePicker
 from cspkg.core import Plugin, Namespace, Main
-from cspkg.scan import Scan
+from cspkg.scan import Read
 from itertools import groupby
 from re import escape
 from cspkg.start import root
@@ -13,17 +13,22 @@ class WordSearch(Plugin):
 
     def __init__(self, xstr):
         super().__init__(xstr)
-        self.add_kmap(WordSearchNS, Main, '<Control-c>', self.match)
+        self.add_kmap(WordSearchNS, Main, '<Control-c>', 
+        lambda event: Read(events={'<Escape>': lambda read: read.done(), 
+        '<Return>': lambda read: self.match(read)}))
+
         self.add_kmap(WordSearchNS, Main, '<Control-v>', 
         lambda event: self.options.display(self.xstr))
 
-    def match(self, event):
+    def match(self, read):
         """
 
         """
 
-        scan  = Scan()
-        data = scan.data.split(' ')
+        data = read.text()
+        read.done()
+
+        data = data.split(' ')
         find = lambda ind: self.xstr.find(
         escape(ind).lower(), '1.0', step='+1l linestart')
 
@@ -44,10 +49,9 @@ class WordSearch(Plugin):
  
     def match_regions(self, find, data):
         regions = []
-    
         for ind in data:
-            for ch, index0, index1 in find(ind):
-                regions.append((int(index0.split('.')[0]),  ch))
+            for word, index0, index1 in find(ind):
+                regions.append((int(index0.split('.')[0]),  word))
 
         regions.sort()
         seq = groupby(regions, lambda ind: ind[0])
