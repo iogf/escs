@@ -5,7 +5,7 @@ from cspkg.plugins.normal_mode import Normal
 from cspkg.stderr import printd
 from cspkg.tools import error
 from cspkg.start import root
-from cspkg.scan import Scan
+from cspkg.scan import Read
 
 # Wrapper around these functions to get the
 # error shown on the statusbar.
@@ -34,8 +34,17 @@ class Mc(Plugin):
         self.add_kmap(McNS, Normal, '<Key-B>', lambda e: self.clear_clipboard())
         self.add_kmap(McNS, Normal, '<Key-G>', lambda e: self.list_clipboard())
         self.add_kmap(McNS, Normal, '<Key-F>', lambda e: self.info())
-        self.add_kmap(McNS, Normal, '<Key-N>', lambda e: self.rename())
-        self.add_kmap(McNS, Normal, '<Key-E>', lambda e: self.create_dir())
+
+        self.add_kmap(McNS, Normal, '<Key-N>', lambda e: Read(events={
+        '<Escape>': lambda read: read.done(), 
+        '<Return>': lambda read: self.rename(read)},
+        msg='Rename File:'))
+
+        self.add_kmap(McNS, Normal, '<Key-E>', lambda e: Read(events={
+        '<Escape>': lambda read: read.done(), 
+        '<Return>': lambda read: self.create_dir(read)},
+        msg='Create Dir:'))
+
         self.add_kmap(McNS, Normal, '<Key-I>', self.load_path)
         self.add_kmap(McNS, Normal, '<Key-J>', lambda e:self.ls(self.ph))
 
@@ -118,17 +127,16 @@ class Mc(Plugin):
         del Mc.clipboard[:]
         self.ls(self.ph)
 
-    def rename(self):
+    def rename(self, read):
         path = self.xstr.get(
         'insert linestart', 'insert lineend')
 
-        root.status.set_msg('Rename file:')
-        scan = Scan()
-        destin = join(dirname(path), scan.data)
+        destin = join(dirname(path), read.text())
         code = check_call('mv "%s" %s' % (path, 
         destin), shell=1)
 
         root.status.set_msg('File renamed!')
+        read.done()
         self.ls(self.ph)
 
     def rm(self):
@@ -137,13 +145,12 @@ class Mc(Plugin):
         root.status.set_msg('Deleted files!')
         self.ls(self.ph)
 
-    def create_dir(self):
+    def create_dir(self, read):
         path = self.xstr.get('insert linestart', 'insert lineend')
+        data = read.text()
+        read.done()
 
-
-        root.status.set_msg('Type dir name:')
-        scan  = Scan()
-        path = join(path, scan.data)
+        path = join(path, data)
         code = check_call('mkdir "%s"' % path, shell=1)
 
         root.status.set_msg('Folder created!')
