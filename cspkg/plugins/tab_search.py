@@ -10,24 +10,15 @@ class TabSearch(Plugin):
         super().__init__(xstr)
         self.xstr = xstr
 
-        self.add_kmap(TabSearchNS, Main, 
-        '<Alt-i>', self.on_next_mode)
+        self.add_kmap(TabSearchNS, Main, '<Alt-i>', 
+        lambda event: Read(events={'<<Data>>': self.switch_next, 
+        '<Alt-p>': self.switch_next, '<Alt-o>': self.switch_back, 
+        '<Escape>': self.stop}, msg='Type a Tab/Name:'))
 
-        self.add_kmap(TabSearchNS, Main, 
-        '<Alt-u>', self.on_back_mode)
-
-    def on_next_mode(self, event):
-        read = Read(events={'<<Data>>': self.switch_next, 
-        '<Alt-p>': self.switch_next, 
-        '<Alt-o>': self.switch_back, 
-        '<Escape>': self.stop})
-
-    def on_back_mode(self, event):
-        read = Read(events={
-        '<<Data>>': self.switch_back, 
-        '<Alt-p>': self.switch_next, 
-        '<Alt-o>': self.switch_back, 
-        '<Escape>': self.stop})
+        self.add_kmap(TabSearchNS, Main, '<Alt-u>', 
+        lambda event: Read(events={'<<Data>>': self.switch_back, 
+        '<Alt-p>': self.switch_next, '<Alt-o>': self.switch_back, 
+        '<Escape>': self.stop}, msg='Type a Tab/Name:'))
 
     def switch_next(self, read):
         """

@@ -6,7 +6,7 @@ from cspkg.fwin import OptionWindow
 from cspkg.core import Plugin, Namespace
 from cspkg.plugins.normal_mode import Normal
 from tkinter import ACTIVE
-from cspkg.scan import Scan
+from cspkg.scan import Scan, Read
 from re import split, sub
 from cspkg.start import root
 import sqlite3
@@ -16,9 +16,9 @@ class CodeSnippetNS(Namespace):
 
 class SnippetPicker(OptionWindow):
     def __init__(self, conn, cursor):
-        self.cursor  = cursor
+        self.cursor = cursor
         self.conn = conn
-        OptionWindow.__init__(self)
+        OptionWindow.__init__(self, title='Code Snippets')
 
         self.listbox.bind('<Return>', self.fetch_snippet)
         self.listbox.bind('<Key-d>', self.delete)
@@ -58,11 +58,11 @@ class SnippetPicker(OptionWindow):
         del self.options[index]
 
 class CodeSnippet(Plugin):
-    nocas   = True
+    nocas = True
     db_name = join(expanduser('~'), '.ysnippet.db')
-    conn    = sqlite3.connect(db_name)
-    cursor  = conn.cursor()
-    picker  = SnippetPicker(conn, cursor)
+    conn = sqlite3.connect(db_name)
+    cursor = conn.cursor()
+    picker = SnippetPicker(conn, cursor)
 
     def __init__(self, xstr):
         """
@@ -71,34 +71,41 @@ class CodeSnippet(Plugin):
 
         super().__init__(xstr)
 
-        self.add_kmap(CodeSnippetNS, Normal, '<Control-r>', self.store)
-        self.add_kmap(CodeSnippetNS, Normal, '<Control-e>', self.show_matches)
-        self.add_kmap(CodeSnippetNS, Normal, '<Control-f>', self.find)
+        self.add_kmap(CodeSnippetNS, Normal, '<Control-r>', 
+        lambda event: Read(events={'<Escape>': lambda read: read.done(), 
+        '<Return>': lambda read: self.store(read)}, 
+        msg='Type a Snippet/Name:'))
+
+        self.add_kmap(CodeSnippetNS, Normal, '<Control-f>', 
+        lambda event: Read(events={'<Escape>': lambda read: read.done(), 
+        '<Return>': self.find}, msg='Type a Snippet/Pattern:'))
+
+        self.add_kmap(CodeSnippetNS, Normal, '<Control-e>', 
+        lambda event: self.picker.display(self.xstr))
 
         # Create table.
         self.cursor.execute('''CREATE TABLE if not exists 
         snippet (id integer PRIMARY KEY, title text, data text);''')
 
-    def store(self, event):
-        root.status.set_msg('Type a title:')
-        scan = Scan()
-    
-        values = (scan.data, self.xstr.join_ranges('sel', '\n'))
+    def store(self, read):
+        values = (read.text(), self.xstr.join_ranges('sel', '\n'))
         self.xstr.tag_remove('sel', 'sel.first', 'sel.last')
         
         self.cursor.execute('''INSERT INTO snippet 
         (title, data) VALUES (?, ?)''', values)
         self.conn.commit()
-
+        read.done()
         root.status.set_msg('Snippet saved!')
 
-    def find(self, event):
+    def find(self, read):
         """
         """
-        root.status.set_msg('Snippet pattern:')
-        scan = Scan()
         
-        matches = self.build_sql(scan.data)
+        matches = self.build_sql(read.text())
+        # It has be called here otherwise focus goes back
+        # to the Xstr instance instead of the SnippetPicker.
+        read.done()
+
         self.picker.extend(matches)
         self.picker.display(self.xstr)
         root.status.set_msg('Found %s snippets!' % len(matches))
@@ -115,10 +122,6 @@ class CodeSnippet(Plugin):
         self.cursor.execute(sql, attrs)
         matches = self.cursor.fetchall()
         return matches
-
-    def show_matches(self, event):
-        self.picker.display(self.xstr)
-        root.status.set_msg('Displaying %s snippets' % len(self.picker.options))
 
 install = CodeSnippet
 

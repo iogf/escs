@@ -59,7 +59,7 @@ class InputBox:
         root.note.focus_restore()
 
 class Read(InputBox, DataEvent, IdleEvent):
-    def __init__(self, events={}, default_data='', complete_words=[]):
+    def __init__(self, events={}, default_data='', complete_words=[], msg=''):
         InputBox.__init__(self, default_data, complete_words)
         DataEvent.__init__(self, self.entry)
         IdleEvent.__init__(self, self.entry)
@@ -68,6 +68,7 @@ class Read(InputBox, DataEvent, IdleEvent):
         for indi, indj in events.items():
             self.entry.bind(indi, lambda event, handle=indj: 
                         self.dispatch(handle) , add=True)
+        root.status.set_msg(msg)
 
     def text(self, clear=False):
         data = self.entry.get()

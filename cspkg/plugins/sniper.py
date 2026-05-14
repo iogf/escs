@@ -25,28 +25,22 @@ class Sniper(Plugin):
 
     # Sniper search options.
     file_regex = ''
-    ignore     = ''
-    multiline  = True
+    ignore = ''
+    multiline = True
 
     # Either lax(1), literal(0), regex(2).
-    type   = 1
+    type = 1
     nocase = False
-    wide   = True
+    wide = True
 
     def  __init__(self, xstr):
         super().__init__(xstr)
 
-        self.add_kmap(SniperNS, Main, '<Alt-s>', self.display_matches)
-        self.add_kmap(SniperNS, Main, '<Alt-r>', self.find_matches)
+        self.add_kmap(SniperNS, Main, '<Alt-s>', 
+        lambda event: self.options.display(self.xstr))
 
-        if not self.dirs:
-            printd('Sniper - Sniper.dirs is not set.')
-
-    def display_matches(self, event):
-        self.options.display(self.xstr)
-
-    def find_matches(self, event):
-        read = Read(events = {
+        self.add_kmap(SniperNS, Main, '<Alt-r>', 
+        lambda event: Read(events = {
         '<Return>':self.find, 
         '<Control-i>':self.set_ignore_regex, 
         '<Control-x>':self.set_type_lax, 
@@ -56,7 +50,11 @@ class Sniper(Plugin):
         '<Control-s>':self.set_nocase, 
         '<Control-w>':self.set_wide, 
         '<Control-m>':self.set_multiline, 
-        '<Escape>':  lambda read: read.done()})
+        '<Escape>':  lambda read: read.done()},
+            msg='Type a Pattern:'))
+
+        if not self.dirs:
+            printd('Sniper - Sniper.dirs is not set.')
         
     @classmethod
     def c_path(cls, path='ag'):

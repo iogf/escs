@@ -36,9 +36,9 @@ class ChannelController(Plugin):
     def __init__(self, xstr, server, chan):
         super().__init__(xstr)
         self.server = server
-        self.xstr   = xstr
-        self.chan   = chan
-        self.peers  = []
+        self.xstr = xstr
+        self.chan = chan
+        self.peers = []
 
         events = (('PRIVMSG->%s' % self.chan , self.e_privmsg), 
         ('332->%s' % self.chan, self.e_332), 
@@ -281,12 +281,12 @@ class IrcConnect:
 
         con.add_map(CONNECT, self.on_connect)
         con.add_map(CONNECT_ERR, self.on_connect_err)
-        self.misc     = None
-        self.addr     = addr
-        self.port     = port
-        self.user     = user
-        self.nick     = nick
-        self.irccmd   = irccmd
+        self.misc = None
+        self.addr = addr
+        self.port = port
+        self.user = user
+        self.nick = nick
+        self.irccmd  = irccmd
         self.channels = channels
         self.encoding = encoding
 

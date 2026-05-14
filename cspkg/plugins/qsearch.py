@@ -21,14 +21,11 @@ class QSearch(Plugin):
     nocase = True
     def __init__(self, xstr):
         super().__init__(xstr)
-        self.xstr   = xstr
+        self.xstr = xstr
         xstr.tag_update(**self.confs)
 
         self.add_kmap(QSearchNS, Main, '<Alt-k>', self.backwards)
         self.add_kmap(QSearchNS, Main, '<Alt-j>', self.forwards)
-
-        # self.add_kmap(QSearchNS, Main, '<Key-bracketleft>', self.backwards)
-        # self.add_kmap(QSearchNS, Main, '<Key-bracketright>', self.forwards)
 
     @classmethod
     def c_appearance(cls, confs):
@@ -39,11 +36,11 @@ class QSearch(Plugin):
         printd('Quick Search - Setting confs = ', cls.confs)
 
     def forwards(self, event):
-        self.index     = self.xstr.index('insert')
+        self.index = self.xstr.index('insert')
         self.stopindex = 'end'
         self.backwards = False
 
-        Read(events = {
+        read = Read(events = {
         '<Alt-p>':self.search_down, 
         '<Alt-o>': self.search_up, 
         '<Control-n>': self.toggle_nocase, 
@@ -60,11 +57,11 @@ class QSearch(Plugin):
         read.done()
 
     def backwards(self, event):
-        self.index     = self.xstr.index('insert')
+        self.index = self.xstr.index('insert')
         self.backwards = True
         self.stopindex = '1.0'
 
-        Read(events = {
+        read = Read(events = {
         '<Alt-p>':self.search_down, 
         '<Alt-o>': self.search_up, 
         '<<Data>>': self.update, 
@@ -75,7 +72,7 @@ class QSearch(Plugin):
         """
 
         """
-        data    = read.text()
+        data = read.text()
         pattern = build_regex(data)
         root.status.set_msg('Pattern:%s' % pattern)
         self.xstr.ipick('(QSEARCH)', pattern,
@@ -86,7 +83,7 @@ class QSearch(Plugin):
         """
 
         """
-        data    = read.text()
+        data = read.text()
         pattern = build_regex(data)
         self.xstr.ipick('(QSEARCH)', pattern, index='insert', 
         nocase=self.nocase, stopindex='1.0', backwards=True)
@@ -95,7 +92,7 @@ class QSearch(Plugin):
         """
 
         """
-        data    = read.text()
+        data = read.text()
         pattern = build_regex(data)
         self.xstr.ipick('(QSEARCH)', pattern, 
         nocase=self.nocase, stopindex='end', index='insert')

@@ -11,22 +11,19 @@ class FSnifferNS(Namespace):
 
 class FSniffer(Plugin):
     options = LinePicker(title='Fsniffer')
-    wide    = True
+    wide = True
 
     def __init__(self, xstr):
         super().__init__(xstr)
-        self.add_kmap(FSnifferNS, Main, '<Alt-t>', self.display_matches)
-        self.add_kmap(FSnifferNS, Main, '<Alt-y>', self.find_matches)
+
+        self.add_kmap(FSnifferNS, Main, '<Alt-y>', 
+        lambda event: Read(events={'<Return>' : self.find,
+        '<Control-w>':self.set_wide, '<<Idle>>': self.update_pattern,
+        '<Escape>': lambda read: read.done()}, msg='Type a File/Path:'))
+
+        self.add_kmap(FSnifferNS, Main, '<Alt-t>', 
+        lambda event: self.options.display(self.xstr))
     
-    def display_matches(self, event):
-        self.options.display(self.xstr)
-
-    def find_matches(self, event):
-        Read(events={'<Return>' : self.find,
-        '<Control-w>':self.set_wide, 
-        '<<Idle>>': self.update_pattern,
-        '<Escape>': lambda read: read.done()})
-
     @classmethod
     def set_wide(cls, read):
         FSniffer.wide = False if FSniffer.wide else True

@@ -25,19 +25,8 @@ class Find(Plugin):
         super().__init__(xstr)
         xstr.tag_update(**self.confs)
 
-        self.add_kmap(FindNS, Normal,
-        '<Alt-slash>', lambda event: self.start())
-
-    @classmethod
-    def c_appearance(cls, confs):
-        """
-        """
-
-        cls.confs.update(confs)
-        printd('Find - Setting confs = ', cls.confs)
-
-    def start(self):
-        read = Read(events={
+        self.add_kmap(FindNS, Normal,'<Alt-slash>', 
+        lambda event: Read(events={
         '<Alt-q>': self.set_data,
         '<Alt-o>': self.up, '<Escape>': self.cancel, 
         '<Alt-p>': self.down, '<Return>': self.cancel,
@@ -51,7 +40,15 @@ class Find(Plugin):
         '<Control-e>': self.toggle_exact,
         '<Control-i>': self.toggle_elide,
         '<Control-l>': self.toggle_nolinestop},
-        default_data=Find.regex)
+         default_data=Find.regex, msg='Type a Pattern:'))
+
+    @classmethod
+    def c_appearance(cls, confs):
+        """
+        """
+
+        cls.confs.update(confs)
+        printd('Find - Setting confs = ', cls.confs)
 
     def toggle_nocase(self, read):
         self.nocase = False if self.nocase else True
