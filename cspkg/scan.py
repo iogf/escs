@@ -4,9 +4,6 @@ from tkinter import Frame, Entry, BOTH
 from cspkg.start import root
 from cspkg.mixins import DataEvent, IdleEvent
 
-class ScanCancel(Exception):
-    pass
-
 class InputBox:
     def __init__(self, default_data='', complete_words=[]):
         self.default_data = default_data
@@ -77,43 +74,8 @@ class Read(InputBox, DataEvent, IdleEvent):
         return data
 
     def dispatch(self, handle):
-        is_done = handle(self)
-        # if is_done == True: 
-            # self.done()
+        handle(self)
 
-class Scan(InputBox):
-    """
-    """
-
-    def __init__(self, default_data ='', complete_words=[]):
-        InputBox.__init__(self, default_data, complete_words)
-        self.entry.bind('<Return>', lambda event: self.on_success())
-
-        self.entry.bind('<Escape>', lambda event: self.cancel())
-        self.data = None
-        self.xstr.wait_window(self.frame)
-
-        if self.data == None:
-            raise ScanCancel('Canceled input!')
-
-    def on_success(self):
-        self.data = self.entry.get()
-        InputBox.done(self)
-
-    def cancel(self):
-        """
-        Called on <Escape>, the self.data attribute
-        is set to None which means the user just canceled
-        the action.
-        """
-
-        self.data = None
-        InputBox.done(self)
-
-    def __str__(self):
-        return self.data
-
-    __repr__ = __str__
 
 
 
