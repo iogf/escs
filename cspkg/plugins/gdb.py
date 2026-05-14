@@ -4,7 +4,7 @@ from untwisted.expect import Expect, LOAD, CLOSE
 from tkinter.filedialog import askopenfilename
 from untwisted.splits import Terminator
 from cspkg.tools import RegexEvent
-from cspkg.scan import Scan
+from cspkg.scan import Read
 from cspkg.start import root
 from cspkg.core import Namespace, Plugin, Mode
 from os.path import abspath
@@ -26,14 +26,22 @@ class Gdb(Plugin):
         self.add_kmap(GdbNS, C, '<Key-p>', self.evaluate_selection)
         self.add_kmap(GdbNS, C, '<Key-R>', self.ask_gdb_exec)
         self.add_kmap(GdbNS, C, '<Key-r>', self.run)
-        self.add_kmap(GdbNS, C, '<Key-x>', self.evaluate_expression)
         self.add_kmap(GdbNS, C, '<Key-Q>', self.quit_db)
         self.add_kmap(GdbNS, C, '<Key-c>', self.send_continue)
-        self.add_kmap(GdbNS, C, '<Key-m>', self.send_dcmd)
+
         self.add_kmap(GdbNS, C, '<Key-s>',  self.send_step)
         self.add_kmap(GdbNS, C, '<Key-A>',  self.set_auto_open)
         self.add_kmap(GdbNS, C, '<Key-C>', self.clear_breakpoint)
         self.add_kmap(GdbNS, C, '<Key-b>', self.send_break)
+
+        self.add_kmap(GdbNS, C, '<Key-m>', 
+        lambda event: Read(events={'<Escape>': lambda read: read.done(), 
+        '<Return>': self.send_dcmd}, msg='Send Command:'))
+
+        self.add_kmap(GdbNS, C, '<Key-x>', 
+        lambda event: Read(events={'<Escape>': lambda read: read.done(), 
+        '<Return>': self.evaluate_expression}, msg='Evaluate Expression:'))
+
         self.auto_open = False
 
     def switch_gdb_mode(self, event):
@@ -47,19 +55,22 @@ class Gdb(Plugin):
         self.auto_open = False if self.auto_open else True
         root.status.set_msg('(GDB) Auto open files: %s!' % self.auto_open)
 
-    def evaluate_expression(self, event):
-        scan  = Scan()
+    def evaluate_expression(self, read):
+        data = read.text()
+        read.done()
 
-        self.send("print %s\r\n" % scan.data)
+        self.send("print %s\r\n" % data)
         root.status.set_msg('(GDB) Sent expression!')
 
     def run(self, event):
         self.send('run\r\n')
         root.status.set_msg('(GDB) Sent run!')
 
-    def send_dcmd(self, event):
-        scan  = Scan()
-        self.send('%s\r\n' % scan.data)
+    def send_dcmd(self, read):
+        data = read.text()
+        read.done()
+
+        self.send('%s\r\n' % data)
         root.status.set_msg('(GDB) Sent cmd!')
 
     def evaluate_selection(self, event):

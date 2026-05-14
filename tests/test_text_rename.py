@@ -1,6 +1,5 @@
 from cspkg.plugins.normal_mode import Normal, NormalMode
 from cspkg.plugins.text_rename import TextRename
-from cspkg.scan import ScanCancel
 from cspkg.start import root
 from tkinter import TclError
 import unittest
@@ -28,10 +27,17 @@ class TestTextRename(unittest.TestCase):
 
     def test0(self):
         self.xstr.event_generate('<Escape>')
+        root.update()
+
         self.assertEqual(self.mod0.mode, Normal)
 
-        self.xstr.after(100, self.test0_helper0)
         self.xstr.event_generate('<Alt-N>')
+        root.update()
+
+        scan = root.focus_get()
+        scan.insert('end', 'escs-testing')
+        scan.event_generate('<Return>')
+        root.update()
 
         home = os.path.expanduser('~')
         filename = os.path.join(home, 'escs-testing')
@@ -40,26 +46,24 @@ class TestTextRename(unittest.TestCase):
         self.assertEqual(True, os.path.exists(filename))
         os.remove(filename)
 
-    def test0_helper0(self):
-        scan = root.focus_get()
-        scan.insert('end', 'escs-testing')
-        scan.event_generate('<Return>')
-
     def test1(self):
         self.xstr.event_generate('<Escape>')
+        root.update()
+
         self.assertEqual(self.mod0.mode, Normal)
 
-        self.xstr.after(100, self.test1_helper0)
         self.xstr.event_generate('<Alt-N>')
+        root.update()
+
+        scan = root.focus_get()
+        scan.event_generate('<Escape>')
+        root.update()
  
         home = os.path.expanduser('~')
 
         filename = os.path.join(home, 'escs-testing')
         self.assertEqual(filename, self.xstr.filename)
 
-    def test1_helper0(self):
-        scan = root.focus_get()
-        scan.event_generate('<Escape>')
 
 if __name__ == '__main__':
     unittest.main()

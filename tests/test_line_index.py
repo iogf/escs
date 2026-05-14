@@ -1,6 +1,5 @@
 from cspkg.plugins.normal_mode import Normal, NormalMode
 from cspkg.plugins.line_index import LineIndex
-from cspkg.scan import ScanCancel
 from cspkg.start import root
 from tkinter import TclError
 import unittest
@@ -23,24 +22,26 @@ class TestLineIndex(unittest.TestCase):
         pass
 
     def test0(self):
-        self.xstr.after(100, self.test0_helper0)
         self.xstr.event_generate('<Alt-w>')
-        self.assertEqual(self.xstr.index('insert'), '2.3')
+        root.update()
 
-    def test0_helper0(self):
         scan = root.focus_get()
         scan.insert('end', '2 3')
         scan.event_generate('<Return>')
+        root.update()
+
+        self.assertEqual(self.xstr.index('insert'), '2.3')
 
     def test1(self):
-        self.xstr.after(100, self.test1_helper0)
         self.xstr.event_generate('<Alt-w>')
-        self.assertEqual(self.xstr.index('insert'), '5.0')
+        root.update()
 
-    def test1_helper0(self):
         scan = root.focus_get()
         scan.insert('end', '5')
         scan.event_generate('<Return>')
+        root.update()
+
+        self.assertEqual(self.xstr.index('insert'), '5.0')
 
     def test2(self):
         self.xstr.mark_set('insert', '2.0')

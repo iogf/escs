@@ -1,5 +1,5 @@
 
-from cspkg.scan import Scan
+from cspkg.scan import Read
 from rope.base.project import Project
 from cspkg.tools import get_project_root, error
 from cspkg.xstr import Xstr
@@ -21,9 +21,15 @@ class Rope(Plugin):
     def __init__(self, xstr):
         super().__init__(xstr)
         self.files = None
-        self.add_kmap(RopeNS, Python, '<Key-n>', self.rename)
+
         self.add_kmap(RopeNS, Python, '<Key-y>', self.static_analysis)
-        self.add_kmap(RopeNS, Python, '<Key-N>', self.move)
+        self.add_kmap(RopeNS, Python, '<Key-n>', 
+        lambda event: Read(events={'<Escape>': lambda read: read.done(), 
+        '<Return>': self.rename}, msg='Rope - Rename:'))
+
+        self.add_kmap(RopeNS, Python, '<Key-N>', 
+        lambda event: Read(events={'<Escape>': lambda read: read.done(),
+        '<Return>': self.move}, msg='Rope - Move:'))
 
     def static_analysis(self, event):
         path = (self.xstr.project if self.xstr.project 
@@ -59,12 +65,13 @@ class Rope(Plugin):
             xstr.load_data(resource1.real_path)
 
     @error
-    def move(self, event):
+    def move(self, read):
         """
         """
-        scan = Scan()
+        data = read.text()
+        read.done()
 
-        tmp0    = self.xstr.get('1.0', 'insert')
+        tmp0 = self.xstr.get('1.0', 'insert')
         offset  = len(tmp0)
 
         path = (self.xstr.project if self.xstr.project 
@@ -72,9 +79,9 @@ class Rope(Plugin):
         project = Project(path)
 
         project = Project(path)
-        mod     = path_to_resource(project, self.xstr.filename)
-        mover   = create_move(project, mod, offset)
-        destin  = path_to_resource(project, scan.data)
+        mod = path_to_resource(project, self.xstr.filename)
+        mover = create_move(project, mod, offset)
+        destin  = path_to_resource(project, data)
         changes = mover.get_changes(destin)
         project.do(changes)
 
@@ -97,20 +104,21 @@ class Rope(Plugin):
                 self.on_move(ind)
 
     @error
-    def rename(self, name):
-        scan = Scan()
+    def rename(self, read):
+        data = read.text()
+        read.done()
 
-        tmp0    = self.xstr.get('1.0', 'insert')
-        offset  = len(tmp0)
+        tmp0 = self.xstr.get('1.0', 'insert')
+        offset = len(tmp0)
         path = (self.xstr.project if self.xstr.project 
         else get_project_root(self.xstr.filename))
 
         # Obs: It demand to have an __init__.ṕy 
         # in the directory to work.
         project = Project(path)
-        mod     = path_to_resource(project, self.xstr.filename)
+        mod = path_to_resource(project, self.xstr.filename)
         renamer = Rename(project, mod, offset)
-        changes = renamer.get_changes(scan.data)
+        changes = renamer.get_changes(data)
         project.do(changes)
 
         self.update_instances(changes)
