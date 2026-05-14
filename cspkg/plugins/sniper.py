@@ -56,7 +56,7 @@ class Sniper(Plugin):
         '<Control-s>':self.set_nocase, 
         '<Control-w>':self.set_wide, 
         '<Control-m>':self.set_multiline, 
-        '<Escape>':  lambda wid: True})
+        '<Escape>':  lambda read: read.done()})
         
     @classmethod
     def c_path(cls, path='ag'):
@@ -64,7 +64,6 @@ class Sniper(Plugin):
         Set the ag path. If ag is known to your environment then
         there is no need to set it.
         """
-        pass
         cls.path = path
         printd('Sniper - Setting ag path = ', path)
 
@@ -76,39 +75,37 @@ class Sniper(Plugin):
         cls.dirs = dirs
         printd('Sniper - Setting dirs =', *dirs)
 
-    def set_wide(self, wid):
+    def set_wide(self, read):
         Sniper.wide = False if Sniper.wide else True
         root.status.set_msg('Set wide search: %s' % Sniper.wide)
 
-    def set_multiline(self, wid):
+    def set_multiline(self, read):
         Sniper.multiline = False if Sniper.multiline else True
         root.status.set_msg('Set multiline search: %s' % Sniper.multiline)
 
-    def set_nocase(self, wid):
+    def set_nocase(self, read):
         Sniper.nocase = False if Sniper.nocase else True
         root.status.set_msg('Set nocase search: %s' % Sniper.nocase)
 
-    def set_ignore_regex(self, wid):
-        Sniper.ignore = wid.get()
+    def set_ignore_regex(self, read):
+        Sniper.ignore = read.text(clear=True)
         root.status.set_msg('Set ignore file regex:%s' % Sniper.ignore)
-        wid.delete(0, 'end')
-
-    def set_type_literal(self, wid):
+    
+    def set_type_literal(self, read):
         root.status.set_msg('Set search type: LITERAL')
         Sniper.type = 0
 
-    def set_type_lax(self, wid):
+    def set_type_lax(self, read):
         root.status.set_msg('Set search type: LAX')
         Sniper.type = 1
 
-    def set_type_regex(self, wid):
+    def set_type_regex(self, read):
         root.status.set_msg('Set search type: REGEX')
         Sniper.type = 2
 
-    def set_file_regex(self, wid):
-        self.file_regex = wid.get()
+    def set_file_regex(self, read):
+        self.file_regex = read.text(clear=True)
         root.status.set_msg('Set file regex:%s' % self.file_regex)
-        wid.delete(0, 'end')
 
     def make_cmd(self, pattern):
         cmd = [self.path, '--nocolor', '--nogroup',
@@ -150,19 +147,19 @@ class Sniper(Plugin):
         return child.communicate()[0]
 
     @error
-    def find(self, wid):
+    def find(self, read):
         """
         """
 
-        pattern = wid.get()
+        pattern = read.text()
         root.status.set_msg('Set pattern:%s!' % pattern)
         output = self.run_cmd(pattern)
+        read.done()
 
         if output:
             self.fmt_output(output)
         else:
             root.status.set_msg('No results:%s!' % pattern)
-        return True
 
     def fmt_output(self, output):
         regex  = '(.+):([0-9]+):[0-9]+:(.+)' 

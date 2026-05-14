@@ -107,8 +107,14 @@ class ModalWindow(Toplevel):
     def  __init__(self, xstr=None, title=''):
         """
         It implements a modal window that is associated with a
-        Xstr instance primarily. It can work as a permanent modal
-        window to retain results for some operation.
+        Xstr instance primarily. 
+
+        It can work as a permanent modal window to retain results for 
+        later usage.
+
+        When the ModalWindow.close method is called it returns focus
+        to the pane's Xstr instance that was focused. It uses root.note method
+        to restore the focus.
         """
         Toplevel.__init__(self, master=root)
         # root.bind('<Configure>', lambda event: self.update(), add=True)
@@ -138,6 +144,7 @@ class ModalWindow(Toplevel):
     def display(self, xstr):
         self.xstr = xstr
         self.update_size()
+
         self.deiconify()
         self.grab_set()
         # root.wait_window(self)
@@ -150,7 +157,7 @@ class ModalWindow(Toplevel):
 
         self.grab_release()
         self.withdraw()
-        self.xstr.focus_set()
+        root.note.focus_restore()
 
 class OptionWindow(ModalWindow):
     def extend(self, options=[]):
@@ -194,8 +201,9 @@ class OptionWindow(ModalWindow):
         # Why does it need this? It seem to fail
         # just using self.listbox.focus_set() in some tk
         # versions.
-        root.after(100, lambda : 
-            self.listbox.focus_set())
+        # root.after(100, lambda : 
+            # self.listbox.focus_set())
+        self.listbox.focus_set()
 
 class TextWindow(ModalWindow):
     def __init__(self,  data, xstr=None, title=''):
@@ -266,14 +274,15 @@ class LinePicker(OptionWindow):
         self.withdraw()
 
     def on_current_xstr(self):
-        index    = self.listbox.index(ACTIVE)
+        index = self.listbox.index(ACTIVE)
         filename = self.options[index][1][0]
-        line     = self.options[index][1][1]
+        line = self.options[index][1][1]
 
         if not self.xstr.filename in filename:
             self.xstr.load_data(filename)
         self.xstr.setcur(line, 0)
-        self.close()
+        self.grab_release()
+        self.withdraw()
 
 class Option:
     def __init__(self, name, type='', doc=''):

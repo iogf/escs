@@ -20,14 +20,14 @@ class FSearch(Plugin):
         self.add_kmap(FSearchNS, Normal, '<Key-C>',  lambda event: 
         Read(events={'<Return>' : self.find, 
         '<<Idle>>': self.update_pattern, 
-        '<Escape>': lambda wid: True}))
+        '<Escape>': lambda read: read.done()}))
 
     def reload_results(self, event):
         self.xstr.swap(self.output, '1.0', 'end')
         root.status.set_msg('Previous located files.')
 
-    def update_pattern(self, wid):
-        pattern = build_regex(wid.get(), '.*')
+    def update_pattern(self, read):
+        pattern = build_regex(read.text(), '.*')
         root.status.set_msg('File pattern: %s' % pattern)
 
     def run_cmd(self, pattern):
@@ -41,11 +41,11 @@ class FSearch(Plugin):
         output = child.communicate()[0]
         return output
 
-    def find(self, wid):
-        pattern = wid.get()
+    def find(self, read):
+        pattern = read.text()
         self.output = self.run_cmd(pattern)
         self.xstr.swap(self.output, '1.0', 'end')
         root.status.set_msg('Locate results: %s' % self.output.count('\n'))
-        return True
+        read.done()
 
 install = FSearch

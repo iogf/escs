@@ -9,6 +9,8 @@ class EscsBook(Notebook):
         Notebook.__init__(self, *args, **kwargs)
         self.bindtags((self, '.', 'all'))
 
+        root = self.winfo_toplevel()
+
     def focus_restore(self):
         wid  = self.nametowidget(self.select())
         wid.fwidget.focus_set()

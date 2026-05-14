@@ -25,15 +25,15 @@ class FSniffer(Plugin):
         Read(events={'<Return>' : self.find,
         '<Control-w>':self.set_wide, 
         '<<Idle>>': self.update_pattern,
-        '<Escape>': lambda wid: True})
+        '<Escape>': lambda read: read.done()})
 
     @classmethod
-    def set_wide(cls, event):
+    def set_wide(cls, read):
         FSniffer.wide = False if FSniffer.wide else True
         root.status.set_msg('Set wide search: %s' % FSniffer.wide)
 
-    def update_pattern(self, wid):
-        pattern = build_regex(wid.get(), '.*')
+    def update_pattern(self, read):
+        pattern = build_regex(read.text(), '.*')
         root.status.set_msg('File pattern: %s' % pattern)
 
     def make_cmd(self, pattern):
@@ -62,14 +62,15 @@ class FSniffer(Plugin):
         output = child.communicate()[0]
         return output
 
-    def find(self, wid):
-        pattern = wid.get()
+    def find(self, read):
+        pattern = read.text()
         output = self.run_cmd(pattern)
+        read.done()
+
         if output:
             self.fmt_output(output)
         else:
             root.status.set_msg('No results:%s!' % pattern)
-        return True
 
     def fmt_output(self, output):
         output = output.strip('\n').rstrip('\n')

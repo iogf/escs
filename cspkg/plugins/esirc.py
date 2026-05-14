@@ -76,9 +76,9 @@ class ChannelController(Plugin):
         self.chmode(Extra)
 
         self.add_kmap(EsircNS, Extra, '<Key-m>', lambda event: Read(
-        events={'<Escape>': lambda wid: True, '<Return>': lambda wid: 
-        self.send_cmsg(wid, self.chan)}, complete_words = self.peers), add=False)
-
+        events={'<Escape>': lambda read: read.done(), '<Return>': lambda read: 
+        self.send_cmsg(read.text(clear=True), self.chan)}, 
+        complete_words = self.peers), add=False)
     
         self.add_kmap(EsircNS, Extra, '<Key-e>', 
         self.server.send_cmd, add=False)
@@ -129,14 +129,12 @@ class ChannelController(Plugin):
         self.xstr.append(H5 % (nicka, nickb), '(ESIRC-NICK)')
         self.peers.append(nickb)
 
-    def send_cmsg(self, wid, target):
+    def send_cmsg(self, data, target):
         """
         """
 
-        data = wid.get()
         self.xstr.append(H1 % (self.server.irc.misc.nick, data))
         send_msg(self.server.irc.con, target, data)
-        wid.delete(0, 'end')
 
 class PMsgController(Plugin):
     def __init__(self, xstr, server, nick):
@@ -144,9 +142,11 @@ class PMsgController(Plugin):
         self.server = server
         self.nick = nick
         self.chmode(Extra)
+
         self.add_kmap(EsircNS, Extra, '<Key-m>', 
-        lambda event: Read(events={'<Escape>': lambda wid: True, 
-        '<Return>': lambda wid: self.send_umsg(wid, nick)}), add=False)
+        lambda event: Read(events={'<Escape>': lambda read: read.done(), 
+        '<Return>': lambda read: self.send_umsg(read.text(clear=True), 
+        nick)}), add=False)
 
         # Register itself in the pcontrollers in lower case
         # in order to avoid opening other pchannel when user
@@ -165,14 +165,12 @@ class PMsgController(Plugin):
         self.add_kmap(EsircNS, Extra, '<Key-M>',  
         self.server.open_pchannel, add=False)
 
-    def send_umsg(self, wid, target):
+    def send_umsg(self, data, target):
         """
         """
 
-        data = wid.get()
         self.xstr.append(H1 % (self.server.irc.misc.nick, data))
         send_msg(self.server.irc.con, target, data)
-        wid.delete(0, 'end')
 
 class ServerController(Plugin):
     def __init__(self, xstr, irc):

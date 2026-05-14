@@ -19,7 +19,7 @@ class InputBox:
         self.entry.focus_set()
 
         # Maybe there is a more elegant way.
-        self.entry.bind('<FocusOut>', lambda event: self.entry.focus_set())
+        # self.entry.bind('<FocusOut>', lambda event: self.entry.focus_set())
         self.entry.bind('<Tab>', self.complete)
 
         self.entry.insert('end', default_data)
@@ -50,6 +50,7 @@ class InputBox:
         self.entry.delete(index1, index2)
         self.entry.insert(index1, word)
         self.pattern = word
+        return 'break'
 
     def done(self):
         self.entry.destroy()
@@ -68,10 +69,16 @@ class Read(InputBox, DataEvent, IdleEvent):
             self.entry.bind(indi, lambda event, handle=indj: 
                         self.dispatch(handle) , add=True)
 
+    def text(self, clear=False):
+        data = self.entry.get()
+        if clear is True:
+            self.entry.delete(0, 'end')
+        return data
+
     def dispatch(self, handle):
-        is_done = handle(self.entry)
-        if is_done == True: 
-            self.done()
+        is_done = handle(self)
+        # if is_done == True: 
+            # self.done()
 
 class Scan(InputBox):
     """

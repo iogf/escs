@@ -37,27 +37,31 @@ class TestFSniffer(unittest.TestCase):
 
         picker = root.focus_get()
 
-        self.assertEqual(picker.title(), 'Fsniffer')
-        picker.listbox.focus_set() 
-        picker.listbox.event_generate('<Escape>')
+        self.assertEqual(picker.master.title(), 'Fsniffer')
+
+        picker.event_generate('<Escape>')
+        root.update()
 
     def test1(self):
         self.xstr.event_generate('<Alt-y>')
         root.update() 
+        root.update_idletasks() 
 
         read = root.focus_get()
-        read.insert('end', 'test fsni')
+        read.insert('end', 'resolv')
 
         read.event_generate('<Return>')
-        root.after(1000, self.test1_helper0)
         root.update() 
+        print('Focus:', root.focus_get())
 
+        # root.after(100, self.test1_helper0)
+        # # time.sleep(3)
         # picker = root.focus_get()
 
         # self.assertEqual(picker.title(), 'Fsniffer')
         # picker.event_generate('<Escape>')
 
-    def test1_helper0(self):
-        print('Focus:', root.focus_get())
+    # def test1_helper0(self):
+        # print('Focus:', root.focus_get())
 
     

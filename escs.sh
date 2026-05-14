@@ -57,6 +57,12 @@ git branch -a
 git checkout -b staging
 git push --set-upstream origin staging
 ##############################################################################
+# create scan-refactor branch.
+cd /home/tau/projects/escs-code/
+git branch -a
+git checkout -b scan-refactor
+git push --set-upstream origin scan-refactor
+##############################################################################
 # merge staging into main.
 cd /home/tau/projects/escs-code/
 git checkout main

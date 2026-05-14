@@ -29,10 +29,10 @@ class TabSearch(Plugin):
         '<Alt-o>': self.switch_back, 
         '<Escape>': self.stop})
 
-    def switch_next(self, wid):
+    def switch_next(self, read):
         """
         """
-        data = wid.get()
+        data = read.text()
         seq  = root.note.next(lambda text: data in text)
         elem = next(seq)
         root.note.select(elem)
@@ -41,11 +41,11 @@ class TabSearch(Plugin):
         # The wid is a PanedVerticalWindow
         root.title('Escs %s' % wid.fwidget.filename)
 
-    def switch_back(self, wid):
+    def switch_back(self, read):
         """
         """
 
-        data = wid.get()
+        data = read.text()
         seq  = root.note.back(lambda text: data in text)
         elem = next(seq)
         root.note.select(elem)
@@ -53,8 +53,8 @@ class TabSearch(Plugin):
         wid  = root.note.nametowidget(root.note.select())
         root.title('Escs %s' % wid.fwidget.filename)
 
-    def stop(self, wid):
-        return True
+    def stop(self, read):
+        read.done()
 
 install = TabSearch
 
