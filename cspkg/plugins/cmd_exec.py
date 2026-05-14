@@ -19,7 +19,7 @@ class CmdExec(Plugin):
 
         self.add_kmap(CmdExec, Main, '<Alt-semicolon>',  
         lambda event: Read(events={'<Escape>' : lambda read: read.done(),
-        '<Return>': lambda read: self.exec_cmd(read)}, msg='Exec Code:'))
+        '<Return>': self.exec_cmd}, msg='Exec Code:'))
 
         self.add_kmap(CmdExec, Main, '<Control-z>',  self.set_target)
         self.add_kmap(CmdExec, Main, '<Control-semicolon>',  self.exec_all)

@@ -7,7 +7,7 @@ from cspkg.tools import RegexEvent
 from cspkg.plugins.golang_mode import Golang
 from cspkg.core import Plugin, Namespace
 from re import findall
-from cspkg.scan import Scan
+from cspkg.scan import Read
 from cspkg.start import root
 import shlex
 import sys
@@ -27,33 +27,49 @@ class Delve(Plugin):
         self.add_kmap(DelveNS, Golang, '<Key-p>', self.evaluate_selection)
         self.add_kmap(DelveNS, Golang, '<Key-r>', self.run)
         self.add_kmap(DelveNS, Golang, '<Key-t>', self.send_restart)
-        self.add_kmap(DelveNS, Golang, '<Key-x>', self.evaluate_expression)
-        self.add_kmap(DelveNS, Golang, '<Key-R>', self.run_args)
+
         self.add_kmap(DelveNS, Golang, '<Key-Q>', self.quit_db)
         self.add_kmap(DelveNS, Golang, '<Key-c>', self.send_continue)
-        self.add_kmap(DelveNS, Golang, '<Key-m>', self.send_dcmd)
         self.add_kmap(DelveNS, Golang, '<Key-S>', self.dump_clear_all)
         self.add_kmap(DelveNS, Golang, '<Key-C>', self.remove_breakpoint)
         self.add_kmap(DelveNS, Golang, '<Key-b>', self.send_break)
         self.add_kmap(DelveNS, Golang, '<Key-A>',  self.set_auto_open)
 
+        self.add_kmap(DelveNS, Golang, '<Key-x>', lambda event: 
+        Read(events={'<Escape>': lambda read: read.done(), 
+        '<Return>': self.evaluate_expression}, 
+        msg='Evaluate Expression:'))
+
+        self.add_kmap(DelveNS, Golang, '<Key-m>', 
+        lambda event: Read(events={'<Escape>': lambda read: read.done(),
+        '<Return>': self.send_dcmd}, 
+        msg='Send command:'))
+
+        self.add_kmap(DelveNS, Golang, '<Key-R>', 
+        lambda event: Read(events={'<Escape>': lambda read: read.done(), 
+        '<Return>': self.run_args}, 
+        msg='Run with Args'))
+
     def set_auto_open(self, event):
         self.auto_open = False if self.auto_open else True
         root.status.set_msg('(Delve) Auto open files: %s!' % self.auto_open)
 
-    def evaluate_expression(self, event):
-        ask  = Scan()
+    def evaluate_expression(self, read):
+        data = read.text()
+        read.done()
 
-        self.send("print %s\r\n" % ask.data)
+        self.send("print %s\r\n" % data)
         root.status.set_msg('(delve) Sent expression!')
 
     def send_restart(self, event):
         self.send('restart\r\n')
         root.status.set_msg('(delve) Sent restart!')
 
-    def send_dcmd(self, event):
-        ask  = Scan()
-        self.send('%s\r\n' % ask.data)
+    def send_dcmd(self, read):
+        data = read.text()
+        read.done()
+
+        self.send('%s\r\n' % data)
         root.status.set_msg('(delve) Sent cmd!')
 
     def evaluate_selection(self, event):
@@ -77,16 +93,16 @@ class Delve(Plugin):
 
         root.status.set_msg('(delve) Started !')
 
-    def run_args(self, event):
-        ask  = Scan()
+    def run_args(self, read):
+        data = read.text()
+        read.done()
 
         if self.expect:
             self.expect.terminate()
         cmd = 'dlv debug --allow-non-terminal-interactive %s -- %s' % (
-            self.xstr.filename, ask.data)
-        self.create_process(shlex.split(cmd))
-        
-        root.status.set_msg('(delve) Started: %s' % ask.data)
+            self.xstr.filename, data)
+        self.create_process(cmd)
+        root.status.set_msg('(delve) Started: %s' % data)
 
     def send_break(self, event):
         line, col = self.xstr.indexsplit('insert')

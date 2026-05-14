@@ -13,7 +13,7 @@ class RunProcess(Plugin):
         super().__init__(xstr)
         self.add_kmap(RunProcessNS, Normal, '<Key-M>', 
          lambda event: Read(events={'<Escape>': lambda read: read.done(), 
-        '<Return>': lambda read: self.run(read)}, 
+        '<Return>': self.run}, 
         msg='Shell command:'))
 
     def run(self, read):

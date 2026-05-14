@@ -35,18 +35,16 @@ class Mc(Plugin):
         self.add_kmap(McNS, Normal, '<Key-G>', lambda e: self.list_clipboard())
         self.add_kmap(McNS, Normal, '<Key-F>', lambda e: self.info())
 
+        self.add_kmap(McNS, Normal, '<Key-I>', self.load_path)
+        self.add_kmap(McNS, Normal, '<Key-J>', lambda e:self.ls(self.ph))
+
         self.add_kmap(McNS, Normal, '<Key-N>', lambda e: Read(events={
-        '<Escape>': lambda read: read.done(), 
-        '<Return>': lambda read: self.rename(read)},
+        '<Escape>': lambda read: read.done(), '<Return>': self.rename}, 
         msg='Rename File:'))
 
         self.add_kmap(McNS, Normal, '<Key-E>', lambda e: Read(events={
-        '<Escape>': lambda read: read.done(), 
-        '<Return>': lambda read: self.create_dir(read)},
+        '<Escape>': lambda read: read.done(), '<Return>': self.create_dir},
         msg='Create Dir:'))
-
-        self.add_kmap(McNS, Normal, '<Key-I>', self.load_path)
-        self.add_kmap(McNS, Normal, '<Key-J>', lambda e:self.ls(self.ph))
 
         self.xstr.tag_update(**self.confs)
 

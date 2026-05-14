@@ -21,8 +21,7 @@ class TextRename(Plugin):
 
         self.add_kmap(TextRenameNS, Main, '<Alt-N>', 
         lambda event: Read(events={'<Escape>': lambda read: read.done(), 
-        '<Return>': lambda read: self.rename(read)}, 
-        msg='Rename File:'))
+        '<Return>': self.rename}, msg='Rename File:'))
     
     def rename(self, read):
         """

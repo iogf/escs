@@ -15,7 +15,8 @@ class WordSearch(Plugin):
         super().__init__(xstr)
         self.add_kmap(WordSearchNS, Main, '<Control-c>', 
         lambda event: Read(events={'<Escape>': lambda read: read.done(), 
-        '<Return>': lambda read: self.match(read)}))
+        '<Return>': self.match}, 
+        msg='Type a Pattern:'))
 
         self.add_kmap(WordSearchNS, Main, '<Control-v>', 
         lambda event: self.options.display(self.xstr))

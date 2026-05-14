@@ -3,7 +3,7 @@
 from cspkg.tools import RegexEvent
 from untwisted.splits import Terminator
 from cspkg.plugins.python_mode import Python
-from cspkg.scan import Scan
+from cspkg.scan import Read
 from cspkg.start import root
 import shlex
 import sys
@@ -26,11 +26,8 @@ class Pdb(Plugin):
         self.auto_open = False
 
         self.add_kmap(PdbNS, Python, '<Key-p>', self.evaluate_selection)
-        self.add_kmap(PdbNS, Python, '<Key-x>', self.evaluate_expression)
         self.add_kmap(PdbNS, Python, '<Key-r>', self.run)
-        self.add_kmap(PdbNS, Python, '<Key-R>', self.run_args)
         self.add_kmap(PdbNS, Python, '<Key-exclam>', self.send_restart)
-        self.add_kmap(PdbNS, Python, '<Key-m>', self.send_dcmd)
         self.add_kmap(PdbNS, Python, '<Key-Q>', self.quit_db) 
         self.add_kmap(PdbNS, Python, '<Key-c>', self.send_continue)
         self.add_kmap(PdbNS, Python, '<Key-S>', self.dump_clear_all)
@@ -39,6 +36,18 @@ class Pdb(Plugin):
         self.add_kmap(PdbNS, Python, '<Key-s>',  self.send_step)
         self.add_kmap(PdbNS, Python, '<Key-A>',  self.set_auto_open)
         self.add_kmap(PdbNS, Python, '<Key-b>', self.send_break)
+
+        self.add_kmap(PdbNS, Python, '<Key-R>', 
+        lambda event: Read(events={'<Escape>': lambda read: read.done(), 
+        '<Return>': self.run_args}, msg='Run with Args'))
+
+        self.add_kmap(PdbNS, Python, '<Key-m>', 
+        lambda event: Read(events={'<Escape>': lambda read: read.done(),
+        '<Return>': self.send_dcmd}, msg='Send command:'))
+
+        self.add_kmap(PdbNS, Python, '<Key-x>', 
+        lambda event: Read(events={'<Escape>': lambda read: read.done(), 
+        '<Return>': self.evaluate_expression}, msg='Evaluate Expression:'))
 
     def c_path(self, path):
         DebuggerProcess.path = path
@@ -81,10 +90,11 @@ class Pdb(Plugin):
             xstr.set_breakpoint(line, self.bp_appearence)
         root.status.set_msg('Debugger stopped at: %s:%s' % (filename, line))
 
-    def evaluate_expression(self, event):
-        scan  = Scan()
+    def evaluate_expression(self, read):
+        data = read.text()
+        read.done()
 
-        self.send("p %s\r\n" % scan.data)
+        self.send("p %s\r\n" % data)
         root.status.set_msg('(pdb) Sent expression!')
 
     def set_auto_open(self, event):
@@ -144,15 +154,16 @@ class Pdb(Plugin):
 
         root.status.set_msg('(pdb) Started !')
 
-    def run_args(self, event):
-        scan  = Scan()
+    def run_args(self, read):
+        data = read.text()
+        read.done()
         args = '%s -u -m pdb %s %s' % (self.path, 
-        self.xstr.filename, scan.data)
+        self.xstr.filename, data)
 
         if self.expect:
             self.expect.terminate()
         self.create_process(args)
-        root.status.set_msg('(pdb) Started with Args: %s' % scan.data)
+        root.status.set_msg('(pdb) Started with Args: %s' % data)
 
     def dump_clear_all(self, event):
         self.send('clear\r\nyes\r\n')
@@ -165,10 +176,11 @@ class Pdb(Plugin):
         self.send('clear %s:%s\r\n' % (self.xstr.filename, line))
         root.status.set_msg('(pdb) Command clear sent!')
 
-    def send_dcmd(self, event):
-        scan  = Scan()
+    def send_dcmd(self, read):
+        data = read.text()
+        read.done()
 
-        self.send('%s\r\n' % scan.data)
+        self.send('%s\r\n' % data)
         root.status.set_msg('(pdb) Sent cmd!')
 
     def quit_db(self, event):

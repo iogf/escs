@@ -73,7 +73,7 @@ class CodeSnippet(Plugin):
 
         self.add_kmap(CodeSnippetNS, Normal, '<Control-r>', 
         lambda event: Read(events={'<Escape>': lambda read: read.done(), 
-        '<Return>': lambda read: self.store(read)}, 
+        '<Return>': self.store}, 
         msg='Type a Snippet/Name:'))
 
         self.add_kmap(CodeSnippetNS, Normal, '<Control-f>', 
@@ -101,11 +101,10 @@ class CodeSnippet(Plugin):
         """
         """
         
-        matches = self.build_sql(read.text())
-        # It has be called here otherwise focus goes back
-        # to the Xstr instance instead of the SnippetPicker.
+        data = read.text()
         read.done()
 
+        matches = self.build_sql(data)
         self.picker.extend(matches)
         self.picker.display(self.xstr)
         root.status.set_msg('Found %s snippets!' % len(matches))
