@@ -1,5 +1,7 @@
 from cspkg.plugins.normal_mode import Normal
 from cspkg.core import Main, Mode, EscsApp
+from cspkg.start import root
+
 import random
 import unittest
 import time
@@ -14,24 +16,13 @@ class TestXstr0(unittest.TestCase):
     the cspkg.start module.
     """
 
-    @classmethod
-    def setUpClass(cls):
-        cls.root = EscsApp()
-        pass
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.root.destroy()
-
-        pass
-
     def test0(self):
-        xstr = self.root.note.create('Tests0')
+        xstr = root.note.create('Tests0')
         xstr.insert('end', 'Xstr test.\n' * 10)
 
-        self.root.note.select(xstr.master.master.master)
+        root.note.select(xstr.master.master.master)
         xstr.focus_set()
-        self.root.update() 
+        root.update() 
 
         index0 = xstr.min('2.4', '3.5')
         self.assertEqual(index0, '2.4')
@@ -47,12 +38,12 @@ class TestXstr0(unittest.TestCase):
         pass
 
     def test1(self):
-        xstr = self.root.note.create('Tests1')
+        xstr = root.note.create('Tests1')
         xstr.insert('end', 'Xstr test.\n' * 10)
 
-        self.root.note.select(xstr.master.master.master)
+        root.note.select(xstr.master.master.master)
         xstr.focus_set()
-        self.root.update() 
+        root.update() 
 
         index0 = xstr.max('2.4', '3.5')
         self.assertEqual(index0, '3.5')
@@ -72,12 +63,11 @@ class TestXstr0(unittest.TestCase):
         Test Xstr.replace_ranges method. Such a method is used to replace
         ranges of text that belong to a given tag name.
         """
-        xstr = self.root.note.create('Tests3')
-        xstr.insert('end', 'Xstr test.\n' * 10)
+        xstr = root.note.create('Tests3')
 
-        self.root.note.select(xstr.master.master.master)
+        root.note.select(xstr.master.master.master)
         xstr.focus_set()
-        self.root.update() 
+        root.update() 
 
         xstr.delete('1.0', 'end')
         xstr.append('9985', 'sel')
@@ -110,13 +100,13 @@ class TestXstr0(unittest.TestCase):
         self.assertEqual(xstr.tag_ranges('sel'), ())
 
     def test4(self):
-        xstr = self.root.note.create('Tests4')
+        xstr = root.note.create('Tests4')
         xstr.insert('end', '9985 3219 3212 9321\n')
         xstr.insert('end', '2391 3123 4212 3421\n')
 
-        self.root.note.select(xstr.master.master.master)
+        root.note.select(xstr.master.master.master)
         xstr.focus_set()
-        self.root.update() 
+        root.update() 
         xstr.mark_set('insert', '1.0')
         xstr.ipick('(IPICK)', '2391')
 
@@ -157,10 +147,10 @@ class TestXstr0(unittest.TestCase):
         that are passed to the Xstr.search method.
         """
 
-        xstr = self.root.note.create('Tests3')
-        self.root.note.select(xstr.master.master.master)
+        xstr = root.note.create('Tests3')
+        root.note.select(xstr.master.master.master)
         xstr.focus_set()
-        self.root.update() 
+        root.update() 
 
         xstr.insert('end', '1234 1343 5321 2934\n')
         patterns0 = tuple(xstr.find('1', '1.0', 'end'))
@@ -178,73 +168,6 @@ class TestXstr0(unittest.TestCase):
         print(patterns1)
         self.assertEqual(''.join(map(lambda ind: ind[0], 
         patterns1)), '343931333 3334')
-
-class TestXstr1(unittest.TestCase):
-    """
-    Test Xstr.xstr_widgets separately to avoid
-    conflicts with other tests. The Xstr.xstr_widgets 
-    returns the number of Xstr instances.
-
-    When testing such a method with others it turns out necessary
-    to keep track of the number of Xstr instances that were created.
-    It makes testing slightly more complicated.
-    """
-    @classmethod
-    def setUpClass(cls):
-        cls.root = EscsApp()
-        pass
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.root.destroy()
-        pass
-
-    def test0(self):
-        xstr = self.root.note.create('Tests')
-        xstr0 = xstr.master.master.create('Xstr0')
-        xstr1 = xstr.master.master.create('Xstr1')
-
-        xstr2 = xstr.master.master.master.create('Xstr2')
-
-        xstr3 = xstr2.master.master.create('Xstr3')
-        lst0 = list(xstr.xstr_widgets(self.root))
-
-        self.assertEqual(len(lst0), 5)
-
-        self.assertIn(xstr0, lst0)
-        self.assertIn(xstr1, lst0)
-        self.assertIn(xstr2, lst0)
-        self.assertIn(xstr3, lst0)
-
-        # Create tabs and check if if Xstr.xstr_widgets returns
-        # the correct Xstr instances.
-        xstr4 = self.root.note.create('Xstr4')
-        xstr5 = self.root.note.create('Xstr5')
-
-        lst1 = list(xstr.xstr_widgets(self.root))
-        self.assertIn(xstr4, lst1)
-        self.assertIn(xstr5, lst1)
-        self.assertEqual(len(lst1), 7)
-
-        lst2 = xstr.get_opened_files(self.root)
-        self.assertEqual(len(lst1), 7)
-
-        for indi, indj in lst2.items():
-            self.assertIn(indj, lst1)
-
-        xstr0.master.destroy()
-        xstr1.master.destroy()
-
-        xstr2.master.master.destroy()
-        xstr3.master.destroy()
-        
-        xstr4.master.master.master.destroy()
-        xstr5.master.master.master.destroy()
-
-        lst3 = list(xstr.xstr_widgets(self.root))
-        self.assertEqual(len(lst3), 1)
-        self.assertIn(xstr, lst3)
-
 
 if __name__ == '__main__':
     unittest.main()
