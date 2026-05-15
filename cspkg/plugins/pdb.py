@@ -95,7 +95,7 @@ class Pdb(Plugin):
         read.done()
 
         self.send("p %s\r\n" % data)
-        root.status.set_msg('(pdb) Sent expression!')
+        root.status.set_msg('Pdb - Sent expression!')
 
     def set_auto_open(self, event):
         self.auto_open = False if self.auto_open else True
@@ -108,35 +108,35 @@ class Pdb(Plugin):
     def send_break(self, event):
         self.send('break %s:%s\r\n' % (self.xstr.filename, 
         self.xstr.indexsplit('insert')[0]))
-        root.status.set_msg('(pdb) Command break sent !')
+        root.status.set_msg('Pdb - Command break sent !')
 
     def send_step(self, event):
         self.send('step\r\n')
-        root.status.set_msg('(pdb) Command step sent !')
+        root.status.set_msg('Pdb - Command step sent !')
 
     def send_tbreak(self, event):
         self.send('tbreak %s:%s\r\n' % (self.xstr.filename, 
         self.xstr.indexsplit('insert')[0]))
-        root.status.set_msg('(pdb) Command tbreak sent !')
+        root.status.set_msg('Pdb - Command tbreak sent !')
 
     def send_continue(self, event):
         """
         """
 
         self.send('continue\r\n')
-        root.status.set_msg('(pdb) Command continue sent !')
+        root.status.set_msg('Pdb - Command continue sent !')
 
     def send_restart(self, event):
         """
         """
 
         self.send('restart\r\n')
-        root.status.set_msg('(pdb) Sent restart !')
+        root.status.set_msg('Pdb - Sent restart !')
 
     def evaluate_selection(self, event):
         data = self.xstr.tag_xjoin('sel', sep='\r\n')
         self.send('p %s' % data)
-        root.status.set_msg('(pdb) Sent text selection!')
+        root.status.set_msg('Pdb - Sent text selection!')
 
     def install_handles(self, expect):
         Terminator(expect, delim=b'\n')
@@ -152,7 +152,7 @@ class Pdb(Plugin):
         self.create_process(' '.join([self.path, '-u', 
         '-m', 'pdb', self.xstr.filename]))
 
-        root.status.set_msg('(pdb) Started !')
+        root.status.set_msg('Pdb - Started !')
 
     def run_args(self, read):
         data = read.text()
@@ -163,31 +163,31 @@ class Pdb(Plugin):
         if self.expect:
             self.expect.terminate()
         self.create_process(args)
-        root.status.set_msg('(pdb) Started with Args: %s' % data)
+        root.status.set_msg('Pdb - Started with Args: %s' % data)
 
     def dump_clear_all(self, event):
         self.send('clear\r\nyes\r\n')
-        root.status.set_msg('(pdb) Command clearall sent!')
+        root.status.set_msg('Pdb - Command clearall sent!')
 
     def remove_breakpoint(self, event):
         """
         """
         line, col = self.xstr.indexsplit('insert')
         self.send('clear %s:%s\r\n' % (self.xstr.filename, line))
-        root.status.set_msg('(pdb) Command clear sent!')
+        root.status.set_msg('Pdb - Command clear sent!')
 
     def send_dcmd(self, read):
         data = read.text()
         read.done()
 
         self.send('%s\r\n' % data)
-        root.status.set_msg('(pdb) Sent cmd!')
+        root.status.set_msg('Pdb - Sent cmd!')
 
     def quit_db(self, event):
         if not self.expect:
             root.status.set_msg('Debugger not started.')
         else:
             self.expect.terminate()
-        sys.stdout.write('(pdb) Sent quit!')
+        sys.stdout.write('Pdb - Sent quit!')
 
 install = Pdb

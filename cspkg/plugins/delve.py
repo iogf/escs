@@ -52,30 +52,30 @@ class Delve(Plugin):
 
     def set_auto_open(self, event):
         self.auto_open = False if self.auto_open else True
-        root.status.set_msg('(Delve) Auto open files: %s!' % self.auto_open)
+        root.status.set_msg('Delve - Auto open files: %s!' % self.auto_open)
 
     def evaluate_expression(self, read):
         data = read.text()
         read.done()
 
         self.send("print %s\r\n" % data)
-        root.status.set_msg('(delve) Sent expression!')
+        root.status.set_msg('Delve - Sent expression!')
 
     def send_restart(self, event):
         self.send('restart\r\n')
-        root.status.set_msg('(delve) Sent restart!')
+        root.status.set_msg('Delve - Sent restart!')
 
     def send_dcmd(self, read):
         data = read.text()
         read.done()
 
         self.send('%s\r\n' % data)
-        root.status.set_msg('(delve) Sent cmd!')
+        root.status.set_msg('Delve - Sent cmd!')
 
     def evaluate_selection(self, event):
         data = self.xstr.join_ranges('sel', sep='\r\n')
         self.send('print %s' % data)
-        root.status.set_msg('(delve) Sent selection !')
+        root.status.set_msg('Delve - Sent selection !')
 
     def install_handles(self, expect):
         Terminator(expect, delim=b'\n')
@@ -91,7 +91,7 @@ class Delve(Plugin):
         self.create_process(' '.join(['dlv', 'debug', 
         '--allow-non-terminal-interactive', self.xstr.filename]))
 
-        root.status.set_msg('(delve) Started !')
+        root.status.set_msg('Delve - Started !')
 
     def run_args(self, read):
         data = read.text()
@@ -102,7 +102,7 @@ class Delve(Plugin):
         cmd = 'dlv debug --allow-non-terminal-interactive %s -- %s' % (
             self.xstr.filename, data)
         self.create_process(cmd)
-        root.status.set_msg('(delve) Started: %s' % data)
+        root.status.set_msg('Delve Started: %s' % data)
 
     def send_break(self, event):
         line, col = self.xstr.indexsplit('insert')
@@ -112,7 +112,7 @@ class Delve(Plugin):
         bname = '%s%s' % (''.join(bname), line)
         self.send('break %s %s:%s\r\n' % (bname, self.xstr.filename, line))
 
-        root.status.set_msg('(delve) Sent breakpoint !')
+        root.status.set_msg('Delve - Sent breakpoint !')
 
     def send(self, data):
         self.expect.send(data.encode(self.encoding))
@@ -123,12 +123,12 @@ class Delve(Plugin):
         """
 
         self.send('continue\r\n')
-        root.status.set_msg('(delve) Sent continue !')
+        root.status.set_msg('Delve - Sent continue !')
 
     def dump_clear_all(self, event):
         self.send('clearall\r\n')
 
-        root.status.set_msg('(delve) Sent clearall !')
+        root.status.set_msg('Delve - Sent clearall !')
 
     def remove_breakpoint(self, event):
         """
@@ -139,7 +139,7 @@ class Delve(Plugin):
         bname = '%s%s' % (''.join(bname), line)
         self.send('clear %s\r\n' % bname)
 
-        root.status.set_msg('(delve) Sent clear !')
+        root.status.set_msg('Delve - Sent clear !')
 
     def create_process(self, args):
         self.expect = Expect(args)
@@ -174,10 +174,10 @@ class Delve(Plugin):
 
     def quit_db(self, event):
         if not self.expect:
-            root.status.set_msg('Delve debugger not started.')
+            root.status.set_msg('Delve - debugger not started.')
         else:
             self.expect.terminate()
-        sys.stdout.write('(Delve) Sent quit!')
+        sys.stdout.write('Delve - Sent quit!')
 
     def handle_line(self, expect, filename, line):
         xstr = root.note.lseek(filename, line, self.auto_open)

@@ -49,34 +49,34 @@ class Gdb(Plugin):
 
     def send_step(self, event):
         self.send('step\r\n')
-        root.status.set_msg('(GDB) Command step sent !')
+        root.status.set_msg('GDB - Command step sent !')
 
     def set_auto_open(self, event):
         self.auto_open = False if self.auto_open else True
-        root.status.set_msg('(GDB) Auto open files: %s!' % self.auto_open)
+        root.status.set_msg('GDB - Auto open files: %s!' % self.auto_open)
 
     def evaluate_expression(self, read):
         data = read.text()
         read.done()
 
         self.send("print %s\r\n" % data)
-        root.status.set_msg('(GDB) Sent expression!')
+        root.status.set_msg('GDB - Sent expression!')
 
     def run(self, event):
         self.send('run\r\n')
-        root.status.set_msg('(GDB) Sent run!')
+        root.status.set_msg('GDB - Sent run!')
 
     def send_dcmd(self, read):
         data = read.text()
         read.done()
 
         self.send('%s\r\n' % data)
-        root.status.set_msg('(GDB) Sent cmd!')
+        root.status.set_msg('GDB - Sent cmd!')
 
     def evaluate_selection(self, event):
         data = event.widget.join_ranges('sel', sep='\r\n')
         self.send('print %s' % data)
-        root.status.set_msg('(GDB) Sent selection !')
+        root.status.set_msg('GDB - Sent selection !')
 
     def install_handles(self, expect):
         Terminator(expect, delim=b'\n')
@@ -85,7 +85,7 @@ class Gdb(Plugin):
         expect.add_map('LINE', self.handle_line)
 
     def ask_gdb_exec(self, event):
-        root.status.set_msg('(GDB) Select a compiled file:')
+        root.status.set_msg('GDB - Select a compiled file:')
         filename = askopenfilename()
         if filename: 
             self.init_gdb(filename)
@@ -94,7 +94,7 @@ class Gdb(Plugin):
         if self.expect:
             self.expect.terminate()
         self.create_process('gdb -f %s' % filename)
-        root.status.set_msg('(GDB) Started: %s' % filename)
+        root.status.set_msg('GDB - Started: %s' % filename)
         self.send('set style enabled off\r\n')
 
     def send_break(self, event):
@@ -102,8 +102,7 @@ class Gdb(Plugin):
 
         # Make sure the name will be unique for removing it later.
         self.send('break %s:%s\r\n' % (event.widget.filename, line))
-
-        root.status.set_msg('(GDB) Sent breakpoint !')
+        root.status.set_msg('GDB - Sent breakpoint !')
 
     def send(self, data):
         self.expect.send(data.encode(self.encoding))
@@ -114,7 +113,7 @@ class Gdb(Plugin):
         """
 
         self.send('continue\r\n')
-        root.status.set_msg('(GDB) Sent continue !')
+        root.status.set_msg('GDB - Sent continue !')
 
     def clear_breakpoint(self, event):
         """
@@ -122,15 +121,14 @@ class Gdb(Plugin):
 
         line, col = event.widget.indexsplit('insert')
         self.send('clear %s:%s\r\n' % (event.widget.filename, line))
-
-        root.status.set_msg('(GDB) Sent clear !')
+        root.status.set_msg('GDB - Sent clear !')
 
     def quit_db(self, event):
         if not self.expect:
             root.status.set_msg('GDB not started.')
         else:
             self.expect.terminate()
-        sys.stdout.write('(GDB) Sent quit!')
+        sys.stdout.write('GDB - Sent quit!')
 
     def create_process(self, cmd):
         Gdb.expect = Expect(cmd)
@@ -139,8 +137,8 @@ class Gdb(Plugin):
         data: sys.stdout.write(data.decode(self.encoding)))
 
         self.expect.add_map(CLOSE, self.on_bkpipe)
-
         self.install_handles(self.expect)
+
         root.protocol("WM_DELETE_WINDOW", self.on_tk_quit)
 
     def on_bkpipe(self, expect):
