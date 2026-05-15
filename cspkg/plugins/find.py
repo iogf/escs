@@ -98,7 +98,7 @@ class Find(Plugin):
         """
 
         self.xstr.tag_remove('(FIND)', '1.0', 'end')
-        regex = read.get()
+        regex = read.text()
 
         matches = self.xstr.check_ranges('sel', regex, 
         regexp=self.regexp, nocase=self.nocase, exact=self.exact, 
@@ -114,7 +114,7 @@ class Find(Plugin):
         """
         """
 
-        regex = read.get()
+        regex = read.text()
         index = self.xstr.tag_nextrange('(FIND)', '1.0')
         self.xstr.replace(regex, Find.data, index[0], 
         regexp=self.regexp, nocase=self.nocase, 
@@ -123,7 +123,7 @@ class Find(Plugin):
     def sub_selected(self, read):
         """
         """
-        regex = read.get()
+        regex = read.text()
         count = self.xstr.replace_ranges('sel',
         regex, Find.data, regexp=self.regexp, nocase=self.nocase, 
         exact=self.exact, elide=self.elide)
@@ -133,7 +133,7 @@ class Find(Plugin):
     def sub_all(self, read):
         """
         """
-        regex = read.get()
+        regex = read.text()
         count = self.xstr.replace_all(regex, Find.data, 
         '1.0', 'end', regexp=self.regexp, nocase=self.nocase, 
         exact=self.exact, elide=self.elide)
