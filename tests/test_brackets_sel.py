@@ -80,3 +80,5 @@ class TestBracketsSel(unittest.TestCase):
         self.assertEqual(ranges8, ('1.26', '3.4'))
         xstr.event_generate('<Escape>')
 
+if __name__ == '__main__':
+    unittest.main()

@@ -17,13 +17,15 @@ class BracketsSel(Plugin):
 
         token = self.xstr.get('insert', 'insert +1c')
         if token in self.lhs:
-            self.xstr.tag_add('sel', 'insert +1c', 
-                self.xstr.check_brackets(token, self.lhs[token], 
-                    'insert', self.MAX)[0])
+            index = self.xstr.check_brackets(
+                token, self.lhs[token], 'insert', self.MAX)
+            if index is not None:
+                self.xstr.tag_add('sel', 'insert +1c', index[0])
         elif token in self.rhs:
-            self.xstr.tag_add('sel', 
-                self.xstr.check_brackets(self.rhs[token], token, 
-                    'insert +1c', self.MAX, True)[1], 'insert')
+            index = self.xstr.check_brackets(self.rhs[token], 
+                token, 'insert +1c', self.MAX, True)
+            if index is not None:
+                self.xstr.tag_add('sel', index[1], 'insert')
 
     def sel_all(self, event):
         """
@@ -32,12 +34,15 @@ class BracketsSel(Plugin):
 
         token = self.xstr.get('insert', 'insert +1c')
         if token in self.lhs:
-            self.xstr.tag_add('sel', 'insert', self.xstr.check_brackets(
-                token,self.lhs[token], 'insert', self.MAX)[1])
+            index = self.xstr.check_brackets(
+                token,self.lhs[token], 'insert', self.MAX)
+            if index is not None:
+                self.xstr.tag_add('sel', 'insert', index[1])
         elif token in self.rhs:
-            self.xstr.tag_add('sel', 
-                self.xstr.check_brackets(self.rhs[token], token, 
-                    'insert +1c', self.MAX, True)[0], 'insert +1c')
+            index = self.xstr.check_brackets(self.rhs[token], 
+                    token, 'insert +1c', self.MAX, True)
+            if index is not None:
+                self.xstr.tag_add('sel', index[0], 'insert +1c')
 
     lhs = {
         '(': ')',

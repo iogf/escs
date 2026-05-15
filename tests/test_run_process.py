@@ -24,20 +24,19 @@ class TestRunProcess(unittest.TestCase):
         xstr.focus_set()
         root.update() 
 
-        root.after(100, self.helper0)
         xstr.event_generate('<Key-M>')
+        root.update()
+
+        scan = root.focus_get()
+        scan.insert('end', 'ls')
+        scan.event_generate('<Return>')
+        root.update()
 
         data0 = xstr.get('1.0', 'end')
         process = Popen('ls', stdout=PIPE, stderr=PIPE, 
         text=True, shell=True)
         output, err = process.communicate()
-
         self.assertTrue(output in data0)
-
-    def helper0(self):
-        scan = root.focus_get()
-        scan.insert('end', 'ls')
-        scan.event_generate('<Return>')
 
 if __name__ == '__main__':
     unittest.main()
