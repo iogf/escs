@@ -379,11 +379,11 @@ load_cls(Spider)
 
 from cspkg.plugins import codec
 ##############################################################################
-# Spawning processes.
-# from cspkg.plugins.spawn import unix_platform
+# Spawning processes using select to avoid blocking.
+# from cspkg.plugins.spawn import select
 
-# Spawning processes cross_platform.
-# from cspkg.plugins.spawn import cross_platform
+# Spawning processes using a threaded approach.
+# from cspkg.plugins.spawn import thread
 ##############################################################################
 # from cspkg.plugins import pdb
 # load_module(pdb)

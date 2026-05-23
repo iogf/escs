@@ -42,16 +42,6 @@ class BaseSpawn:
         """
 
         """
-        # sigint = lambda: self.dump_signal(signal.SIGINT)
-        # ENV['sigint'] = sigint
-
-        # self.input.hook('spawn', 'NORMAL', '<Control-backslash>', 
-        # lambda event: self.dump_signal(signal.SIGQUIT), add=False)
-        # sigquit = lambda: self.dump_signal(signal.SIGQUIT)
-        # ENV['sigquit'] = sigquit
-
-        # When one of the Xstr instances are destroyed then
-        # the process is killed.
 
         HandleOutput(self.output, self)
         HandleInput(self.input, self)

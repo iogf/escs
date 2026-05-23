@@ -95,13 +95,6 @@ git checkout *
 cd ~/projects/escs-code
 pip install .
 ##############################################################################
-# install escs. 
-cd ~/projects/escs-code
-sudo bash -i
-python setup.py install
-rm -fr build
-exit
-##############################################################################
 # preview markdown docs.
 cd /home/tau/projects/escs-code
 markdown README.md > README.html
