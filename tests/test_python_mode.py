@@ -24,6 +24,7 @@ class TestPythonMode(unittest.TestCase):
     def test0(self):
         self.mod1.chmode(Normal)
         self.xstr.event_generate('<Key-exclam>')
+        root.update()
         self.assertEqual(self.mod0.mode, Python)
         self.mod1.chmode(Normal)
         self.assertEqual(self.mod1.mode, Normal)
@@ -35,17 +36,19 @@ class TestPythonMode(unittest.TestCase):
 
         # The selection should remain on Python mode.
         self.xstr.event_generate('<Key-exclam>')
+        root.update()
 
         self.assertEqual(self.xstr.tag_nextrange('sel', '1.0'), 
         ('1.0', self.xstr.index('end')))
 
         self.assertEqual(self.mod0.mode, Python)
         self.xstr.event_generate('<Escape>')
+
+        root.update()
         self.assertEqual(self.mod1.mode, Normal)
 
         # When switching to Normal mode it shouldn't exist anymore.
         self.assertEqual(self.xstr.tag_nextrange('sel', '1.0'), ())
-        
         pass
 
 if __name__ == '__main__':

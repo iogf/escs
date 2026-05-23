@@ -29,21 +29,26 @@ class TestLineSel(unittest.TestCase):
         self.xstr.event_generate('<Key-f>')
 
         ranges = self.xstr.tag_nextrange('sel', '1.0')
+        root.update() 
         self.assertEqual(ranges, ('2.0', self.xstr.index('2.0 +1l')))
 
         # Sending Key-f it removes the selection on the line.
         self.xstr.event_generate('<Key-f>')
         ranges = self.xstr.tag_nextrange('sel', '1.0')
+        root.update() 
+
         self.assertEqual(ranges, ())
 
         self.xstr.mark_set('insert', '4.0')
         self.xstr.event_generate('<Key-f>')
 
         ranges = self.xstr.tag_nextrange('sel', '4.0')
+        root.update() 
         self.assertEqual(ranges, ('4.0', self.xstr.index('4.0 +1l')))
 
         self.xstr.event_generate('<Key-f>')
         ranges = self.xstr.tag_nextrange('sel', '1.0')
+        root.update() 
         self.assertEqual(ranges, ())
 
         # Add selection from 1.0 to 4.0 then place the cursor at the
@@ -54,9 +59,12 @@ class TestLineSel(unittest.TestCase):
 
         # Make sure it has left to ranges of text selection.
         ranges = self.xstr.tag_nextrange('sel', '1.0')
+        root.update() 
+
         self.assertEqual(ranges, ('1.0', self.xstr.index('1.0 +1l')))
 
         ranges = self.xstr.tag_nextrange('sel', '2.0')
+        root.update() 
         self.assertEqual(ranges, ('3.0', self.xstr.index('3.0 +1l')))
 
 if __name__ == '__main__':

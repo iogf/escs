@@ -32,11 +32,15 @@ class TestSpacing(unittest.TestCase):
 
         # Check whether they were created.
         panes0 = xstr0.master.master.panes()
+        root.update() 
+
         self.assertEqual(len(panes0), 3)
         xstr0.event_generate('<Alt-V>')
 
         xstr1 = root.focus_get()
         panes1 = xstr1.master.master.panes()
+        root.update() 
+
         self.assertEqual(len(panes1), 4)
 
         # Create vertical panes for such it grabs the focus from
@@ -45,18 +49,24 @@ class TestSpacing(unittest.TestCase):
         xstr2 = root.focus_get()
         xstr2.event_generate('<Alt-C>')
         panes2 = xstr2.master.master.master.panes()
+        root.update() 
+
         self.assertEqual(len(panes2), 2)
 
         xstr2.event_generate('<Alt-C>')
 
         xstr3 = root.focus_get()
         panes3 = xstr3.master.master.master.panes()
+        root.update() 
+
         self.assertEqual(len(panes3), 3)
 
         xstr4 = root.focus_get()
         xstr4.event_generate('<Alt-C>')
 
         panes5 = xstr4.master.master.master.panes()
+        root.update() 
+
         self.assertEqual(len(panes5), 4)
 
 if __name__ == '__main__':

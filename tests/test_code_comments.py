@@ -32,6 +32,8 @@ class TestCodeComments(unittest.TestCase):
         xstr0.event_generate('<Key-c>')
 
         data0 = xstr0.get('1.0', 'end') 
+        root.update() 
+
         self.assertEqual(data0.startswith('#'), True)
         
         # Test for removing python comments.
@@ -40,6 +42,8 @@ class TestCodeComments(unittest.TestCase):
         xstr0.event_generate('<Key-C>')
 
         data0 = xstr0.get('1.0', 'end') 
+        root.update() 
+
         self.assertEqual(data0.startswith('#'), False)
 
         # Test for cpp files.
@@ -56,6 +60,8 @@ class TestCodeComments(unittest.TestCase):
         xstr1.event_generate('<Key-c>')
 
         # Check whether comments were added in all selected lines.
+        root.update() 
+
         for ind in range(0, 2):
             self.assertEqual(xstr1.get('%s.0' % ind, 
                 '%s.0 lineend' % ind).startswith('//'), True)
@@ -66,6 +72,8 @@ class TestCodeComments(unittest.TestCase):
         xstr1.event_generate('<Key-C>')
 
         # Check whether comments were removed correctly.
+        root.update() 
+
         for ind in range(0, 2):
             self.assertEqual(xstr1.get('%s.0' % ind, 
                 '%s.0 lineend' % ind).startswith('//'), False)

@@ -33,6 +33,7 @@ class TestTabSearch(unittest.TestCase):
 
         root.note.select(cls.xstr0.master.master.master)
         cls.xstr0.focus_set()
+
         root.update() 
 
     @classmethod
@@ -50,6 +51,8 @@ class TestTabSearch(unittest.TestCase):
 
         tab0 = root.note.select()
         tab0_name = root.note.tab(tab0, 'text')
+        root.update() 
+
         self.assertEqual(tab0_name, 'TestA 0')
         self.assertEqual(root.focus_get(), self.xstr0)
 
@@ -63,6 +66,8 @@ class TestTabSearch(unittest.TestCase):
 
         tab1 = root.note.select()
         tab1_name = root.note.tab(tab1, 'text')
+        root.update() 
+
         self.assertEqual(tab1_name, 'TestC 2')
         self.assertEqual(root.focus_get(), self.xstr2)
 

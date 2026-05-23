@@ -9,7 +9,7 @@ It has some similarities with Vim like Normal, Insert modes and keystrokes to mo
 It was built with some goals, it should be easily extensible; users should extend and configure 
 Escs in a mainstream programming language (e.g Python). . 
 
-Escs doesn't demand you to have twenty three fingers it makes you feel like having twienty four 
+Escs doesn't demand you to have twenty three fingers it makes you feel like having twenty four 
 fingers in your hands.
 
 Escs has an optmized scheme of keystrokes/operations it has a single major mode (i.e Main) also 

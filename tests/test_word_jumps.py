@@ -29,9 +29,13 @@ class TestWordJumps(unittest.TestCase):
     def test0(self):
         self.xstr.mark_set('insert', '1.0')
         self.xstr.event_generate('<Alt-l>')
+        root.update() 
+
         self.assertEqual(self.xstr.index('insert'), '1.9')
 
         self.xstr.event_generate('<Alt-l>')
+        root.update() 
+
         self.assertEqual(self.xstr.index('insert'), '1.16')
 
     def test1(self):
@@ -39,8 +43,10 @@ class TestWordJumps(unittest.TestCase):
 
         self.xstr.event_generate('<Alt-h>')
         self.xstr.event_generate('<Alt-h>')
+        root.update() 
 
         self.assertEqual(self.xstr.index('insert'), '1.16')
 
         self.xstr.event_generate('<Alt-h>')
+        root.update() 
         self.assertEqual(self.xstr.index('insert'), '1.9')

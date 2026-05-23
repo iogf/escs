@@ -24,8 +24,12 @@ class TestNormalMode(unittest.TestCase):
     def test0(self):
         self.mod.chmode(TestMode)
         self.xstr.event_generate('<Escape>')
+        root.update() 
+
         self.assertEqual(self.mod.mode, Normal)
         self.mod.chmode(TestMode)
+        root.update() 
+
         self.assertEqual(self.mod.mode, TestMode)
 
         pass

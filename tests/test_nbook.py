@@ -12,6 +12,7 @@ class TestEscsBook(unittest.TestCase):
         root.note.select(xstr.master.master.master)
 
         tab_name = root.nametowidget(xstr.master.master.master)
+        root.update()
         self.assertEqual(root.note.tab(tab_name, 'text'), 'test0')
         root.note.forget(0)
 
@@ -22,6 +23,7 @@ class TestEscsBook(unittest.TestCase):
         root.note.select(xstr.master.master.master)
 
         tab_name = root.nametowidget(xstr.master.master.master)
+        root.update()
         self.assertEqual(root.note.tab(tab_name, 'text'), basename(file.name))
         file.close()
         root.note.forget(0)
@@ -47,9 +49,11 @@ class TestEscsBook(unittest.TestCase):
         files0 = [[[file0.name, file1.name], [file2.name]], 
         [[file3.name], [file4.name, file5.name]]]
         root.note.load(*files0)
+        root.update()
 
         self.assertEqual(root.note.tab(0, 'text'), 
         basename(file2.name))
+        root.update()
 
         self.assertEqual(root.note.tab(1, 'text'), 
         basename(file5.name))
@@ -65,6 +69,7 @@ class TestEscsBook(unittest.TestCase):
         xinsts0 = [indj for indi in frames0
         for indj in indi.winfo_children() 
         if isinstance(indj, Xstr)]
+        root.update()
 
         self.assertEqual(xinsts0[0].filename, file0.name)
         self.assertEqual(xinsts0[1].filename, file1.name)
@@ -75,6 +80,7 @@ class TestEscsBook(unittest.TestCase):
         xinsts1 = [indj for indi in frames1
         for indj in indi.winfo_children() 
         if isinstance(indj, Xstr)]
+        root.update()
 
         self.assertEqual(xinsts1[0].filename, file2.name)
 
@@ -89,6 +95,7 @@ class TestEscsBook(unittest.TestCase):
         xinsts0 = [indj for indi in frames0
         for indj in indi.winfo_children() 
         if isinstance(indj, Xstr)]
+        root.update()
 
         self.assertEqual(xinsts0[0].filename, file3.name)
 
@@ -98,6 +105,7 @@ class TestEscsBook(unittest.TestCase):
         xinsts1 = [indj for indi in frames1
         for indj in indi.winfo_children() 
         if isinstance(indj, Xstr)]
+        root.update()
 
         self.assertEqual(xinsts1[0].filename, file4.name)
         self.assertEqual(xinsts1[1].filename, file5.name)

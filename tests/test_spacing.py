@@ -32,6 +32,8 @@ class TestSpacing(unittest.TestCase):
         xstr0.event_generate('<Escape>')
 
         data0 = xstr0.get('1.0', '1.0 lineend')
+        root.update() 
+
         self.assertEqual(data0.startswith('    ['), True)
 
         xstr1 = root.note.create('Tests.ext')
@@ -47,6 +49,8 @@ class TestSpacing(unittest.TestCase):
         xstr1.event_generate('<Tab>')
         xstr1.event_generate('<Escape>')
         data1 = xstr1.get('1.0', '1.0 lineend')
+        root.update() 
+
         self.assertEqual(data1.startswith('  ['), True)
 
 
@@ -63,6 +67,8 @@ class TestSpacing(unittest.TestCase):
         xstr2.event_generate('<Tab>')
         xstr2.event_generate('<Escape>')
         data2 = xstr2.get('1.0', '1.0 lineend')
+        root.update() 
+
         self.assertEqual(data2.startswith('   ('), True)
 
 if __name__ == '__main__':

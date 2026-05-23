@@ -28,6 +28,8 @@ class TestTabs(unittest.TestCase):
         tab_id1 = root.note.select()
 
         tab = root.nametowidget(tab_id1)
+        root.update() 
+
         self.assertEqual(root.note.tab(tab_id1, 'text'), 'null')
 
         root.event_generate('<Alt-R>')
@@ -36,6 +38,8 @@ class TestTabs(unittest.TestCase):
         
         # When a new tab is created it is not selected automatically
         # thus the focus shoud remain on tab_id1.
+        root.update() 
+
         self.assertEqual(tab_id2, tab_id1)
         self.assertEqual(len(root.note.tabs()), 4)
 
@@ -43,21 +47,33 @@ class TestTabs(unittest.TestCase):
         
         # Test select left and select right keystrokes.
         root.event_generate('<Alt-p>')
+        root.update() 
+
         self.assertEqual(root.note.index('current'), 1)
 
         root.event_generate('<Alt-p>')
+        root.update() 
+
         self.assertEqual(root.note.index('current'), 2)
 
         root.event_generate('<Alt-p>')
+        root.update() 
+
         self.assertEqual(root.note.index('current'), 3)
     
         root.event_generate('<Alt-o>')
+        root.update() 
+
         self.assertEqual(root.note.index('current'), 2)
 
         root.event_generate('<Alt-o>')
+        root.update() 
+
         self.assertEqual(root.note.index('current'), 1)
 
         root.event_generate('<Alt-o>')
+        root.update() 
+
         self.assertEqual(root.note.index('current'), 0)
 
         # Test Alt-x i.e removing tabs.
@@ -68,6 +84,8 @@ class TestTabs(unittest.TestCase):
         index0 = root.note.index(tab_id3)
             
         # # Check focus has returned to the first tab.
+        root.update() 
+
         self.assertEqual(index0, 0)
 
         root.event_generate('<Alt-x>')

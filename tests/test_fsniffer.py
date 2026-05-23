@@ -36,12 +36,12 @@ class TestFSniffer(unittest.TestCase):
         root.update() 
 
         xstr.event_generate('<Alt-t>')
-        root.update() 
 
         picker = root.focus_get()
+        root.update() 
+
         self.assertEqual(picker.master.title(), 'Fsniffer')
         picker.event_generate('<Escape>')
-        root.update()
 
     def test1(self):
         xstr = root.note.create('Test1')
@@ -80,4 +80,6 @@ class TestFSniffer(unittest.TestCase):
 
         # The results of fsniffer should be equal in length
         # to the results of locate command.
+        root.update() 
+
         self.assertTrue(len(data0), len(data1))

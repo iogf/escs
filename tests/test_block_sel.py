@@ -33,6 +33,8 @@ class TestBlockSel(unittest.TestCase):
         self.xstr.event_generate('<Key-V>')
 
         ranges = self.xstr.tag_ranges('sel')
+        root.update() 
+
         for ind in range(0, len(ranges), 2):
             self.assertEqual(len(self.xstr.get(
                     ranges[ind], ranges[ind+1])), 5)
@@ -44,6 +46,8 @@ class TestBlockSel(unittest.TestCase):
         self.xstr.event_generate('<Key-X>')
 
         ranges = self.xstr.tag_ranges('sel')
+        root.update() 
+
         for ind in range(0, len(ranges), 2):
             self.assertEqual(len(self.xstr.get(
                 ranges[ind], ranges[ind+1])), 2)
@@ -57,6 +61,7 @@ class TestBlockSel(unittest.TestCase):
         self.xstr.event_generate('<Key-V>')
 
         ranges = self.xstr.tag_ranges('sel')
+        root.update() 
 
         # Make sure it has length 2.
         for ind in range(0, len(ranges), 2):
@@ -71,6 +76,7 @@ class TestBlockSel(unittest.TestCase):
         self.xstr.event_generate('<Key-V>')
 
         ranges = self.xstr.tag_ranges('sel')
+        root.update() 
 
         # Make sure it has length 6.
         for ind in range(0, len(ranges), 2):
@@ -88,6 +94,7 @@ class TestBlockSel(unittest.TestCase):
         self.xstr.event_generate('<Key-V>')
 
         ranges = self.xstr.tag_ranges('sel')
+        root.update() 
 
         # Make sure it has length 6.
         for ind in range(0, len(ranges), 2):
@@ -100,6 +107,8 @@ class TestBlockSel(unittest.TestCase):
         self.xstr.event_generate('<Key-X>')
 
         ranges = self.xstr.tag_ranges('sel')
+        root.update() 
+
         self.assertEqual(ranges, ())
 
 if __name__ == '__main__':

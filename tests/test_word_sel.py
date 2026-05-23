@@ -30,6 +30,7 @@ class TestWordSel(unittest.TestCase):
         xstr.event_generate('<Key-w>')
 
         ranges = xstr.tag_nextrange('sel', '1.0')
+        root.update() 
         self.assertEqual(ranges, ('1.0', '1.7'))
 
         xstr.tag_remove('sel', '1.0', 'end')
@@ -38,6 +39,8 @@ class TestWordSel(unittest.TestCase):
         xstr.event_generate('<Key-w>')
 
         ranges = xstr.tag_nextrange('sel', '1.0')
+        root.update() 
+
         self.assertEqual(ranges, ('1.0', '1.7'))
 
         # Place the cursor on the blank char then
@@ -48,6 +51,8 @@ class TestWordSel(unittest.TestCase):
 
         # The selected ranges should be the same.
         ranges = xstr.tag_nextrange('sel', '1.0')
+        root.update() 
+
         self.assertEqual(ranges, ())
 
         xstr.mark_set('insert', '1.11')
@@ -55,6 +60,8 @@ class TestWordSel(unittest.TestCase):
 
         # The selected ranges should be the same.
         ranges = xstr.tag_nextrange('sel', '1.7')
+        root.update() 
+
         self.assertEqual(ranges, ('1.11', '1.17'))
 
     def test1(self):
@@ -68,6 +75,8 @@ class TestWordSel(unittest.TestCase):
         xstr.event_generate('<Key-W>')
 
         ranges = xstr.tag_nextrange('sel', '1.0')
+        root.update() 
+
         self.assertEqual(ranges, ('1.0', '1.7'))
         xstr.tag_remove('sel', '1.0', 'end')
 
@@ -75,6 +84,8 @@ class TestWordSel(unittest.TestCase):
         xstr.event_generate('<Key-W>')
 
         ranges = xstr.tag_nextrange('sel', '1.0')
+        root.update() 
+
         self.assertEqual(ranges, ('1.0', '1.7'))
         xstr.tag_remove('sel', '1.0', 'end')
 
@@ -82,6 +93,8 @@ class TestWordSel(unittest.TestCase):
         xstr.event_generate('<Key-W>')
 
         ranges = xstr.tag_nextrange('sel', '1.0')
+        root.update() 
+
         self.assertEqual(ranges, ('1.8', '1.15'))
         xstr.tag_remove('sel', '1.0', 'end')
 
@@ -89,6 +102,8 @@ class TestWordSel(unittest.TestCase):
         xstr.event_generate('<Key-W>')
 
         ranges = xstr.tag_nextrange('sel', '1.0')
+        root.update() 
+
         self.assertEqual(ranges, ())
 
 if __name__ == '__main__':

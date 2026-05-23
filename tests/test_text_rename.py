@@ -37,10 +37,10 @@ class TestTextRename(unittest.TestCase):
         scan = root.focus_get()
         scan.insert('end', 'escs-testing')
         scan.event_generate('<Return>')
-        root.update()
 
         home = os.path.expanduser('~')
         filename = os.path.join(home, 'escs-testing')
+        root.update()
 
         self.assertEqual(filename, self.xstr.filename)
         self.assertEqual(True, os.path.exists(filename))
@@ -57,11 +57,10 @@ class TestTextRename(unittest.TestCase):
 
         scan = root.focus_get()
         scan.event_generate('<Escape>')
-        root.update()
- 
         home = os.path.expanduser('~')
 
         filename = os.path.join(home, 'escs-testing')
+        root.update()
         self.assertEqual(filename, self.xstr.filename)
 
 

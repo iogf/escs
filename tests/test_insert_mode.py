@@ -23,29 +23,36 @@ class TestInsertMode(unittest.TestCase):
 
     def test0(self):
         self.mod0.chmode(Normal)
+        root.update() 
         self.assertEqual(self.mod0.mode, Normal)
         self.xstr.event_generate('<Key-i>')
+        root.update() 
         self.assertEqual(self.mod0.mode, Insert)
 
         pass
 
     def test1(self):
         self.xstr.event_generate('<Escape>')
+        root.update() 
         self.assertEqual(self.mod1.mode, Normal)
 
         self.xstr.event_generate('<Key-i>')
+        root.update() 
         self.assertEqual(self.mod0.mode, Insert)
 
         self.xstr.event_generate('<Key-a>')
         self.xstr.event_generate('<Key-b>')
         self.xstr.event_generate('<Key-c>')
         self.xstr.event_generate('<Escape>')
+        root.update() 
+
         self.assertEqual(self.mod1.mode, Normal)
         self.assertEqual(self.xstr.get('1.0', 'end'), 'abc\n')
 
     def test2(self):
         self.xstr.tag_add('sel', '1.0', 'end')
         self.xstr.event_generate('<Key-i>')
+        root.update() 
 
         self.assertEqual(self.xstr.tag_nextrange('sel', '1.0'), ())
         self.assertEqual(self.mod0.mode, Insert)

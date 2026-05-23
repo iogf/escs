@@ -78,12 +78,16 @@ class TestXstr0(unittest.TestCase):
         xstr.replace_ranges('sel', '9985', '*')
 
         data0 = xstr.get('1.0', 'end')
+        root.update() 
+
         self.assertEqual(data0, '*1234*8472*\n')
 
         xstr.tag_add('sel', '1.0', 'end')
         xstr.replace_ranges('sel', '\*', '9985')
 
         data1 = xstr.get('1.0', 'end')
+        root.update() 
+
         self.assertEqual(data1, '99851234998584729985\n')
 
         xstr.insert('end', '\n')
@@ -95,6 +99,7 @@ class TestXstr0(unittest.TestCase):
 
         xstr.replace_ranges('sel', '5|6|7', '*')
         data2 = xstr.get('2.0', 'end')
+        root.update() 
 
         self.assertEqual(data2, '*1232*9421*\n')
         self.assertEqual(xstr.tag_ranges('sel'), ())
@@ -111,11 +116,15 @@ class TestXstr0(unittest.TestCase):
         xstr.ipick('(IPICK)', '2391')
 
         ranges0 = xstr.tag_ranges('(IPICK)')
+        root.update() 
+
         self.assertEqual(tuple(map(str, ranges0)), ('2.0', '2.4'))
         xstr.tag_remove('(IPICK)', '1.0', 'end')
 
         xstr.ipick('(IPICK)', '4212')
         ranges1 = xstr.tag_ranges('(IPICK)')
+        root.update() 
+
         self.assertEqual(tuple(map(str, ranges1)), ('2.10', '2.14'))
         xstr.tag_remove('(IPICK)', '1.0', 'end')
 
@@ -127,6 +136,8 @@ class TestXstr0(unittest.TestCase):
         index='end', backwards=True)
     
         ranges2 = xstr.tag_ranges('(IPICK)')
+        root.update() 
+
         self.assertEqual(tuple(map(str, ranges2)), ('1.5', '1.9'))
         xstr.tag_remove('(IPICK)', '1.0', 'end')
 
@@ -135,6 +146,8 @@ class TestXstr0(unittest.TestCase):
         index='end', backwards=True)
     
         ranges3 = xstr.tag_ranges('(IPICK)')
+        root.update() 
+
         self.assertEqual(tuple(map(str, ranges3)), 
         (xstr.index('2.0 lineend -4c'), xstr.index('2.0 lineend')))
 
@@ -154,6 +167,7 @@ class TestXstr0(unittest.TestCase):
 
         xstr.insert('end', '1234 1343 5321 2934\n')
         patterns0 = tuple(xstr.find('1', '1.0', 'end'))
+        root.update() 
 
         for indi, indj, indz in patterns0:
             self.assertEqual(indi == xstr.get(indj, indz) == '1', True)
@@ -161,11 +175,13 @@ class TestXstr0(unittest.TestCase):
 
         xstr.insert('end', '1234 1233 5331 3934\n')
         patterns1 = tuple(xstr.find('3.', 'end', '2.0', backwards=True))
+        root.update() 
 
         for indi, indj, indz in patterns1:
             self.assertEqual((indi == xstr.get(indj, indz)), True)
+        root.update() 
+
         self.assertEqual(len(patterns1), 7)
-        print(patterns1)
         self.assertEqual(''.join(map(lambda ind: ind[0], 
         patterns1)), '343931333 3334')
 

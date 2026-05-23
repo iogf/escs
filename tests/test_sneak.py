@@ -21,35 +21,55 @@ class TestSneak(unittest.TestCase):
         xstr.mark_set('insert', '1.0')
 
         xstr.event_generate('<Key-period>')
+        root.update() 
+
         self.assertEqual(mod1.mode, JumpNext)
 
         xstr.event_generate('<Key-2>')
         xstr.mark_set('insert', '1.6')
+        root.update() 
+
         self.assertEqual(mod0.mode, Normal)
     
         xstr.event_generate('<Key-period>')
+        root.update() 
+
         self.assertEqual(mod1.mode, JumpNext)
 
         xstr.event_generate('<Key-9>')
+        root.update() 
+
         self.assertEqual(xstr.index('insert'), '1.13')
         self.assertEqual(mod0.mode, Normal)
 
         xstr.insert('end', '711 143 331 231\n')
         xstr.event_generate('<Key-period>')
+        root.update() 
+
         self.assertEqual(mod1.mode, JumpNext)
         xstr.event_generate('<Key-7>')
+        root.update() 
+
         self.assertEqual(xstr.index('insert'), '2.1')
         self.assertEqual(mod0.mode, Normal)
 
         xstr.event_generate('<Key-comma>')
+        root.update() 
+
         self.assertEqual(mod1.mode, JumpBack)
         xstr.event_generate('<Key-2>')
+        root.update() 
+
         self.assertEqual(xstr.index('insert'), '1.14')
         self.assertEqual(mod0.mode, Normal)
 
         xstr.event_generate('<Key-comma>')
+        root.update() 
+
         self.assertEqual(mod1.mode, JumpBack)
         xstr.event_generate('<Key-8>')
+        root.update() 
+
         self.assertEqual(xstr.index('insert'), '1.1')
         self.assertEqual(mod0.mode, Normal)
 
@@ -58,28 +78,40 @@ class TestSneak(unittest.TestCase):
 
         xstr.event_generate('<Key-period>')
         xstr.event_generate('<Key-8>')
+        root.update() 
+
         self.assertEqual(xstr.index('insert'), '3.1')
 
         xstr.event_generate('<Key-semicolon>')
+        root.update() 
+
         self.assertEqual(xstr.index('insert'), '3.2')
 
         xstr.event_generate('<Key-semicolon>')
+        root.update() 
+
         self.assertEqual(xstr.index('insert'), '3.5')
 
         xstr.mark_set('insert', 'end')
 
         xstr.event_generate('<Key-comma>')
         xstr.event_generate('<Key-8>')
+        root.update() 
+
         self.assertEqual(xstr.index('insert'), 
         xstr.index('3.0 lineend -2c'))
 
         xstr.event_generate('<Key-comma>')
         xstr.event_generate('<Key-8>')
+        root.update() 
+
         self.assertEqual(xstr.index('insert'), 
         xstr.index('3.0 lineend -7c'))
 
         xstr.event_generate('<Key-comma>')
         xstr.event_generate('<Key-8>')
+        root.update() 
+
         self.assertEqual(xstr.index('insert'), 
         xstr.index('3.0 lineend -11c'))
 

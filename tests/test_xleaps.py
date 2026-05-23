@@ -28,17 +28,25 @@ class TestXleaps(unittest.TestCase):
 
         # Create an anchor at 1.0 whose label is a.
         self.xstr.event_generate('<Alt-bracketleft>')
+        root.update() 
+
         self.assertEqual(self.mod1.mode, Drop)
 
         self.xstr.event_generate('<Key-a>')
         self.xstr.mark_set('insert', '1.10')
+        root.update() 
+
         self.assertEqual(self.mod0.mode, Normal)
     
         # Check whether anchor a is at 1.0.
         self.xstr.event_generate('<Alt-bracketright>')
+        root.update() 
+
         self.assertEqual(self.mod1.mode, Jump)
 
         self.xstr.event_generate('<Key-a>')
+        root.update() 
+
         self.assertEqual(self.xstr.index('insert'), '1.0')
         self.assertEqual(self.mod0.mode, Normal)
 
@@ -47,24 +55,36 @@ class TestXleaps(unittest.TestCase):
 
         # Create an anchor whose label is b.
         self.xstr.event_generate('<Alt-bracketleft>')
+        root.update() 
+
         self.assertEqual(self.mod1.mode, Drop)
 
         self.xstr.event_generate('<Key-b>')
         self.xstr.mark_set('insert', 'end')
+        root.update() 
+
         self.assertEqual(self.mod0.mode, Normal)
 
         # check the anchor b index.
         self.xstr.event_generate('<Alt-bracketright>')
+        root.update() 
+
         self.assertEqual(self.mod1.mode, Jump)
 
         self.xstr.event_generate('<Key-b>')
+        root.update() 
+
         self.assertEqual(self.xstr.index('insert'), '2.11')
         self.assertEqual(self.mod0.mode, Normal)
 
         # Check anchor a index again.
         self.xstr.event_generate('<Alt-bracketright>')
+        root.update() 
+
         self.assertEqual(self.mod1.mode, Jump)
         self.xstr.event_generate('<Key-a>')
+        root.update() 
+
         self.assertEqual(self.xstr.index('insert'), '1.0')
         self.assertEqual(self.mod0.mode, Normal)
 

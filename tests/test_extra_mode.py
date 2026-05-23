@@ -22,10 +22,13 @@ class TestExtraMode(unittest.TestCase):
         root.update() 
 
         xstr.event_generate('<Alt-v>')
+        root.update() 
         self.assertEqual(mod0.mode, Extra)
 
         xstr.tag_add('sel', '1.0', 'end')
         xstr.event_generate('<Escape>')
+        root.update() 
+
         self.assertEqual(xstr.tag_nextrange('sel', '1.0'), ())
         self.assertEqual(mod1.mode, Normal)
         

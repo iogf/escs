@@ -150,4 +150,39 @@ make VERBOSE=1
 # Run tests.
 
 cd projects/escs-code/tests
-python -m unittest test_clipboard.py
+make run-all
+##############################################################################
+make run-unit file=test_block_sel.py
+make run-unit file=test_bracket_jumps.py
+make run-unit file=test_c_mode.py
+make run-unit file=test_clipboard.py
+make run-unit file=test_code_comments.py
+make run-unit file=test_extra_mode.py
+make run-unit file=test_golang_mode.py
+make run-unit file=test_html_mode.py
+make run-unit file=test_insert_mode.py
+make run-unit file=test_line_feed.py
+make run-unit file=test_line_index.py
+make run-unit file=test_line_sel.py
+make run-unit file=test_nbook.py
+make run-unit file=test_normal_mode.py
+make run-unit file=test_pane_resize.py
+make run-unit file=test_python_mode.py
+make run-unit file=test_qsearch.py
+make run-unit file=test_range_sel.py
+make run-unit file=test_sneak.py
+make run-unit file=test_spacing.py
+make run-unit file=test_splits.py
+make run-unit file=test_tab_search.py
+make run-unit file=test_tabs.py
+make run-unit file=test_text_jumps.py
+make run-unit file=test_text_rename.py
+make run-unit file=test_text_shift.py
+make run-unit file=test_undo.py
+make run-unit file=test_word_jumps.py
+make run-unit file=test_word_sel.py
+make run-unit file=test_xleaps.py
+make run-unit file=test_xstr.py
+make run-unit file=test_xstr_widgets.py
+make run-unit file=test_brackets_sel.py
+

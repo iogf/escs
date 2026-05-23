@@ -32,23 +32,30 @@ class TestClipboard(unittest.TestCase):
         self.xstr.tag_add('sel', '1.0', '1.4')
         self.xstr.event_generate('<Key-y>')
         data0 = self.xstr.clipboard_get()
+
+        root.update() 
         self.assertEqual(data0, '2123')
 
         self.xstr.mark_set('insert', '1.0')
         self.xstr.event_generate('<Key-r>')
 
         data1 = self.xstr.get('1.0', '2.0 lineend')
+
+        root.update() 
         self.assertEqual(data1, '2123\n21231231')
 
         self.xstr.tag_add('sel', '3.0', '3.4')
         self.xstr.event_generate('<Key-u>')
         data2 = self.xstr.clipboard_get()
+
+        root.update() 
         self.assertEqual(data2, '4921')
 
         self.xstr.mark_set('insert', '1.0')
         self.xstr.event_generate('<Key-e>')
 
         data3 = self.xstr.get('1.0', '2.0 linestart')
+        root.update() 
         self.assertEqual(data3, '49212123\n')
         self.xstr.delete('1.0', 'end')
 
@@ -62,6 +69,7 @@ class TestClipboard(unittest.TestCase):
         self.xstr.event_generate('<Key-y>')
 
         data4 = self.xstr.clipboard_get()
+        root.update() 
         self.assertEqual(data4, '4213\n4212\n')
 
         self.xstr.tag_add('sel', '1.0', '1.0 lineend')
@@ -74,6 +82,7 @@ class TestClipboard(unittest.TestCase):
 
         # As it was already tested paste before and paste after then
         # no need to repaste it again.
+        root.update() 
         self.assertEqual(data5, '4213\n4212\n')
         
         # It tests paste block. First it copies the block region        
@@ -89,12 +98,14 @@ class TestClipboard(unittest.TestCase):
 
         self.xstr.event_generate('<Alt-v>')
         self.xstr.event_generate('<Key-y>')
+        root.update() 
         self.assertEqual(self.xstr.clipboard_get(), '1\n5\n5\n')
         self.xstr.mark_set('insert', '1.0 lineend')
 
         self.xstr.event_generate('<Alt-v>')
         self.xstr.event_generate('<Key-t>')
         data6 = self.xstr.get('1.0', 'end')
+        root.update() 
         self.assertEqual(data6, '12341\n53215\n57315\n')
 
         self.xstr.mark_set('insert', '1.1')
@@ -102,6 +113,8 @@ class TestClipboard(unittest.TestCase):
         self.xstr.event_generate('<Alt-v>')
         self.xstr.event_generate('<Key-t>')
         data6 = self.xstr.get('1.0', 'end')
+        root.update() 
+
         self.assertEqual(data6, '112341\n553215\n557315\n')
 
         pass

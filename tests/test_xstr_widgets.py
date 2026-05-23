@@ -26,7 +26,7 @@ class TestXstrWidgets(unittest.TestCase):
 
         xstr3 = xstr2.master.master.create('Xstr3')
         lst0 = list(xstr.xstr_widgets(root))
-
+        self.update()
         self.assertEqual(len(lst0), 5)
 
         self.assertIn(xstr0, lst0)
@@ -40,6 +40,8 @@ class TestXstrWidgets(unittest.TestCase):
         xstr5 = root.note.create('Xstr5')
 
         lst1 = list(xstr.xstr_widgets(root))
+        self.update()
+
         self.assertIn(xstr4, lst1)
         self.assertIn(xstr5, lst1)
         self.assertEqual(len(lst1), 7)
@@ -58,8 +60,10 @@ class TestXstrWidgets(unittest.TestCase):
         
         xstr4.master.master.master.destroy()
         xstr5.master.master.master.destroy()
+        self.update()
 
         lst3 = list(xstr.xstr_widgets(root))
+
         self.assertEqual(len(lst3), 1)
         self.assertIn(xstr, lst3)
 

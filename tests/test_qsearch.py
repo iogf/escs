@@ -37,7 +37,7 @@ class TestQSearch(unittest.TestCase):
         read.event_generate('<Alt-p>')
         read.event_generate('<Alt-p>')
         read.event_generate('<Escape>')
-
+        root.update()
         self.assertEqual(self.xstr.index('insert'), '8.17')
 
     def test1(self):
@@ -53,6 +53,7 @@ class TestQSearch(unittest.TestCase):
         read.event_generate('<Alt-o>')
         read.event_generate('<Alt-o>')
         read.event_generate('<Escape>')
+        root.update()
 
         self.assertEqual(self.xstr.index('insert'), '1.1')
 
@@ -64,14 +65,20 @@ class TestQSearch(unittest.TestCase):
         read = root.focus_get()
         read.insert('end', 'S')
         read.event_generate('<<Data>>')
+        root.update()
+
         self.assertEqual(self.xstr.index('insert'), '1.2')
 
         read.insert('end', ' h')
         read.event_generate('<<Data>>')
+        root.update()
+
         self.assertEqual(self.xstr.index('insert'), '1.7')
 
         read.insert('end', ' .')
         read.event_generate('<<Data>>')
+        root.update()
+
         self.assertEqual(self.xstr.index('insert'), 
         self.xstr.index('insert lineend'))
 
@@ -84,10 +91,14 @@ class TestQSearch(unittest.TestCase):
 
         read = root.focus_get()
         read.event_generate('<Key-h>')
+        root.update()
+
         self.assertEqual(self.xstr.index('insert'), '1.7')
         read.event_generate('<Key-space>')
 
         read.event_generate('<Key-period>')
+        root.update()
+
         self.assertEqual(self.xstr.index('insert'), 
         self.xstr.index('insert lineend'))
 
@@ -105,6 +116,7 @@ class TestQSearch(unittest.TestCase):
         read.event_generate('<Alt-o>')
         read.event_generate('<Alt-o>')
         read.event_generate('<Alt-o>')
+        root.update()
 
         self.assertEqual(self.xstr.index('insert'), '2.1')
         read.event_generate('<Key-space>')
@@ -116,6 +128,7 @@ class TestQSearch(unittest.TestCase):
         read.event_generate('<Alt-p>')
         read.event_generate('<Alt-p>')
         read.event_generate('<Alt-p>')
+        root.update()
 
         self.assertEqual(self.xstr.index('insert'), '10.7')
 
@@ -133,6 +146,7 @@ class TestQSearch(unittest.TestCase):
         read.event_generate('<Alt-o>')
         read.event_generate('<Alt-o>')
         read.event_generate('<Alt-o>')
+        root.update()
 
         self.assertEqual(self.xstr.index('insert'), '2.1')
         read.event_generate('<Key-space>')
@@ -144,6 +158,7 @@ class TestQSearch(unittest.TestCase):
         read.event_generate('<Alt-p>')
         read.event_generate('<Alt-p>')
         read.event_generate('<Alt-p>')
+        root.update()
 
         self.assertEqual(self.xstr.index('insert'), '10.7')
 
@@ -163,6 +178,7 @@ class TestQSearch(unittest.TestCase):
         read.event_generate('<Alt-p>')
         read.event_generate('<Alt-p>')
         read.event_generate('<Alt-p>')
+        root.update()
 
         self.assertEqual(self.xstr.index('insert'), 
         self.xstr.index('insert lineend'))
@@ -176,6 +192,8 @@ class TestQSearch(unittest.TestCase):
         # It looks that xstr.isearch regex is consuming as much as
         # chars for .+ thus it is not 3.20 but 3.1. It is matching
         # S.+\. instead of s.+?\. that is at the end of each line.
+        root.update()
+
         self.assertEqual(self.xstr.index('insert'), '3.1')
 
         read.event_generate('<Escape>')

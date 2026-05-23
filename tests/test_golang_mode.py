@@ -25,8 +25,12 @@ class TestGolangMode(unittest.TestCase):
     def test0(self):
         self.mod1.chmode(Normal)
         self.xstr.event_generate('<Key-numbersign>')
+        root.update() 
+
         self.assertEqual(self.mod0.mode, Golang)
         self.mod1.chmode(Normal)
+        root.update() 
+
         self.assertEqual(self.mod1.mode, Normal)
 
         pass
@@ -34,14 +38,18 @@ class TestGolangMode(unittest.TestCase):
     def test1(self):
         self.xstr.tag_add('sel', '1.0', 'end')
         self.xstr.event_generate('<Key-numbersign>')
+        root.update() 
 
         self.assertEqual(self.xstr.tag_nextrange('sel', '1.0'), 
         ('1.0', self.xstr.index('end')))
+        root.update() 
 
         self.assertEqual(self.mod0.mode, Golang)
         self.xstr.event_generate('<Escape>')
+        root.update() 
         self.assertEqual(self.mod1.mode, Normal)
 
+        root.update() 
         self.assertEqual(self.xstr.tag_nextrange('sel', '1.0'), ())
         
         pass

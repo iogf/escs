@@ -25,22 +25,27 @@ class TestTextShift(unittest.TestCase):
         xstr.mark_set('insert', '1.0')
         xstr.tag_add('sel', '1.0', '1.0 lineend')
         xstr.event_generate('<Key-greater>')
+        root.update() 
 
         self.assertEqual(xstr.get('1.0', 
             '1.0 lineend').startswith(' '), True)
         xstr.event_generate('<Key-greater>')
+        root.update() 
 
         self.assertEqual(xstr.get('1.0', 
             '1.0 lineend').startswith('  3'), True)
 
         xstr.tag_add('sel', '1.0', '1.0 lineend')
         xstr.event_generate('<Key-less>')
+        root.update() 
 
         self.assertEqual(xstr.get('1.0', 
             '1.0 lineend').startswith(' 3'), True)
         xstr.tag_add('sel', '1.0', '1.0 lineend')
 
         xstr.event_generate('<Key-less>')
+        root.update() 
+
         self.assertEqual(xstr.get('1.0', 
             '1.0 lineend').startswith('3'), True)
 
@@ -49,6 +54,7 @@ class TestTextShift(unittest.TestCase):
 
         xstr.tag_add('sel', '1.0', '2.0 lineend')
         xstr.event_generate('<Key-greater>')
+        root.update() 
 
         for ind in range(0, 2):
             self.assertEqual(xstr.get('%s.0' % ind, 
@@ -56,6 +62,7 @@ class TestTextShift(unittest.TestCase):
 
         xstr.tag_add('sel', '1.0', '2.0 lineend')
         xstr.event_generate('<Key-greater>')
+        root.update() 
 
         for ind in range(0, 2):
             self.assertEqual(xstr.get('%s.0' % ind, 
@@ -63,6 +70,7 @@ class TestTextShift(unittest.TestCase):
 
         xstr.tag_add('sel', '1.0', '2.0 lineend')
         xstr.event_generate('<Key-less>')
+        root.update() 
 
         for ind in range(0, 2):
             self.assertEqual(xstr.get('%s.0' % ind, 
@@ -70,6 +78,7 @@ class TestTextShift(unittest.TestCase):
 
         xstr.tag_add('sel', '1.0', '2.0 lineend')
         xstr.event_generate('<Key-less>')
+        root.update() 
 
         for ind in range(0, 2):
             self.assertEqual(xstr.get('%s.0' % ind, 
@@ -80,6 +89,7 @@ class TestTextShift(unittest.TestCase):
 
         xstr.tag_add('sel', '3.0', '3.0 lineend')
         xstr.event_generate('<Key-greater>')
+        root.update() 
 
         self.assertEqual(xstr.get('1.0', 
             '1.0 lineend').startswith(' '), True)
@@ -93,9 +103,11 @@ class TestTextShift(unittest.TestCase):
 
         xstr.tag_add('sel', '3.0', '3.0 lineend')
         xstr.event_generate('<Key-less>')
+        root.update() 
 
         self.assertEqual(xstr.get('1.0', 
             '1.0 lineend').startswith(''), True)
+        root.update() 
 
         self.assertEqual(xstr.get('3.0', 
             '3.0 lineend').startswith(''), True)

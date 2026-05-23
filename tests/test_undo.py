@@ -32,25 +32,35 @@ class TestUndo(unittest.TestCase):
         xstr.event_generate('<Escape>')
 
         data0 = xstr.get('1.0', 'end')
+        root.update() 
+
         self.assertTrue(data0 == '\n')
 
         xstr.event_generate('<Key-q>')
         data1 = xstr.get('1.0', 'end')
+        root.update() 
+
         self.assertTrue(data1.startswith('[ABEeD]'))
 
         xstr.event_generate('<Key-Q>')
         data2 = xstr.get('1.0', 'end')
+        root.update() 
+
         self.assertTrue(data2 == '\n')
 
         xstr.mark_set('insert', 'end')
         xstr.event_generate('<Key-t>')
         data3 = xstr.get('1.0', 'end')
+        root.update() 
+
         self.assertTrue(data3.startswith('[ABEeD]'))
 
         xstr.mark_set('insert', 'end')
         xstr.event_generate('<Key-q>')
 
         data4 = xstr.get('1.0', 'end')
+        root.update() 
+
         self.assertTrue(data4 == '\n')
 
 if __name__ == '__main__':

@@ -42,12 +42,16 @@ class TestPaneResize(unittest.TestCase):
         xstr1.event_generate('<Control-h>')
         root.update() 
         xstr0_width1 = xstr0.winfo_width()
+        root.update() 
+
         self.assertEqual(xstr0_width0 - 15, xstr0_width1)
 
         xstr0_width2 = xstr0.winfo_width()
         xstr1.event_generate('<Control-h>')
         root.update() 
         xstr0_width3 = xstr0.winfo_width()
+        root.update() 
+
         self.assertEqual(xstr0_width2 - 15, xstr0_width3)
 
         # Create a vertical pane.
@@ -61,6 +65,8 @@ class TestPaneResize(unittest.TestCase):
         xstr2.event_generate('<Control-j>')
         root.update() 
         xstr2_height1 = xstr2.winfo_height()
+        root.update() 
+
         self.assertEqual(xstr2_height0 - 15, xstr2_height1)
 
 
@@ -75,6 +81,7 @@ class TestPaneResize(unittest.TestCase):
         xstr3.event_generate('<Control-j>')
         root.update() 
         xstr3_height1 = xstr3.winfo_height()
+
         self.assertEqual(xstr3_height0 - 15, xstr3_height1)
 
         xstr3_height2 = xstr3.winfo_height()

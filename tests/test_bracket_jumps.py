@@ -25,21 +25,33 @@ class TestBracketJumps(unittest.TestCase):
         self.xstr.insert('end', '381 (123) [321] 932\n')
         self.xstr.mark_set('insert', '1.0')
         self.xstr.event_generate('<Key-bracketright>')
+        root.update() 
+
         self.assertEqual(self.xstr.index('insert'), '1.5')
 
         self.xstr.event_generate('<Key-bracketright>')
+        root.update() 
+
         self.assertEqual(self.xstr.index('insert'), '1.9')
 
         self.xstr.event_generate('<Key-bracketright>')
+        root.update() 
+
         self.assertEqual(self.xstr.index('insert'), '1.11')
 
         self.xstr.event_generate('<Key-bracketleft>')
+        root.update() 
+
         self.assertEqual(self.xstr.index('insert'), '1.10')
 
         self.xstr.event_generate('<Key-bracketleft>')
+        root.update() 
+
         self.assertEqual(self.xstr.index('insert'), '1.8')
 
         self.xstr.event_generate('<Key-bracketleft>')
+        root.update() 
+
         self.assertEqual(self.xstr.index('insert'), '1.4')
 
         pass

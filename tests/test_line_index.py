@@ -27,6 +27,7 @@ class TestLineIndex(unittest.TestCase):
 
         scan = root.focus_get()
         scan.insert('end', '2 3')
+
         scan.event_generate('<Return>')
         root.update()
 
@@ -45,13 +46,13 @@ class TestLineIndex(unittest.TestCase):
 
     def test2(self):
         self.xstr.mark_set('insert', '2.0')
-        self.xstr.after(100, self.test2_helper0)
         self.xstr.event_generate('<Alt-w>')
-        self.assertEqual(self.xstr.index('insert'), '2.0')
 
-    def test2_helper0(self):
         scan = root.focus_get()
         scan.event_generate('<Escape>')
+
+        root.update() 
+        self.assertEqual(self.xstr.index('insert'), '2.0')
 
 if __name__ == '__main__':
     unittest.main()

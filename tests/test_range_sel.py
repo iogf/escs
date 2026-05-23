@@ -32,12 +32,16 @@ class TestRangeSel(unittest.TestCase):
         self.xstr.event_generate('<Key-v>')
 
         ranges = self.xstr.tag_nextrange('sel', '1.0')
+        root.update() 
+
         self.assertEqual(ranges, ('2.0', '4.5'))
 
         self.xstr.mark_set('insert', '5.0')
         self.xstr.event_generate('<Key-v>')
 
         ranges = self.xstr.tag_nextrange('sel', '1.0')
+        root.update() 
+
         self.assertEqual(ranges, ('2.0', '5.0'))
 
 
@@ -48,6 +52,8 @@ class TestRangeSel(unittest.TestCase):
         self.xstr.event_generate('<Key-v>')
 
         ranges = self.xstr.tag_nextrange('sel', '7.0')
+        root.update() 
+
         self.assertEqual(ranges, ('7.0', '9.5'))
 
         # Removes selection from '7.0' to '8.4'.
@@ -57,10 +63,14 @@ class TestRangeSel(unittest.TestCase):
         # Make sure selection was removed then checks selection on
         # '8.4' to '8.5'
         ranges = self.xstr.tag_nextrange('sel', '7.0')
+        root.update() 
+
         self.assertEqual(ranges, ('8.4', '9.5'))
 
         # The initial selection should remain intact.
         ranges = self.xstr.tag_nextrange('sel', '1.0')
+        root.update() 
+
         self.assertEqual(ranges, ('2.0', '5.0'))
 
         # First drop the mark on '1.0'.
@@ -73,6 +83,8 @@ class TestRangeSel(unittest.TestCase):
 
         # Make sure no text is selected.
         ranges = self.xstr.tag_nextrange('sel', '1.0')
+        root.update() 
+
         self.assertEqual(ranges, ())
 
         # First drop the mark on '10.0'.
@@ -85,6 +97,8 @@ class TestRangeSel(unittest.TestCase):
 
         # Make sure the range '1.0' to '10.0' is selected.
         ranges = self.xstr.tag_nextrange('sel', '1.0')
+        root.update() 
+
         self.assertEqual(ranges, ('1.0', '10.0'))
 
 if __name__ == '__main__':
