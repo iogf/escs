@@ -5,13 +5,13 @@ from untwisted.expect import Expect, LOAD, CLOSE
 from cspkg.plugins.spawn.base_spawn import BaseSpawn
 from cspkg.core import Command
 from cspkg.start import root
-from os import environ 
+from os import environ, setsid, killpg
 
 import shlex
 
 class Spawn(BaseSpawn):
     def __init__(self, cmd):
-        self.expect = Expect(cmd, env=environ)
+        self.expect = Expect(cmd, env=environ, start_new_session=True)
 
     def install_events(self):
         super(Spawn, self).install_events()
@@ -23,7 +23,11 @@ class Spawn(BaseSpawn):
         self.expect.add_map(CLOSE, self.handle_close)
         
     def dump_signal(self, num):
-        self.expect.child.send_signal(num)
+        # It seems it has to be killpg otherwise
+        # it fails to send the signal to the children.
+        killpg(self.expect.child.pid, num)
+
+        # self.expect.child.send_signal(num)
 
     def terminate_process(self):
         # Exceptions should be written to sys.stdout for default.

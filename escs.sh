@@ -227,3 +227,6 @@ export VISUAL="vim"
 '
 
 source ~/.bashrc
+##############################################################################
+# Use openssh-askpass to push git changes.
+sudo dnf install openssh-askpass

@@ -14,8 +14,10 @@ import shlex
 
 class Spawn(BaseSpawn):
     def __init__(self, cmd):
+        # The preexec_fn=setsid is added to allow dumping signals
+        # through to the children processes.
         self.child = Popen(cmd, 
-        shell=True, stdout=PIPE, stdin=PIPE, 
+        shell=True, stdout=PIPE, stdin=PIPE, preexec_fn=setsid,
         stderr=STDOUT,  env=environ, text=True)
 
         self.stdout = Device(self.child.stdout)

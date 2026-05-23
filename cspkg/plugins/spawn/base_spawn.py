@@ -22,6 +22,15 @@ class HandleInput(Plugin):
         self.add_kmap(SpawnNS, Normal, '<F1>', 
         lambda xstr: spawn.dump_line(), add=False)
 
+        self.add_kmap(SpawnNS, Normal, '<Control-i>', 
+        lambda event: spawn.dump_signal(signal.SIGINT), add=False)
+
+        self.add_kmap(SpawnNS, Normal, '<Control-backslash>', 
+        lambda event: spawn.dump_signal(signal.SIGQUIT), add=False)
+
+        self.add_kmap(SpawnNS, Normal, '<Control-q>', 
+        lambda event: spawn.dump_signal(signal.SIGKILL), add=False)
+
 class BaseSpawn:
     def __init__(self, cmd, input, output):
         self.cmd    = cmd
@@ -33,8 +42,6 @@ class BaseSpawn:
         """
 
         """
-        # self.input.hook('spawn', 'NORMAL', '<Control-c>', 
-        # lambda event: self.dump_signal(signal.SIGINT), add=False)
         # sigint = lambda: self.dump_signal(signal.SIGINT)
         # ENV['sigint'] = sigint
 
