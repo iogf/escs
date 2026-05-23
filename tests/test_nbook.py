@@ -8,12 +8,12 @@ import unittest
 
 class TestEscsBook(unittest.TestCase):
     def test0(self):
-        xstr = root.note.create('test0')
+        xstr = root.note.create('Test0')
         root.note.select(xstr.master.master.master)
 
         tab_name = root.nametowidget(xstr.master.master.master)
         root.update()
-        self.assertEqual(root.note.tab(tab_name, 'text'), 'test0')
+        self.assertEqual(root.note.tab(tab_name, 'text'), 'Test0')
         root.note.forget(0)
 
     def test1(self):
@@ -143,16 +143,16 @@ class TestEscsBook(unittest.TestCase):
         # self.assertEqual(files1, files2)
 
     def test3(self):
-        xstr0 = root.note.create('alpha')
-        xstr1 = root.note.create('beta')
-        xstr2 = root.note.create('gamma')
-        xstr3 = root.note.create('zeta')
+        xstr0 = root.note.create('Test1')
+        xstr1 = root.note.create('Test2')
+        xstr2 = root.note.create('Test3')
+        xstr3 = root.note.create('Test4')
         lm0 = lambda data: 'a' in data
 
         tab_names0 = (root.note.tab(ind, 'text') 
         for ind in root.note.next(lm0))
 
-        tab_names1 = ('alpha', 'beta', 'gamma', 'zeta')
+        tab_names1 = ('Test1', 'Test2', 'Test3', 'Test4')
         self.assertTrue(tab_names0, tab_names1)
 
         root.note.select(1)
@@ -161,14 +161,14 @@ class TestEscsBook(unittest.TestCase):
         tab_names1 = (root.note.tab(ind, 'text') 
         for ind in root.note.next(lm1))
 
-        tab_names2 = ('beta', 'zeta')
+        tab_names2 = ('Test2', 'Test4')
         self.assertTrue(tab_names1, tab_names2)
 
     def test4(self):
-        xstr0 = root.note.create('alpha')
-        xstr1 = root.note.create('beta')
-        xstr2 = root.note.create('gamma')
-        xstr3 = root.note.create('zeta')
+        xstr0 = root.note.create('Test5')
+        xstr1 = root.note.create('Test6')
+        xstr2 = root.note.create('Test7')
+        xstr3 = root.note.create('Test8')
 
         root.note.select(4)
         lm0 = lambda data: 'a' in data
@@ -176,7 +176,7 @@ class TestEscsBook(unittest.TestCase):
         tab_names0 = (root.note.tab(ind, 'text') 
         for ind in root.note.next(lm0))
 
-        tab_names1 = ('zeta', 'gamma', 'beta', 'alpha')
+        tab_names1 = ('Test8', 'Test7', 'Test6', 'Test5')
         self.assertTrue(tab_names0, tab_names1)
 
         root.note.select(1)
@@ -185,7 +185,7 @@ class TestEscsBook(unittest.TestCase):
         tab_names1 = (root.note.tab(ind, 'text') 
         for ind in root.note.next(lm1))
 
-        tab_names2 = ('zeta', 'beta')
+        tab_names2 = ('Test8', 'Test6')
         self.assertTrue(tab_names1, tab_names2)
 
 if __name__ == '__main__':

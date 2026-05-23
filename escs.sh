@@ -31,6 +31,8 @@ find . -name "*.pyc" -exec rm -f {} \;
 # push code.
 cd /home/tau/projects/escs-code/
 git status
+rm -fr build
+rm -fr escs.egg-info
 git add *
 git commit -a 
 git push
@@ -149,7 +151,7 @@ make VERBOSE=1
 ##############################################################################
 # Run tests.
 
-cd projects/escs-code/tests
+cd ~/projects/escs-code/tests
 make run-all
 ##############################################################################
 make run-unit file=test_block_sel.py
@@ -194,4 +196,34 @@ git checkout staging
 git merge scan-refactor
 git push
 git checkout staging
+git status
+##############################################################################
+cd ~
+ls -la | grep ssh
+cd .ssh
+ls -la
+cat known_hosts
+##############################################################################
+cd /home/tau/projects/escs-code/
+git status
+git checkout spawn-refactor
+pip install .
+cd ~
+mv .escs escs.tmp
+cd /home/tau/projects/escs-code/
+ls
+rm -fr build/
+rm -fr escs-egg-info
+cd ~
+rm -fr ~/.escs
+mv escs.tmp .escs
+git checkout staging
+git branch -a
+##############################################################################
+# Set escs as default editor.
+echo .bashrc << '
+export EDITOR="vim"
+export VISUAL="vim"
+'
 
+source ~/.bashrc
