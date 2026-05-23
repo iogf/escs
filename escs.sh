@@ -185,4 +185,13 @@ make run-unit file=test_xleaps.py
 make run-unit file=test_xstr.py
 make run-unit file=test_xstr_widgets.py
 make run-unit file=test_brackets_sel.py
+make run-unit file=test_fsearch.py
+
+##############################################################################
+# merge scan-refactor into main.
+cd /home/tau/projects/escs-code/
+git checkout staging
+git merge scan-refactor
+git push
+git checkout staging
 
