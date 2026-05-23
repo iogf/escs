@@ -10,11 +10,17 @@ sys.path.append(join(expanduser('~'), '.escs'))
 from cspkg.core import load_module, load_cls, chkmap
 from cspkg.stderr import printd
 ##############################################################################
-# from cspkg.plugins.spawn.base_spawn import SpawnNS
+# Use chkmap to remap keystrokes.
+# It turns the apostrophe key a shortcut to get in EXTRA mode.
+
+# Example:
+
+# from cspkg.plugins.extra_mode import ExtraModeNS
 # from cspkg.plugins.normal_mode import Normal, NormalModeNS
+# from cspkg.core import Main
 # 
-# chkmap(SpawnNS, (Normal, '<F1>'), (Normal, '<F1>'))
-# chkmap(SpawnNS, (Normal, '<F1>'), (Normal, '<Key-ccedilla>'))
+# chkmap(ExtraModeNS, (Main, '<Alt-v>'), (Main, '<Alt-v>'))
+# chkmap(ExtraModeNS, (Main, '<Alt-v>'), (Normal, '<Key-ccedilla>'))
 ##############################################################################
 # Set homedir manually.
 
