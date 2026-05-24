@@ -81,7 +81,7 @@ class Xstr(Text):
 
         data = self.get('1.0', 'end -1c')
         data = data.encode(self.charset)
-        fd   = open(self.filename, 'wb')
+        fd = open(self.filename, 'wb')
         fd.write(data)
         fd.close()
         self.event_generate('<<SaveData>>')
@@ -97,10 +97,10 @@ class Xstr(Text):
             map = self.tag_nextrange(name, '1.0', 'end')
             if map == (): 
                 return count
+
             self.tag_remove(name, *map)
-    
             inc = self.replace_all(regex, data, map[0], map[1], 
-                    exact, regexp, nocase, elide, nolinestop)
+                        exact, regexp, nocase, elide, nolinestop)
             count = count + inc
         return count
 
@@ -108,10 +108,10 @@ class Xstr(Text):
         """
         """
 
-        self.filename     = os.path.abspath(filename)
+        self.filename = os.path.abspath(filename)
         _, self.extension = os.path.splitext(self.filename)
 
-        fd   = open(self.filename, 'rb')
+        fd = open(self.filename, 'rb')
         data = fd.read()
         fd.close()
 

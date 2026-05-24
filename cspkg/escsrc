@@ -414,12 +414,9 @@ from cspkg.plugins import caps
 ##############################################################################
 # Setup Xstr font type, color and cursor.
 
-def escs_setup(xstr):
-    xstr.config(blockcursor=True, 
-    undo=True, foreground='yellow', insertbackground='red', 
-    background='black', font=('Monospace', 8, 'bold'))
-
-load_cls(escs_setup) 
+load_cls(lambda xstr: xstr.config(blockcursor=True, 
+undo=True, foreground='yellow', insertbackground='red', 
+background='black', font=('Courier', 9, 'bold'))) 
 ##############################################################################
 # The escs irc mode.
 # from cspkg.plugins.esirc import IrcConnect
