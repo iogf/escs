@@ -9,15 +9,15 @@ class Xstr(Text):
         Text.__init__(self, *args, **kwargs)
 
         self.default_filename = default_filename
-        self.filename  = os.path.abspath(default_filename)
+        self.filename = os.path.abspath(default_filename)
         self.extension = os.path.splitext(self.filename)
 
-        self.charset  = 'utf-8'
-        self.project  = ''
+        self.charset = 'utf-8'
+        self.project = ''
         self.mark_set('(LC)', '1.0')
         self.tabchar = ' '
         self.tabsize = 4
-        self.project  = ''
+        self.project = ''
 
     def min(self, index0, index1):
         """
