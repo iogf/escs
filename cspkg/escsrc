@@ -429,7 +429,7 @@ background='black', font=('Courier', 9, 'bold')))
 # '(ESIRC-QUIT)': {'foreground': '#4EDB1F'},
 # '(ESIRC-NICK)': {'foreground': '#E9F0AD'},
 # '(ESIRC-KICK)': {'foreground': '#FC8D9A'},
-# '(ESIRC-353)': {'foreground': '#BF9163'},
+# '(ESIRC-353)': {'foreground': '#D9B593'},
 # '(ESIRC-332)': {'foreground': '#81BFFC'},
 # '(ESIRC-CLOSE)': {'foreground': '#A7F2E9'}})
 
