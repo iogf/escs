@@ -223,3 +223,9 @@ source ~/.bashrc
 ##############################################################################
 # Use openssh-askpass to push git changes.
 sudo dnf install openssh-askpass
+##############################################################################
+# create lsp-feature branch.
+cd /home/tau/projects/escs-code/
+git branch -a
+git checkout -b lsp-feature
+git push --set-upstream origin lsp-feature
