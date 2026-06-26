@@ -72,12 +72,12 @@ git merge staging
 git push
 git checkout staging
 ##############################################################################
-# merge staging into staging.
+# merge lsp-feature into staging.
 cd /home/tau/projects/escs-code/
 git checkout staging
-git merge staging
-git checkout staging
+git merge lsp-feature
 git push
+git checkout lsp-feature
 
 ##############################################################################
 # delete the staging branch.
