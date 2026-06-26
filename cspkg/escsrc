@@ -28,30 +28,39 @@ from cspkg.stderr import printd
 # Xstr.homedir = expanduser('~')
 # printd('Setting home dir:', Xstr.homedir)
 ##############################################################################
-# Basic core modes.
+# Used to insert text in a Xstr instance.
 
 from cspkg.plugins import insert_mode
 load_module(insert_mode)
 ##############################################################################
+# Basic keystrokes to work with documents.
 
 from cspkg.plugins import normal_mode
 load_module(normal_mode)
 ##############################################################################
+# Implement misc tools to work with documents.
 
 from cspkg.plugins import extra_mode
 load_module(extra_mode)
 ##############################################################################
+# Implement tools to work with Python files.
 
 from cspkg.plugins import python_mode
 load_module(python_mode)
 ##############################################################################
+# Implement tools to work with JS files.
 
 from cspkg.plugins import javascript_mode
 load_module(javascript_mode)
 ##############################################################################
+# Implement tools to work with HTML files.
 
 from cspkg.plugins import html_mode
 load_module(html_mode)
+##############################################################################
+# Used pin/unpin modes.
+from cspkg.plugins import qmode
+load_module(qmode)
 ##############################################################################
 # Used to manage tabs. It implements keystrokes to open, remove tabs
 # also select focus.
