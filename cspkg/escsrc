@@ -307,8 +307,8 @@ load_module(xleaps)
 # Jump quickly backwards/forwards to (), [] or {}. 
 # It is useful when dealing with programming source codes.
 
-from cspkg.plugins import bracket_jumps
-load_module(bracket_jumps)
+from cspkg.plugins import token_jumps
+load_module(token_jumps)
 ##############################################################################
 # Perform python code analysis to find unused code. 
 # It uses vulture lib.

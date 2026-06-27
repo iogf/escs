@@ -2,14 +2,17 @@ from re import escape
 from cspkg.core import Plugin, Namespace
 from cspkg.plugins.normal_mode import Normal
 
-class BracketJumpsNS(Namespace):
+class TokenJumpsNS(Namespace):
     pass
 
-class BracketJumps(Plugin):
+class TokenJumps(Plugin):
     def __init__(self, xstr):
         super().__init__(xstr)
-        self.add_kmap(BracketJumpsNS, Normal, '<Key-bracketright>', self.next_sym)
-        self.add_kmap(BracketJumpsNS, Normal, '<Key-bracketleft>', self.prev_sym)
+
+        self.add_kmap(TokenJumpsNS, Normal, 
+        '<Key-bracketright>', self.next_sym)
+        self.add_kmap(TokenJumpsNS, Normal, 
+        '<Key-bracketleft>', self.prev_sym)
 
         self.chars = ('(', ')', '[', ']', '{', '}')
 
@@ -41,6 +44,6 @@ class BracketJumps(Plugin):
         self.xstr.mark_set('insert', index0)
         self.xstr.see('insert')
 
-install = BracketJumps
+install = TokenJumps
 
 
