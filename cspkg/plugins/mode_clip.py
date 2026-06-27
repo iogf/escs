@@ -17,15 +17,16 @@ class ModeClip(Plugin):
 
     def pin_mode(self, event):
         taglist = self.xstr.bindtags()
-        self.mode_ref = taglist[1]
+        ModeClip.mode_ref = taglist[1]
         root.status.set_msg('ModeClip - Pinned mode.')
         self.chmode(Normal)
 
     def unpin_mode(self, event):
         taglist = self.xstr.bindtags()
 
-        self.xstr.bindtags((taglist[0], 
-        self.mode_ref if self.mode_ref else taglist[1], taglist[2]))
+        self.xstr.bindtags((taglist[0], ModeClip.mode_ref 
+        if ModeClip.mode_ref else taglist[1], taglist[2]))
+
         self.xstr.event_generate('<<Chmode>>')
         root.status.set_msg('ModeClip - Unpinned mode.')
 
