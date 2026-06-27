@@ -59,8 +59,8 @@ from cspkg.plugins import html_mode
 load_module(html_mode)
 ##############################################################################
 # Used pin/unpin modes.
-from cspkg.plugins import qmode
-load_module(qmode)
+from cspkg.plugins import mode_clip
+load_module(mode_clip)
 ##############################################################################
 # Used to manage tabs. It implements keystrokes to open, remove tabs
 # also select focus.
