@@ -3,7 +3,7 @@
 
 from subprocess import Popen, STDOUT, PIPE
 from cspkg.plugins.normal_mode import Normal
-from cspkg.plugins.html_mode import Html
+from cspkg.plugins.prog import Html
 from cspkg.fwin import LinePicker
 from cspkg.core import Plugin, Namespace
 from cspkg.stderr import printd

@@ -8,7 +8,7 @@ from cspkg.scan import Read
 from cspkg.start import root
 from cspkg.core import Namespace, Plugin, Mode
 from os.path import abspath
-from cspkg.plugins.c_mode import C
+from cspkg.plugins.prog import C
 import shlex
 import sys
 

@@ -1,6 +1,6 @@
 
 from cspkg.core import Namespace, Command, Plugin
-from cspkg.plugins.python_mode import Python
+from cspkg.plugins.prog import Python
 from cspkg.plugins.normal_mode import Normal
 from subprocess import Popen, STDOUT, PIPE
 from os.path import relpath

@@ -4,7 +4,7 @@
 from untwisted.splits import Terminator
 from untwisted.expect import Expect, LOAD, CLOSE
 from cspkg.tools import RegexEvent
-from cspkg.plugins.golang_mode import Golang
+from cspkg.plugins.prog import Golang
 from cspkg.core import Plugin, Namespace
 from re import findall
 from cspkg.scan import Read

@@ -11,7 +11,7 @@ from rope.base import libutils
 from rope.refactor.move import create_move
 from cspkg.core import Namespace, Plugin, Mode
 from cspkg.plugins.normal_mode import Normal
-from cspkg.plugins.python_mode import Python
+from cspkg.plugins.prog import Python
 from os.path import dirname
 
 class RopeNS(Namespace):

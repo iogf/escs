@@ -43,20 +43,10 @@ load_module(normal_mode)
 from cspkg.plugins import extra_mode
 load_module(extra_mode)
 ##############################################################################
-# Implement tools to work with Python files.
+# Implement modes to work with programming languages.
 
-from cspkg.plugins import python_mode
-load_module(python_mode)
-##############################################################################
-# Implement tools to work with JS files.
-
-from cspkg.plugins import javascript_mode
-load_module(javascript_mode)
-##############################################################################
-# Implement tools to work with HTML files.
-
-from cspkg.plugins import html_mode
-load_module(html_mode)
+from cspkg.plugins.prog import Prog
+load_cls(Prog)
 ##############################################################################
 # Used pin/unpin modes.
 from cspkg.plugins import mode_clip
@@ -264,6 +254,11 @@ load_module(complete_word)
 # from cspkg.plugins import delve
 # load_module(delve)
 ##############################################################################
+# Auto completion for golang.
+
+# from cspkg.plugins import golang_hints
+# load_module(golang_hints)
+##############################################################################
 # Keystroke to select strings that are wrapped by (), [] or {}.
 
 from cspkg.plugins import brackets_sel
@@ -357,14 +352,6 @@ load_module(token_jumps)
 # path = '/path/to/mypy'
 # Mypy.c_path(path)
 # load_cls(Mypy)
-##############################################################################
-# It implements C mode.
-
-from cspkg.plugins import c_mode
-load_module(c_mode)
-##############################################################################
-from cspkg.plugins import golang_mode
-load_module(golang_mode)
 ##############################################################################
 # Syntax plugin is used to highlight code.
 # It uses python pygments styles to highlight code :)

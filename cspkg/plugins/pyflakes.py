@@ -3,7 +3,7 @@ from os.path import relpath
 from cspkg.fwin import LinePicker
 from cspkg.core import Command, Namespace, Plugin
 from cspkg.tools import get_project_root
-from cspkg.plugins.python_mode import Python
+from cspkg.plugins.prog import Python
 from cspkg.plugins.normal_mode import Normal
 from cspkg.start import root
 from cspkg.stderr import printd

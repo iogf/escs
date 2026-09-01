@@ -3,7 +3,7 @@
 
 from cspkg.core import Command, Plugin, Namespace
 from subprocess import Popen, STDOUT, PIPE
-from cspkg.plugins.python_mode import Python
+from cspkg.plugins.prog import Python
 from cspkg.plugins.normal_mode import Normal
 from os.path import relpath
 from cspkg.fwin import LinePicker

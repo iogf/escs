@@ -2,7 +2,7 @@
 """
 from cspkg.tools import RegexEvent
 from untwisted.splits import Terminator
-from cspkg.plugins.python_mode import Python
+from cspkg.plugins.prog import Python
 from cspkg.scan import Read
 from cspkg.start import root
 import shlex
