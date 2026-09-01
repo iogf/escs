@@ -1,17 +1,17 @@
 from cspkg.plugins.normal_mode import Normal, NormalModeNS, NormalMode
-from cspkg.plugins.bracket_jumps import BracketJumps
+from cspkg.plugins.token_jumps import TokenJumps
 from cspkg.core import Mode, EscsApp
 from cspkg.start import root
 from tkinter import TclError
 import unittest
 import time
 
-class TestBracketJumps(unittest.TestCase):
+class TestTokenJumps(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.xstr = root.note.create('Tests')
         cls.mod0 = NormalMode(cls.xstr)
-        cls.mod1 = BracketJumps(cls.xstr)
+        cls.mod1 = TokenJumps(cls.xstr)
 
         root.note.select(0)
         cls.xstr.focus_set()

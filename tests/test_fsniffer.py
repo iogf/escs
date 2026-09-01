@@ -36,10 +36,10 @@ class TestFSniffer(unittest.TestCase):
         root.update() 
 
         xstr.event_generate('<Alt-t>')
+        root.update() 
 
         picker = root.focus_get()
         root.update() 
-
         self.assertEqual(picker.master.title(), 'Fsniffer')
         picker.event_generate('<Escape>')
 
