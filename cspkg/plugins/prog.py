@@ -24,6 +24,9 @@ class Python(Mode):
 class Tcl(Mode):
     pass
 
+class Perl(Mode):
+    pass
+
 EXTS = {
     '.c' : C,
     '.py': Python,
