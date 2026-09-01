@@ -101,6 +101,14 @@ def chkmap(namespace, kmap0, kmap1=None, spread=False, add=False):
     if kmap1 is not None:
         klist.append((kmap1, spread, add))
 
+def bind(mode, seq, handle, spread=False, add=True):
+    def bindwrapper(xstr):
+        plugin = Plugin(xstr)
+        plugin.add_kmap(CoreNS, mode, seq, 
+            lambda e: handle(plugin), spread, add)
+    rcmod.append((bindwrapper, (), {}))
+    pass
+
 class EscsApp(Tk):
     def __init__(self, *args, **kwargs):
         """

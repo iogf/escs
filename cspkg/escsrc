@@ -5,20 +5,21 @@ import sys
 from os.path import expanduser, join
 sys.path.append(join(expanduser('~'), '.escs'))
 ##############################################################################
-# Functions used to load the plugins.
+# Functions used to load plugins and configure keystrokes.
 
-from cspkg.core import load_module, load_cls, chkmap
+from cspkg.core import load_module, load_cls, chkmap, Main, bind
 from cspkg.stderr import printd
+
+from cspkg.plugins.extra_mode import ExtraModeNS
+from cspkg.plugins.normal_mode import Normal, NormalModeNS
+from cspkg.plugins.insert_mode import Insert, InsertModeNS
+
 ##############################################################################
 # Use chkmap to remap keystrokes.
 # It turns the apostrophe key a shortcut to get in EXTRA mode.
 
 # Example:
 
-# from cspkg.plugins.extra_mode import ExtraModeNS
-# from cspkg.plugins.normal_mode import Normal, NormalModeNS
-# from cspkg.core import Main
-# 
 # chkmap(ExtraModeNS, (Main, '<Alt-v>'), (Main, '<Alt-v>'))
 # chkmap(ExtraModeNS, (Main, '<Alt-v>'), (Normal, '<Key-ccedilla>'))
 ##############################################################################
@@ -47,6 +48,16 @@ load_module(extra_mode)
 
 from cspkg.plugins.prog import Prog
 load_cls(Prog)
+##############################################################################
+# Used to set specific keystrokes to switch to programming modes 
+# that are defined in prog module.
+
+# It is useful when a file doesn't have extension and in some 
+# other edge cases. The n variable is an instance of Plugin class. 
+# The kmaps are added with CoreNS namespace.
+
+# bind(Normal, '<Key-exclam>', lambda n: n.chmode(Python))
+# bind(Normal, '<Key-numbersign>', lambda n: n.chmode(Golang))
 ##############################################################################
 # Used pin/unpin modes.
 from cspkg.plugins import mode_clip
