@@ -18,12 +18,15 @@ class Xleaps(Plugin):
         self.add_kmap(XleapsNS, Main, '<Alt-bracketleft>', self.drop_mode)
         self.add_kmap(XleapsNS, Drop, '<Key>', self.drop)
         self.add_kmap(XleapsNS, Jump, '<Key>', self.jump)
+        self.taglist = None
 
     def jump_mode(self, event):
+        self.taglist = self.xstr.bindtags()
         self.chmode(Jump)
         root.status.set_msg('Jump to:')
 
     def drop_mode(self, event):
+        self.taglist = self.xstr.bindtags()
         self.chmode(Drop)
         root.status.set_msg('Drop on:')
 
@@ -31,7 +34,9 @@ class Xleaps(Plugin):
         self.xstr.mark_set('(Xleaps-%s)' % event.keysym, 'insert')
         index = self.xstr.index('insert')
         root.status.set_msg('Droped: (%s) at %s' % (event.keysym, index))
-        self.chmode(Normal)
+        # self.chmode(Normal)
+        self.xstr.bindtags(self.taglist)
+        self.xstr.event_generate('<<Chmode>>')
 
     def jump(self, event):
         index = '(Xleaps-%s)' % event.keysym
@@ -43,6 +48,8 @@ class Xleaps(Plugin):
         else:
             root.status.set_msg('Jumped: (%s)' % event.keysym)
         self.xstr.see('insert')
-        self.chmode(Normal)
+        # self.chmode(Normal)
+        self.xstr.bindtags(self.taglist)
+        self.xstr.event_generate('<<Chmode>>')
 
 install = Xleaps

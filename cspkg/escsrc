@@ -34,8 +34,9 @@ from cspkg.stderr import printd
 # other edge cases. The n variable is an instance of Plugin class. 
 # The kmaps are added with CoreNS namespace.
 
-bind(Normal, '<Key-exclam>', lambda n: n.chmode(Python))
-bind(Normal, '<Key-numbersign>', lambda n: n.chmode(Golang))
+# Bind keystrokes to most used programming modes here.
+bind(Normal, '<Key-exclam>', Python)
+bind(Normal, '<Key-numbersign>', Golang)
 ##############################################################################
 # Used pin/unpin modes.
 from cspkg.plugins import mode_clip

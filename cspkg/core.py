@@ -102,11 +102,11 @@ def chkmap(namespace, kmap0, kmap1=None, spread=False, add=False):
     if kmap1 is not None:
         klist.append((kmap1, spread, add))
 
-def bind(mode, seq, handle, spread=False, add=True):
+def bind(mode0, seq, mode1):
     def bindwrapper(xstr):
         plugin = Plugin(xstr)
-        plugin.add_kmap(CoreNS, mode, seq, 
-            lambda e: handle(plugin), spread, add)
+        plugin.add_kmap(CoreNS, mode0, seq, 
+            lambda e: plugin.chmode(mode1), False, False)
     rcmod.append((bindwrapper, (), {}))
     pass
 
