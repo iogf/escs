@@ -1,4 +1,4 @@
-from cspkg.core import Normal, NormalMode, Extra, ExtraMode, Insert, InsertMode
+from cspkg.core import Normal, Extra, Insert
 from cspkg.core import Main, Mode
 from cspkg.start import root
 from cspkg.plugins.clipboard import Clipboard
@@ -11,10 +11,6 @@ class TestClipboard(unittest.TestCase):
         cls.xstr = root.note.create('Test')
 
         cls.mod0 = Clipboard(cls.xstr)
-        cls.mod1 = NormalMode(cls.xstr)
-        cls.mod2 = InsertMode(cls.xstr)
-        cls.mod3 = ExtraMode(cls.xstr)
-
         root.note.select(0)
         cls.xstr.focus_set()
         root.update() 

@@ -1,4 +1,4 @@
-from cspkg.core import Normal, NormalMode
+from cspkg.core import Normal
 from cspkg.plugins.text_rename import TextRename
 from cspkg.start import root
 from tkinter import TclError
@@ -10,8 +10,7 @@ class TestTextRename(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.xstr = root.note.create('Tests')
-        cls.mod0 = NormalMode(cls.xstr)
-        cls.mod1 = TextRename(cls.xstr)
+        cls.mod0 = TextRename(cls.xstr)
 
         cls.xstr.insert('end', 'TextRename plugin test.\n' * 10)
         root.note.select(cls.xstr.master.master.master)
@@ -29,7 +28,6 @@ class TestTextRename(unittest.TestCase):
         self.xstr.event_generate('<Escape>')
         root.update()
 
-        self.assertEqual(self.mod0.mode, Normal)
 
         self.xstr.event_generate('<Alt-N>')
         root.update()
@@ -49,8 +47,6 @@ class TestTextRename(unittest.TestCase):
     def test1(self):
         self.xstr.event_generate('<Escape>')
         root.update()
-
-        self.assertEqual(self.mod0.mode, Normal)
 
         self.xstr.event_generate('<Alt-N>')
         root.update()

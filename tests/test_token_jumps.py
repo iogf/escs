@@ -1,4 +1,4 @@
-from cspkg.core import Normal, NormalMode
+from cspkg.core import Normal
 from cspkg.plugins.token_jumps import TokenJumps
 from cspkg.core import Mode, EscsApp
 from cspkg.start import root
@@ -10,8 +10,7 @@ class TestTokenJumps(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.xstr = root.note.create('Tests')
-        cls.mod0 = NormalMode(cls.xstr)
-        cls.mod1 = TokenJumps(cls.xstr)
+        cls.mod0 = TokenJumps(cls.xstr)
 
         root.note.select(0)
         cls.xstr.focus_set()

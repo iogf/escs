@@ -1,4 +1,4 @@
-from cspkg.core import Normal, NormalMode
+from cspkg.core import Normal
 from cspkg.plugins.line_sel import LineSel
 from cspkg.start import root
 import unittest
@@ -8,8 +8,7 @@ class TestLineSel(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.xstr = root.note.create('Tests')
-        cls.mod0 = NormalMode(cls.xstr)
-        cls.mod1 = LineSel(cls.xstr)
+        cls.mod0 = LineSel(cls.xstr)
 
         cls.xstr.insert('end', 'LineSel plugin test.\n' * 10)
         root.note.select(cls.xstr.master.master.master)

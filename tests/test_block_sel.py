@@ -1,4 +1,4 @@
-from cspkg.core import Normal, NormalMode
+from cspkg.core import Normal
 from cspkg.plugins.block_sel import BlockSel
 from cspkg.plugins.range_sel import RangeSel
 
@@ -10,7 +10,6 @@ class TestBlockSel(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.xstr = root.note.create('Tests')
-        cls.mod0 = NormalMode(cls.xstr)
         cls.mod1 = BlockSel(cls.xstr)
         cls.mod2 = RangeSel(cls.xstr)
 

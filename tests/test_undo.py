@@ -1,4 +1,4 @@
-from cspkg.core import Normal, NormalMode, Insert, InsertMode
+from cspkg.core import Normal, Insert
 from cspkg.plugins.clipboard import Clipboard
 
 from cspkg.plugins.undo import Undo
@@ -9,8 +9,7 @@ import unittest
 class TestUndo(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        rcmod.extend(((InsertMode, (), {}), (Clipboard, (), {}),
-        (NormalMode, (), {}), (Undo, (), {})))
+        rcmod.extend(((Clipboard, (), {}), (Undo, (), {})))
 
     @classmethod
     def tearDownClass(cls):

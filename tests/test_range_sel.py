@@ -1,4 +1,4 @@
-from cspkg.core import Normal, NormalMode
+from cspkg.core import Normal
 from cspkg.plugins.range_sel import RangeSel
 from cspkg.start import root
 import unittest
@@ -8,8 +8,7 @@ class TestRangeSel(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.xstr = root.note.create('Tests')
-        cls.mod0 = NormalMode(cls.xstr)
-        cls.mod1 = RangeSel(cls.xstr)
+        cls.mod0 = RangeSel(cls.xstr)
 
         cls.xstr.insert('end', 'RangeSel plugin test.\n' * 10)
         root.note.select(cls.xstr.master.master.master)

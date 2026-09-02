@@ -1,4 +1,4 @@
-from cspkg.core import Normal, NormalMode, Insert, InsertMode
+from cspkg.core import Normal, Insert
 from cspkg.plugins.splits import Splits
 from cspkg.start import root
 from cspkg.core import rcmod
@@ -7,8 +7,7 @@ import unittest
 class TestSpacing(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        rcmod.extend(((InsertMode, (), {}),
-        (NormalMode, (), {}), (Splits, (), {})))
+        rcmod.append((Splits, (), {}))
 
     @classmethod
     def tearDownClass(cls):

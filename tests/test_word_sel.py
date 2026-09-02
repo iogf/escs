@@ -1,4 +1,4 @@
-from cspkg.core import Normal, NormalMode
+from cspkg.core import Normal
 from cspkg.plugins.word_sel import WordSel
 from cspkg.start import root
 from cspkg.core import rcmod
@@ -9,7 +9,7 @@ from os.path import join, expanduser
 class TestWordSel(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        rcmod.extend(((NormalMode, (), {}), (WordSel, (), {})))
+        rcmod.append((WordSel, (), {}))
         pass
 
     @classmethod

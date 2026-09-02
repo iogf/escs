@@ -1,5 +1,5 @@
 from cspkg.plugins.line_feed import LineFeed
-from cspkg.core import Mode, Normal, NormalMode, Insert, InsertMode
+from cspkg.core import Mode, Normal, Insert
 from cspkg.start import root
 from tkinter import TclError
 import unittest

@@ -1,4 +1,4 @@
-from cspkg.core import Normal, NormalMode, Extra, ExtraMode
+from cspkg.core import Normal, Extra
 from cspkg.plugins.code_comments import CodeComments
 from cspkg.core import Mode, EscsApp, rcmod
 from cspkg.start import root
@@ -9,8 +9,7 @@ import time
 class TestCodeComments(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        rcmod.extend(((CodeComments, (), {}), 
-        (ExtraMode, (), {}), (NormalMode, (), {})))
+        rcmod.append((CodeComments, (), {}))
 
     @classmethod
     def tearDownClass(cls):

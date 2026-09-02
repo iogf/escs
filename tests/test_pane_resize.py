@@ -1,4 +1,4 @@
-from cspkg.core import Normal, NormalMode
+from cspkg.core import Normal
 from cspkg.plugins.splits import Splits
 
 from cspkg.core import Main, Mode
@@ -11,7 +11,7 @@ import time
 class TestPaneResize(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        rcmod.extend(((NormalMode, (), {}), (Splits, (), {}), (PaneResize, (), {})))
+        rcmod.extend(((Splits, (), {}), (PaneResize, (), {})))
 
     @classmethod
     def tearDownClass(cls):

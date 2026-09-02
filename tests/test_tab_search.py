@@ -1,4 +1,4 @@
-from cspkg.core import Main, Mode, Normal, NormalMode, Insert, InsertMode
+from cspkg.core import Main, Mode, Normal, Insert
 from cspkg.start import root
 from cspkg.plugins.tab_search import TabSearch
 import unittest
@@ -16,18 +16,6 @@ class TestTabSearch(unittest.TestCase):
         cls.mod1 = TabSearch(cls.xstr1)
         cls.mod2 = TabSearch(cls.xstr2)
         cls.mod3 = TabSearch(cls.xstr3)
-
-        cls.mod4 = NormalMode(cls.xstr0)
-        cls.mod4.chmode(Normal)
-
-        cls.mod5 = NormalMode(cls.xstr1)
-        cls.mod5.chmode(Normal)
-
-        cls.mod6 = NormalMode(cls.xstr2)
-        cls.mod6.chmode(Normal)
-
-        cls.mod7 = NormalMode(cls.xstr3)
-        cls.mod7.chmode(Normal)
 
         root.note.select(cls.xstr0.master.master.master)
         cls.xstr0.focus_set()

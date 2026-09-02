@@ -1,4 +1,4 @@
-from cspkg.core import Normal, NormalMode
+from cspkg.core import Normal
 
 from cspkg.plugins.brackets_sel import BracketsSel
 from cspkg.start import root
@@ -8,7 +8,7 @@ import unittest
 class TestBracketsSel(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        rcmod.extend(((NormalMode, (), {}), (BracketsSel, (), {})))
+        rcmod.append((BracketsSel, (), {}))
 
     @classmethod
     def tearDownClass(cls):

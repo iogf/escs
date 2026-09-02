@@ -1,4 +1,4 @@
-from cspkg.core import Normal, NormalMode, rcmod
+from cspkg.core import Normal, rcmod
 from cspkg.start import root
 from cspkg.plugins.tabs import Tabs
 from cspkg.xstr import Xstr
@@ -10,7 +10,7 @@ import time
 
 class TestTabs(unittest.TestCase):
     def test0(self):
-        rcmod.extend(((Tabs, (), {}), (NormalMode, (), {})))
+        rcmod.append((Tabs, (), {}))
         xstr = root.note.create('Test')
         root.note.select(0)
 

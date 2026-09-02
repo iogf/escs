@@ -1,4 +1,4 @@
-from cspkg.core import Normal, NormalMode
+from cspkg.core import Normal
 from cspkg.plugins.line_index import LineIndex
 from cspkg.start import root
 from tkinter import TclError
@@ -8,8 +8,7 @@ class TestLineIndex(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.xstr = root.note.create('null')
-        cls.mod0 = NormalMode(cls.xstr)
-        cls.mod1 = LineIndex(cls.xstr)
+        cls.mod0 = LineIndex(cls.xstr)
 
         cls.xstr.insert('end', 'LineIndex plugin test.\n' * 10)
         root.note.select(cls.xstr.master.master.master)

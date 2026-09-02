@@ -1,4 +1,4 @@
-from cspkg.core import Normal, NormalMode
+from cspkg.core import Normal
 from cspkg.plugins.text_shift import TextShift
 from cspkg.core import Mode, EscsApp, rcmod
 from cspkg.start import root
@@ -9,7 +9,7 @@ import time
 class TestTextShift(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        rcmod.extend(((TextShift, (), {}), (NormalMode, (), {})))
+        rcmod.append((TextShift, (), {}))
 
     @classmethod
     def tearDownClass(cls):

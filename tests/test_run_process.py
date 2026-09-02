@@ -1,4 +1,4 @@
-from cspkg.core import Normal, NormalMode
+from cspkg.core import Normal
 from cspkg.plugins.run_process import RunProcess
 from subprocess import Popen, PIPE
 import shlex
@@ -10,7 +10,7 @@ import unittest
 class TestRunProcess(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        rcmod.extend(((RunProcess, (), {}), (NormalMode, (), {})))
+        rcmod.append((RunProcess, (), {}))
 
     @classmethod
     def tearDownClass(cls):
