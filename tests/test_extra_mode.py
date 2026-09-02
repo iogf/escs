@@ -1,4 +1,4 @@
-from cspkg.core import Extra, ExtraMode, Normal, NormalMode, rcmod, Mode
+from cspkg.core import Extra, Normal, rcmod
 from cspkg.start import root
 from tkinter import TclError
 import unittest
@@ -11,8 +11,6 @@ class TestExtraMode(unittest.TestCase):
 
     def test0(self):
         xstr = root.note.create('Tests')
-        mod0 = ExtraMode(xstr)
-        mod1 = NormalMode(xstr)
         
         xstr.insert('end', 'ExtraMode plugin test.\n')
         root.note.select(xstr.master.master.master)
@@ -22,14 +20,14 @@ class TestExtraMode(unittest.TestCase):
 
         xstr.event_generate('<Alt-v>')
         root.update() 
-        self.assertEqual(mod0.mode, Extra)
+        self.assertEqual(root.status.mode.cget('text'), 'Mode: Extra')
 
         xstr.tag_add('sel', '1.0', 'end')
         xstr.event_generate('<Escape>')
         root.update() 
 
         self.assertEqual(xstr.tag_nextrange('sel', '1.0'), ())
-        self.assertEqual(mod1.mode, Normal)
+        self.assertEqual(root.status.mode.cget('text'), 'Mode: Normal')
         
         pass
 
