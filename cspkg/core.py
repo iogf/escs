@@ -289,8 +289,52 @@ class ExtraMode(Plugin):
         """
         self.chmode(Extra)
 
+class Html(Mode):
+    pass
+
+class C(Mode):
+    pass
+
+class Javascript(Mode):
+    pass
+
+class Golang(Mode):
+    pass
+
+class Python(Mode):
+    pass
+
+class Tcl(Mode):
+    pass
+
+class Perl(Mode):
+    pass
+
+MODE_EXTS = {
+    '.c' : C,
+    '.py': Python,
+    '.js': Javascript,
+    '.go': Golang,
+    '.html': Html,
+    '.tcl': Tcl
+}
+
+class ProgMode(Plugin):
+    def __init__(self, xstr):
+        super().__init__(xstr)
+        self.add_kmap(CoreNS, Normal, 
+        '<Key-slash>', self.setmode)
+
+    def setmode(self, event):
+        filename = self.xstr.filename.lower()
+        path, ext = splitext(filename)
+        mode = MODE_EXTS.get(ext)
+
+        if mode is not None:
+            self.chmode(mode)
+
 rcmod.extend(((TopbarStatus, (), {}), 
 (ModeStatus, (), {}), (CursorStatus, (), {}), (TabStatus, (), {}), 
 (InstallReactor, (), {}), (NormalMode, (), {}), (InsertMode, (), {}), 
-(ExtraMode, (), {})))
+(ExtraMode, (), {}), (ProgMode, (), {})))
 

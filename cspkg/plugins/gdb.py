@@ -6,9 +6,8 @@ from untwisted.splits import Terminator
 from cspkg.tools import RegexEvent
 from cspkg.scan import Read
 from cspkg.start import root
-from cspkg.core import Namespace, Plugin, Mode
+from cspkg.core import Namespace, Plugin, Mode, C
 from os.path import abspath
-from cspkg.plugins.prog import C
 import shlex
 import sys
 

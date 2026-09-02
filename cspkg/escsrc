@@ -8,7 +8,8 @@ sys.path.append(join(expanduser('~'), '.escs'))
 # Functions used to load plugins and configure keystrokes.
 
 from cspkg.core import (load_module, load_cls, 
-chkmap, Main,bind, Normal, Insert, Extra, CoreNS)
+chkmap, Main, bind, Normal, Insert, Extra, Python, 
+Golang, Html, Javascript, CoreNS)
 
 from cspkg.stderr import printd
 ##############################################################################
@@ -25,11 +26,6 @@ from cspkg.stderr import printd
 # from cspkg.xstr import Xstr
 # Xstr.homedir = expanduser('~')
 # printd('Setting home dir:', Xstr.homedir)
-##############################################################################
-# Implement modes to work with programming languages.
-
-from cspkg.plugins.prog import Prog, Python, Golang
-load_cls(Prog)
 ##############################################################################
 # Used to set specific keystrokes to switch to programming modes 
 # that are defined in prog module.
@@ -401,27 +397,27 @@ undo=True, foreground='white', insertbackground='red',
 background='black', font=('Courier', 9, 'bold'))) 
 ##############################################################################
 # The escs irc mode.
-from cspkg.plugins.esirc import IrcConnect
+# from cspkg.plugins.esirc import IrcConnect
 
 # Uncomment these lines to set up your custom color scheme.
 # It accepts all available config options for Tkinter Text widget.
-IrcConnect.c_appearence({'(ESIRC-PRIVMSG)': {'foreground': '#C4C4C4'},
-'(ESIRC-JOIN)': {'foreground': '#F06EF0'},
-'(ESIRC-PART)': {'foreground': '#F0BDAD'},
-'(ESIRC-QUIT)': {'foreground': '#4EDB1F'},
-'(ESIRC-NICK)': {'foreground': '#E9F0AD'},
-'(ESIRC-KICK)': {'foreground': '#FC8D9A'},
-'(ESIRC-353)': {'foreground': '#D9B593'},
-'(ESIRC-332)': {'foreground': '#81BFFC'},
-'(ESIRC-CLOSE)': {'foreground': '#A7F2E9'}})
+
+# IrcConnect.c_appearence({'(ESIRC-PRIVMSG)': {'foreground': '#C4C4C4'},
+# '(ESIRC-JOIN)': {'foreground': '#F06EF0'},
+# '(ESIRC-PART)': {'foreground': '#F0BDAD'},
+# '(ESIRC-QUIT)': {'foreground': '#4EDB1F'},
+# '(ESIRC-NICK)': {'foreground': '#E9F0AD'},
+# '(ESIRC-KICK)': {'foreground': '#FC8D9A'},
+# '(ESIRC-353)': {'foreground': '#D9B593'},
+# '(ESIRC-332)': {'foreground': '#81BFFC'},
+# '(ESIRC-CLOSE)': {'foreground': '#A7F2E9'}})
 
 # Here, the network connections can be defined. 
-def irc_libera(addr='irc.libera.chat', port=6667, user='escs escs escs :not ice.', nick='escs', 
-             irccmd='PRIVMSG nickserv :identify nick_password', channels=['#not-math', '#escs', '#vy', 
-    '#psychology', '#math', '#chess', '#python', '#golang', '#c', '#wrongplanet']):
-    IrcConnect(addr, port, user, nick, irccmd, channels)
+# def irc_libera(addr='irc.libera.chat', port=6667, user='escs escs escs :not ice.', nick='escs', 
+             # irccmd='PRIVMSG nickserv :identify nick_password channels=['#not-math, '#escs']):
+    # IrcConnect(addr, port, user, nick, irccmd, channels)
 
-def irc_rizon(addr='irc.rizon.net', port=6667, user='escs escs escs :escsirc', nick='esirc', 
-             irccmd='PRIVMSG nickserv :identify nick_password', channels=['#not-math', '#escs']):
-    IrcConnect(addr, port, user, nick, irccmd, channels)
+# def irc_rizon(addr='irc.rizon.net', port=6667, user='escs escs escs :escsirc', nick='esirc', 
+             # irccmd='PRIVMSG nickserv :identify nick_password', channels=['#not-math', '#escs']):
+    # IrcConnect(addr, port, user, nick, irccmd, channels)
 

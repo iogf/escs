@@ -2,12 +2,11 @@
 """
 from cspkg.tools import RegexEvent
 from untwisted.splits import Terminator
-from cspkg.plugins.prog import Python
 from cspkg.scan import Read
 from cspkg.start import root
 import shlex
 import sys
-from cspkg.core import Namespace, Plugin, Mode
+from cspkg.core import Namespace, Plugin, Mode, Python
 from untwisted.expect import Expect, LOAD, CLOSE
 from os.path import abspath
 

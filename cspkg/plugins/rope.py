@@ -9,8 +9,7 @@ from rope.base.change import MoveResource
 from cspkg.start import root
 from rope.base import libutils
 from rope.refactor.move import create_move
-from cspkg.core import Namespace, Plugin, Mode, Normal
-from cspkg.plugins.prog import Python
+from cspkg.core import Namespace, Plugin, Mode, Normal, Python
 from os.path import dirname
 
 class RopeNS(Namespace):

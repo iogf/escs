@@ -1,9 +1,8 @@
 from subprocess import Popen, STDOUT, PIPE
 from os.path import relpath
 from cspkg.fwin import LinePicker
-from cspkg.core import Command, Namespace, Plugin, Normal
+from cspkg.core import Command, Namespace, Plugin, Normal, Python
 from cspkg.tools import get_project_root
-from cspkg.plugins.prog import Python
 from cspkg.start import root
 from cspkg.stderr import printd
 from re import findall

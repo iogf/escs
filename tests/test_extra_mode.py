@@ -22,7 +22,6 @@ class TestExtraMode(unittest.TestCase):
 
         xstr.event_generate('<Alt-v>')
         root.update() 
-        time.sleep(3)
         self.assertEqual(mod0.mode, Extra)
 
         xstr.tag_add('sel', '1.0', 'end')

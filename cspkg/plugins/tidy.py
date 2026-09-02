@@ -2,9 +2,8 @@
 """
 
 from subprocess import Popen, STDOUT, PIPE
-from cspkg.plugins.prog import Html
 from cspkg.fwin import LinePicker
-from cspkg.core import Plugin, Namespace, Normal
+from cspkg.core import Plugin, Namespace, Normal, Html
 from cspkg.stderr import printd
 from cspkg.start import root
 from re import findall
