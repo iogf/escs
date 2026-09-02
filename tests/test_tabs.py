@@ -1,5 +1,4 @@
-from cspkg.plugins.normal_mode import Normal, NormalModeNS, NormalMode
-from cspkg.core import rcmod
+from cspkg.core import Normal, NormalMode, rcmod
 from cspkg.start import root
 from cspkg.plugins.tabs import Tabs
 from cspkg.xstr import Xstr

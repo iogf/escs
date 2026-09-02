@@ -1,6 +1,5 @@
-from cspkg.core import Main, Mode
+from cspkg.core import Main, Mode, Normal
 from cspkg.plugins.text_jumps import TextJumps
-from cspkg.plugins.normal_mode import Normal
 from cspkg.start import root
 import unittest
 import time

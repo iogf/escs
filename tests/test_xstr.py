@@ -1,5 +1,4 @@
-from cspkg.plugins.normal_mode import Normal
-from cspkg.core import Main, Mode, EscsApp
+from cspkg.core import Main, Mode, EscsApp, Normal
 from cspkg.start import root
 
 import random

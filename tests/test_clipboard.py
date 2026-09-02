@@ -1,6 +1,4 @@
-from cspkg.plugins.normal_mode import Normal, NormalMode
-from cspkg.plugins.extra_mode import Extra, ExtraMode
-from cspkg.plugins.insert_mode import Insert, InsertMode
+from cspkg.core import Normal, NormalMode, Extra, ExtraMode, Insert, InsertMode
 from cspkg.core import Main, Mode
 from cspkg.start import root
 from cspkg.plugins.clipboard import Clipboard

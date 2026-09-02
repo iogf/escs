@@ -1,5 +1,4 @@
-from cspkg.plugins.normal_mode import Normal, NormalMode
-from cspkg.plugins.insert_mode import Insert, InsertMode
+from cspkg.core import Normal, NormalMode, Insert, InsertMode
 from cspkg.plugins.splits import Splits
 from cspkg.start import root
 from cspkg.core import rcmod

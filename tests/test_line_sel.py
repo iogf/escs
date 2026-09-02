@@ -1,4 +1,4 @@
-from cspkg.plugins.normal_mode import Normal, NormalMode
+from cspkg.core import Normal, NormalMode
 from cspkg.plugins.line_sel import LineSel
 from cspkg.start import root
 import unittest

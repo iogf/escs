@@ -1,5 +1,4 @@
-from cspkg.plugins.normal_mode import Normal, NormalModeNS, NormalMode
-from cspkg.plugins.extra_mode import Extra, ExtraMode
+from cspkg.core import Normal, NormalMode, Extra, ExtraMode
 from cspkg.plugins.code_comments import CodeComments
 from cspkg.core import Mode, EscsApp, rcmod
 from cspkg.start import root

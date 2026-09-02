@@ -1,6 +1,4 @@
-from cspkg.plugins.normal_mode import Normal, NormalMode
-from cspkg.plugins.insert_mode import Insert, InsertMode
-from cspkg.core import Main, Mode
+from cspkg.core import Main, Mode, Normal, NormalMode, Insert, InsertMode
 from cspkg.start import root
 from cspkg.plugins.tab_search import TabSearch
 import unittest

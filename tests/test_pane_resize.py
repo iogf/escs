@@ -1,4 +1,4 @@
-from cspkg.plugins.normal_mode import Normal, NormalMode
+from cspkg.core import Normal, NormalMode
 from cspkg.plugins.splits import Splits
 
 from cspkg.core import Main, Mode

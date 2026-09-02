@@ -1,6 +1,5 @@
-from cspkg.plugins.normal_mode import Normal, NormalModeNS, NormalMode
 from cspkg.plugins.xleaps import Xleaps, Drop, Jump
-from cspkg.core import Mode, EscsApp
+from cspkg.core import Mode, EscsApp, Normal, NormalMode
 from cspkg.start import root
 from tkinter import TclError
 import unittest

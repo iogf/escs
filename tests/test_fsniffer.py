@@ -1,6 +1,5 @@
-from cspkg.plugins.normal_mode import Normal
 from subprocess import Popen, PIPE
-from cspkg.core import Main, Mode
+from cspkg.core import Main, Mode, Normal
 from cspkg.start import root
 from cspkg.plugins.fsniffer import FSniffer
 import unittest

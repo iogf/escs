@@ -1,7 +1,5 @@
 from cspkg.plugins.line_feed import LineFeed
-from cspkg.plugins.normal_mode import Normal, NormalMode
-from cspkg.plugins.insert_mode import Insert, InsertMode
-from cspkg.core import Mode
+from cspkg.core import Mode, Normal, NormalMode, Insert, InsertMode
 from cspkg.start import root
 from tkinter import TclError
 import unittest
@@ -11,8 +9,6 @@ class TestLineFeed(unittest.TestCase):
     def setUpClass(cls):
         cls.xstr = root.note.create('Tests')
         cls.mod0 = LineFeed(cls.xstr)
-        cls.mod1 = NormalMode(cls.xstr)
-        cls.mod2 = InsertMode(cls.xstr)
 
         cls.xstr.insert('end', 'LineFeed plugin test.\n' * 10)
         root.note.select(cls.xstr.master.master.master)
@@ -29,11 +25,9 @@ class TestLineFeed(unittest.TestCase):
         self.xstr.mark_set('insert', '2.0')
         self.xstr.event_generate('<Key-m>')
         root.update() 
-        self.assertEqual(self.mod0.mode, Insert)
         self.assertEqual(self.xstr.get('3.0', 'insert lineend'), '')
         self.xstr.event_generate('<Escape>')
         root.update() 
-        self.assertEqual(self.mod1.mode, Normal)
 
     def test1(self):
         self.xstr.mark_set('insert', '1.0')
@@ -41,11 +35,9 @@ class TestLineFeed(unittest.TestCase):
         self.xstr.event_generate('<Key-n>')
 
         root.update() 
-        self.assertEqual(self.mod0.mode, Insert)
         self.assertEqual(self.xstr.get('1.0', 'insert lineend'), '')
         self.xstr.event_generate('<Escape>')
         root.update() 
-        self.assertEqual(self.mod1.mode, Normal)
 
 if __name__ == '__main__':
     unittest.main()

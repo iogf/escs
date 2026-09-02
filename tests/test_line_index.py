@@ -1,4 +1,4 @@
-from cspkg.plugins.normal_mode import Normal, NormalMode
+from cspkg.core import Normal, NormalMode
 from cspkg.plugins.line_index import LineIndex
 from cspkg.start import root
 from tkinter import TclError

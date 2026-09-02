@@ -1,10 +1,8 @@
-from cspkg.plugins.extra_mode import Extra, ExtraModeNS, ExtraMode
-from cspkg.plugins.normal_mode import Normal, NormalModeNS, NormalMode
-from cspkg.core import rcmod
-from cspkg.core import Mode
+from cspkg.core import Extra, ExtraMode, Normal, NormalMode, rcmod, Mode
 from cspkg.start import root
 from tkinter import TclError
 import unittest
+import time
 
 class TestExtraMode(unittest.TestCase):
     @classmethod
@@ -18,11 +16,13 @@ class TestExtraMode(unittest.TestCase):
         
         xstr.insert('end', 'ExtraMode plugin test.\n')
         root.note.select(xstr.master.master.master)
+        root.update() 
         xstr.focus_set()
         root.update() 
 
         xstr.event_generate('<Alt-v>')
         root.update() 
+        time.sleep(3)
         self.assertEqual(mod0.mode, Extra)
 
         xstr.tag_add('sel', '1.0', 'end')

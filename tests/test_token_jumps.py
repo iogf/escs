@@ -1,4 +1,4 @@
-from cspkg.plugins.normal_mode import Normal, NormalModeNS, NormalMode
+from cspkg.core import Normal, NormalMode
 from cspkg.plugins.token_jumps import TokenJumps
 from cspkg.core import Mode, EscsApp
 from cspkg.start import root

@@ -1,4 +1,4 @@
-from cspkg.plugins.normal_mode import Normal, NormalMode
+from cspkg.core import Normal, NormalMode
 from cspkg.plugins.run_process import RunProcess
 from subprocess import Popen, PIPE
 import shlex

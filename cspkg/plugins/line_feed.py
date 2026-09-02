@@ -1,4 +1,4 @@
-from cspkg.core import Namespace, Main, Plugin, Normal
+from cspkg.core import Namespace, Main, Plugin, Normal, Insert
 
 class LineFeedNS(Namespace):
     pass
