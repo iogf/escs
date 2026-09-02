@@ -5,8 +5,7 @@ from cspkg.tools import build_regex
 from subprocess import Popen, STDOUT, PIPE
 from cspkg.scan import Read
 from cspkg.start import root
-from cspkg.plugins.normal_mode import Normal
-from cspkg.core import Namespace, Plugin
+from cspkg.core import Namespace, Plugin, Normal
 
 class FSearchNS(Namespace):
     pass

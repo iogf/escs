@@ -1,10 +1,9 @@
 """
 """
 
-from cspkg.core import Command, Plugin, Namespace
+from cspkg.core import Command, Plugin, Namespace, Normal
 from subprocess import Popen, STDOUT, PIPE
 from cspkg.plugins.prog import Python
-from cspkg.plugins.normal_mode import Normal
 from os.path import relpath
 from cspkg.fwin import LinePicker
 from cspkg.tools import get_project_root

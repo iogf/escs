@@ -1,7 +1,6 @@
 
 from cspkg.start import root
-from cspkg.core import Namespace, Plugin, Mode
-from cspkg.plugins.normal_mode import Normal
+from cspkg.core import Namespace, Plugin, Mode, Normal
 
 class SneakNS(Namespace):
     pass

@@ -3,8 +3,7 @@
 
 from os.path import expanduser, join
 from cspkg.fwin import OptionWindow
-from cspkg.core import Plugin, Namespace
-from cspkg.plugins.normal_mode import Normal
+from cspkg.core import Plugin, Namespace, Normal
 from tkinter import ACTIVE
 from cspkg.scan import Read
 from re import split, sub

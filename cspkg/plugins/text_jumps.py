@@ -1,5 +1,4 @@
-from cspkg.core import Namespace, Main, Plugin
-from cspkg.plugins.normal_mode import Normal
+from cspkg.core import Namespace, Main, Plugin, Normal
 
 class TextJumpsNS(Namespace):
     pass

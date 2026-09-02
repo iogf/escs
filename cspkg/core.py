@@ -1,5 +1,6 @@
 from os.path import expanduser, join, exists, dirname
 from untwisted.tkinter import extern
+from os.path import splitext
 from cspkg.stderr import printd
 from tkinter import Tk, Grid
 from functools import wraps
@@ -236,6 +237,60 @@ class TabStatus(Plugin):
         root.note.tab(self.xstr.master.master.master,
         text=basename(self.xstr.filename))
 
-rcmod.extend(((TopbarStatus, (), {}), (ModeStatus, (), {}), 
-(CursorStatus, (), {}), (TabStatus, (), {}), (InstallReactor, (), {})))
+class Normal(Mode):
+    pass
+
+class NormalMode(Plugin):
+    def __init__(self, xstr):
+        super().__init__(xstr)
+
+        self.chmode(Normal)
+
+        self.add_kmap(CoreNS, 
+        Main, '<Escape>', self.switch_normal, True)
+
+    def switch_normal(self, event):
+        """
+        """
+        self.xstr.tag_remove('sel', '1.0', 'end')
+        root = self.xstr.winfo_toplevel()
+        root.status.clear_msg()
+        self.chmode(Normal)
+
+class Insert(Mode):
+    EDIT = True
+    pass
+
+class InsertMode(Plugin):
+    def __init__(self, xstr):
+        super().__init__(xstr)
+
+        self.add_kmap(CoreNS, 
+        Normal, '<Key-i>', self.switch_insert)
+
+    def switch_insert(self, event):
+        """
+        """
+        self.xstr.tag_remove('sel', '1.0', 'end')
+        self.chmode(Insert)
+
+class Extra(Mode):
+    pass
+
+class ExtraMode(Plugin):
+    def __init__(self, xstr):
+        super().__init__(xstr)
+
+        self.add_kmap(CoreNS, 
+        Main, '<Alt-v>', self.switch_extra)
+
+    def switch_extra(self, event):
+        """
+        """
+        self.chmode(Extra)
+
+rcmod.extend(((TopbarStatus, (), {}), 
+(ModeStatus, (), {}), (CursorStatus, (), {}), (TabStatus, (), {}), 
+(InstallReactor, (), {}), (NormalMode, (), {}), (InsertMode, (), {}), 
+(ExtraMode, (), {})))
 

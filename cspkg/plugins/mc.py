@@ -1,7 +1,6 @@
 from subprocess import check_output, check_call
 from os.path import expanduser, dirname, join
-from cspkg.core import Namespace, Plugin
-from cspkg.plugins.normal_mode import Normal
+from cspkg.core import Namespace, Plugin, Normal
 from cspkg.stderr import printd
 from cspkg.tools import error
 from cspkg.start import root

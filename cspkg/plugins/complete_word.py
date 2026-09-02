@@ -4,9 +4,7 @@
 
 from cspkg.fwin import CompletionWindow, Option
 from cspkg.start import root
-from cspkg.core import Plugin, Namespace
-from cspkg.plugins.insert_mode import Insert
-from cspkg.plugins.extra_mode import Extra
+from cspkg.core import Plugin, Namespace, Insert, Extra
 
 class CompleteWordNS(Namespace):
     pass

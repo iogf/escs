@@ -1,6 +1,5 @@
 from cspkg.start import root
-from cspkg.core import Namespace, Plugin, Main
-from cspkg.plugins.normal_mode import Normal
+from cspkg.core import Namespace, Plugin, Main, Normal
 
 import signal
 

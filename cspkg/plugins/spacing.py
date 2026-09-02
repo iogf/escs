@@ -2,8 +2,7 @@
 from cspkg.core import Command
 from os.path import splitext
 from cspkg.start import root
-from cspkg.core import Plugin, Namespace, Main
-from cspkg.plugins.insert_mode import Insert
+from cspkg.core import Plugin, Namespace, Main, Insert
 
 class TabSpacingNS(Namespace):
     pass

@@ -1,7 +1,6 @@
 from cspkg.start import root
 from tkinter import TclError
-from cspkg.core import Namespace, Plugin, Main, Mode
-from cspkg.plugins.normal_mode import Normal
+from cspkg.core import Namespace, Plugin, Main, Mode, Normal
 
 class XleapsNS(Namespace):
     pass

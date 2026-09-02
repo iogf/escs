@@ -7,10 +7,8 @@ from base64 import b64encode, b64decode
 from tempfile import NamedTemporaryFile
 from subprocess import Popen, PIPE
 from shutil import copyfile
-from cspkg.core import Plugin, Namespace, Command, rcenv, Main
+from cspkg.core import Plugin, Namespace, Command, rcenv, Main, Extra, Insert
 from requests.exceptions import RequestException
-from cspkg.plugins.extra_mode import Extra
-from cspkg.plugins.insert_mode import Insert
 from cspkg.start import root
 from cspkg.stderr import printd
 from cspkg.tools import psock

@@ -8,8 +8,7 @@ from untwisted.sock_writer  import SockWriter
 from untwisted.sock_reader import SockReader
 from untwisted.event import CLOSE, CONNECT_ERR, CONNECT
 from untwisted.splits import Terminator
-from cspkg.core import Namespace, Plugin, Main
-from cspkg.plugins.extra_mode import Extra
+from cspkg.core import Namespace, Plugin, Main, Extra
 from cspkg.stderr import printd
 from os.path import basename
 from cspkg.scan import Read

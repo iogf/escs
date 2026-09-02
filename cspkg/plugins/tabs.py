@@ -1,8 +1,7 @@
 from cspkg.start import root
 # from tkinter.messagebox import *
 from tkinter.filedialog import askopenfilename
-from cspkg.core import Namespace, Main, Plugin, Command
-from cspkg.plugins.normal_mode import Normal
+from cspkg.core import Namespace, Main, Plugin, Command, Normal
 from cspkg.xstr import Xstr
 
 class TabsNS(Namespace):

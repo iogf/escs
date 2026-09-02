@@ -2,8 +2,7 @@
 from cspkg.scan import Read
 from cspkg.stderr import printd
 from cspkg.start import root
-from cspkg.core import Namespace, Plugin
-from cspkg.plugins.normal_mode import Normal
+from cspkg.core import Namespace, Plugin, Normal
 
 class FindNS(Namespace):
     pass

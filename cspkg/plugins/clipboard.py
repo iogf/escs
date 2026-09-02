@@ -1,8 +1,6 @@
 
 from cspkg.start import root
-from cspkg.core import Namespace, Plugin
-from cspkg.plugins.normal_mode import Normal
-from cspkg.plugins.extra_mode import Extra
+from cspkg.core import Namespace, Plugin, Normal, Extra
 from cspkg.core import Command
 
 class ClipboardNS(Namespace):

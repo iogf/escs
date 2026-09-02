@@ -1,8 +1,7 @@
 
 from cspkg.scan import Read
 from cspkg.start import root
-from cspkg.core import Namespace, Plugin
-from cspkg.plugins.normal_mode import Normal
+from cspkg.core import Namespace, Plugin, Normal
 from subprocess import Popen, PIPE
 
 class RunProcessNS(Namespace):

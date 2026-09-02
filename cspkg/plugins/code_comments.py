@@ -1,8 +1,6 @@
 
 import os.path
-from cspkg.core import Namespace, Plugin
-from cspkg.plugins.extra_mode import Extra
-from cspkg.plugins.normal_mode import Normal
+from cspkg.core import Namespace, Plugin, Normal, Extra
 
 class CodeCommentsNS(Namespace):
     pass

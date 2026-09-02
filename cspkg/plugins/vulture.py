@@ -1,7 +1,6 @@
 
-from cspkg.core import Namespace, Command, Plugin
+from cspkg.core import Namespace, Command, Plugin, Normal
 from cspkg.plugins.prog import Python
-from cspkg.plugins.normal_mode import Normal
 from subprocess import Popen, STDOUT, PIPE
 from os.path import relpath
 from cspkg.fwin import LinePicker

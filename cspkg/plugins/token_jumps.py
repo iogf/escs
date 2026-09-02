@@ -1,6 +1,5 @@
 from re import escape
-from cspkg.core import Plugin, Namespace
-from cspkg.plugins.normal_mode import Normal
+from cspkg.core import Plugin, Namespace, Normal
 
 class TokenJumpsNS(Namespace):
     pass

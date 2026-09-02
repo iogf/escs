@@ -1,6 +1,4 @@
-from cspkg.core import Namespace, Mode, Plugin
-from cspkg.plugins.normal_mode import Normal
-
+from cspkg.core import Namespace, Mode, Plugin, Normal
 from os.path import splitext
 
 class ProgNS(Namespace):
