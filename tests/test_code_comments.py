@@ -26,7 +26,7 @@ class TestCodeComments(unittest.TestCase):
         xstr0.mark_set('insert', '1.0')
         xstr0.tag_add('sel', '1.0', '1.0 lineend')
 
-        xstr0.event_generate('<Alt-v>')
+        xstr0.event_generate('<Key-b>')
         xstr0.event_generate('<Key-c>')
 
         data0 = xstr0.get('1.0', 'end') 
@@ -36,7 +36,7 @@ class TestCodeComments(unittest.TestCase):
         
         # Test for removing python comments.
         xstr0.tag_add('sel', '1.0', '1.0 lineend')
-        xstr0.event_generate('<Alt-v>')
+        xstr0.event_generate('<Key-b>')
         xstr0.event_generate('<Key-C>')
 
         data0 = xstr0.get('1.0', 'end') 
@@ -54,7 +54,7 @@ class TestCodeComments(unittest.TestCase):
         xstr1.insert('end', '321 921 421 332\n' * 3)
         xstr1.tag_add('sel', '1.0', 'end')
 
-        xstr1.event_generate('<Alt-v>')
+        xstr1.event_generate('<Key-b>')
         xstr1.event_generate('<Key-c>')
 
         # Check whether comments were added in all selected lines.
@@ -66,7 +66,7 @@ class TestCodeComments(unittest.TestCase):
 
         # Test for removing cpp comments.
         xstr1.tag_add('sel', '1.0', 'end')
-        xstr1.event_generate('<Alt-v>')
+        xstr1.event_generate('<Key-b>')
         xstr1.event_generate('<Key-C>')
 
         # Check whether comments were removed correctly.

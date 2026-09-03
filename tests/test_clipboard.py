@@ -59,7 +59,7 @@ class TestClipboard(unittest.TestCase):
         self.xstr.tag_add('sel', '1.0', '1.0 lineend')
         self.xstr.tag_add('sel', '3.0', '3.0 lineend')
 
-        self.xstr.event_generate('<Alt-v>')
+        self.xstr.event_generate('<Key-b>')
         self.xstr.event_generate('<Key-y>')
 
         data4 = self.xstr.clipboard_get()
@@ -69,7 +69,7 @@ class TestClipboard(unittest.TestCase):
         self.xstr.tag_add('sel', '1.0', '1.0 lineend')
         self.xstr.tag_add('sel', '3.0', '3.0 lineend')
 
-        self.xstr.event_generate('<Alt-v>')
+        self.xstr.event_generate('<Key-b>')
         self.xstr.event_generate('<Key-u>')
 
         data5 = self.xstr.clipboard_get()
@@ -90,13 +90,13 @@ class TestClipboard(unittest.TestCase):
         self.xstr.tag_add('sel', '2.0', '2.1')
         self.xstr.tag_add('sel', '3.0', '3.1')
 
-        self.xstr.event_generate('<Alt-v>')
+        self.xstr.event_generate('<Key-b>')
         self.xstr.event_generate('<Key-y>')
         root.update() 
         self.assertEqual(self.xstr.clipboard_get(), '1\n5\n5\n')
         self.xstr.mark_set('insert', '1.0 lineend')
 
-        self.xstr.event_generate('<Alt-v>')
+        self.xstr.event_generate('<Key-b>')
         self.xstr.event_generate('<Key-t>')
         data6 = self.xstr.get('1.0', 'end')
         root.update() 
@@ -104,7 +104,7 @@ class TestClipboard(unittest.TestCase):
 
         self.xstr.mark_set('insert', '1.1')
 
-        self.xstr.event_generate('<Alt-v>')
+        self.xstr.event_generate('<Key-b>')
         self.xstr.event_generate('<Key-t>')
         data6 = self.xstr.get('1.0', 'end')
         root.update() 
