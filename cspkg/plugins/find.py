@@ -2,7 +2,7 @@
 from cspkg.scan import Read
 from cspkg.stderr import printd
 from cspkg.start import root
-from cspkg.core import Namespace, Plugin, Normal
+from cspkg.core import Namespace, Plugin, Main
 
 class FindNS(Namespace):
     pass
@@ -24,7 +24,7 @@ class Find(Plugin):
         super().__init__(xstr)
         xstr.tag_update(**self.confs)
 
-        self.add_kmap(FindNS, Normal,'<Alt-slash>', 
+        self.add_kmap(FindNS, Main,'<Alt-slash>', 
         lambda event: Read(events={
         '<Alt-q>': self.set_data,
         '<Alt-o>': self.up, '<Escape>': self.cancel, 

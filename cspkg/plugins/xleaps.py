@@ -14,8 +14,8 @@ class Jump(Mode):
 class Xleaps(Plugin):
     def __init__(self, xstr):
         super().__init__(xstr)
-        self.add_kmap(XleapsNS, Main, '<Alt-bracketright>', self.jump_mode)
-        self.add_kmap(XleapsNS, Main, '<Alt-bracketleft>', self.drop_mode)
+        self.add_kmap(XleapsNS, Main, '<Alt-v>', self.jump_mode)
+        self.add_kmap(XleapsNS, Main, '<Alt-c>', self.drop_mode)
         self.add_kmap(XleapsNS, Drop, '<Key>', self.drop)
         self.add_kmap(XleapsNS, Jump, '<Key>', self.jump)
         self.taglist = None

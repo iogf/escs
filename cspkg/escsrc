@@ -14,12 +14,14 @@ Golang, Html, Javascript, CoreNS)
 from cspkg.stderr import printd
 ##############################################################################
 # Use chkmap to remap keystrokes.
-# It turns the apostrophe key a shortcut to get in EXTRA mode.
 
+# The following example maps <Alt-slash> in Main mode to work as 
+# <Key-ccedilla> in Normal mode. 
 # Example:
 
-# chkmap(CoreNS, (Main, '<Alt-v>'), (Main, '<Alt-v>'))
-# chkmap(CoreNS, (Main, '<Alt-v>'), (Normal, '<Key-ccedilla>'))
+# from cspkg.plugins.find import FindNS
+# chkmap(FindNS, (Main, '<Alt-slash>'), (Main, '<Alt-slash>'))
+# chkmap(FindNS, (Main, '<Alt-slash>'), (Normal, '<Key-ccedilla>'))
 ##############################################################################
 # Set homedir manually.
 

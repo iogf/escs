@@ -9,10 +9,10 @@ class ModeClip(Plugin):
     def __init__(self, xstr):
         super().__init__(xstr)
         self.add_kmap(ModeClipNS, Main, 
-        '<Control-b>', self.pin_mode)
+        '<Control-backslash>', self.pin_mode)
 
         self.add_kmap(ModeClipNS, Normal, 
-        '<Key-b>', self.unpin_mode)
+        '<Key-backslash>', self.unpin_mode)
 
     def pin_mode(self, event):
         taglist = self.xstr.bindtags()

@@ -25,7 +25,7 @@ class TestXleaps(unittest.TestCase):
         self.xstr.mark_set('insert', '1.0')
 
         # Create an anchor at 1.0 whose label is a.
-        self.xstr.event_generate('<Alt-bracketleft>')
+        self.xstr.event_generate('<Alt-c>')
         root.update() 
 
         self.assertEqual(self.mod0.mode, Drop)
@@ -36,7 +36,7 @@ class TestXleaps(unittest.TestCase):
 
     
         # Check whether anchor a is at 1.0.
-        self.xstr.event_generate('<Alt-bracketright>')
+        self.xstr.event_generate('<Alt-v>')
         root.update() 
 
         self.assertEqual(self.mod0.mode, Jump)
@@ -50,29 +50,30 @@ class TestXleaps(unittest.TestCase):
         self.xstr.mark_set('insert', '2.11')
 
         # Create an anchor whose label is b.
-        self.xstr.event_generate('<Alt-bracketleft>')
+        self.xstr.event_generate('<Alt-c>')
         root.update() 
 
         self.assertEqual(self.mod0.mode, Drop)
 
         self.xstr.event_generate('<Key-b>')
+        root.update() 
+
         self.xstr.mark_set('insert', 'end')
         root.update() 
 
 
         # check the anchor b index.
-        self.xstr.event_generate('<Alt-bracketright>')
+        self.xstr.event_generate('<Alt-v>')
         root.update() 
 
         self.assertEqual(self.mod0.mode, Jump)
-
         self.xstr.event_generate('<Key-b>')
         root.update() 
 
         self.assertEqual(self.xstr.index('insert'), '2.11')
 
         # Check anchor a index again.
-        self.xstr.event_generate('<Alt-bracketright>')
+        self.xstr.event_generate('<Alt-v>')
         root.update() 
 
         self.assertEqual(self.mod0.mode, Jump)

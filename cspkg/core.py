@@ -282,7 +282,7 @@ class ExtraMode(Plugin):
         super().__init__(xstr)
 
         self.add_kmap(CoreNS, 
-        Main, '<Alt-v>', self.switch_extra)
+        Normal, '<Key-b>', self.switch_extra)
 
     def switch_extra(self, event):
         """

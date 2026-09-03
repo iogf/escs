@@ -18,7 +18,7 @@ class TestExtraMode(unittest.TestCase):
         xstr.focus_set()
         root.update() 
 
-        xstr.event_generate('<Alt-v>')
+        xstr.event_generate('<Key-b>')
         root.update() 
         self.assertEqual(root.status.mode.cget('text'), 'Mode: Extra')
 
