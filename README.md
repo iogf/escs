@@ -36,6 +36,11 @@ It even has a built-in IRC client plugin.
 
 There is a built-in terminal-like plugin that allows to execute commands through a Bash process. 
 
+Escs is free though a monthly subscription is lovely welcome. If you feel likely escs is worth 
+helping me or you want some personal support then it follows a paypal account. 
+
+last.src@gmail.com
+
 ![screenshot-1](screenshot-1.png)
 
 Features/Plugins
