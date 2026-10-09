@@ -9,18 +9,16 @@ It has some similarities with Vim like Normal, Insert modes and keystrokes to mo
 It was built with some goals, it should be easily extensible; users should extend and configure 
 Escs in a mainstream programming language (e.g Python). . 
 
-Escs doesn't demand you to have twenty three fingers it makes you feel like having twenty four 
-fingers in your hands.
-
 Escs has an optmized scheme of keystrokes/operations it has a single major mode (i.e Main) also 
-minor modes (e.g Normal, Insert, Extra). Operations that are often used and common  when working 
+minor modes (e.g Normal, Insert, Extra). Operations that are often used and common when working 
 with a text editor are implemented in Main mode.
 
 The Syntax Highlighter plugin makes it easy to create themes. It integrates with Python/Pygments 
 to perform syntax hgihlighting for documents.
 
-There are several built-in modes for programming languages like Python, Golang, Javascript.'
-It is straight to implement custom modes or extend built-in modes to work with specific file types.
+There are several built-in modes for programming languages like Python, Golang, Javascript, C, etc.
+These modes implement several tools like debuggers or code refactoring. It is straight to implement custom 
+modes or extend built-in modes to work with specific file types.
 
 Escs integrates with Ycmd to do code completion it is simple to use other type of engines to perform 
 several tasks. It has also a built-in plugin to perform code completion through Jedi.
@@ -68,6 +66,7 @@ Features/Plugins
 - **Self documenting**
 
 - **Syntax Highlighter for 300+ languages**
+    * https://pygments.org/
 
 - **Handy Shortcuts**
 
@@ -75,9 +74,6 @@ Features/Plugins
     * https://github.com/ycm-core/ycmd
 
 - **Quick Snippet Search**
-
-- **The Silver Searcher**
-    * https://github.com/ggreer/the_silver_searcher
 
 - **File Manager**
 
@@ -88,7 +84,8 @@ Features/Plugins
 
 - **Irc Client Plugin**
 
-- **Find Function/Class Definition**
+- **Generic Find Function/Class Definition**
+    * https://github.com/ggreer/the_silver_searcher
 
 - **Python Vulture Integration**
     * https://github.com/jendrikseipp/vulture
